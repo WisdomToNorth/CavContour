@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.21)
 
 # detect if CavalierContours is a subproject or not
 # do not include examples, tests, and benchmarks in that case
@@ -7,7 +7,7 @@ if (NOT DEFINED PROJECT_NAME)
 endif()
 
 project(CavalierContours VERSION 0.1)
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Allow super-projects to override options
@@ -26,13 +26,12 @@ else()
 endif()
 
 
-
 add_library(${CAVC_CPP_HEADER_ONLY_LIB} INTERFACE)
 target_include_directories(${CAVC_CPP_HEADER_ONLY_LIB}
   INTERFACE include/)
 
 if(NOT CAVC_HEADER_ONLY)
-  if(CAVC_BUILD_SHARED_LIB)
+if(CAVC_BUILD_SHARED_LIB)
     add_library(${CAVC_C_API_LIB}
       SHARED src/cavaliercontours.cpp)
   else()
@@ -40,7 +39,7 @@ if(NOT CAVC_HEADER_ONLY)
       STATIC src/cavaliercontours.cpp)
     target_compile_definitions(${CAVC_C_API_LIB}
       PUBLIC CAVC_STATIC_LIB)
-  endif()
+endif()
   # compiler warnings, note: not using /W4 on MSVC since it emits warning due to default of /W3
   # from cmake
   if(MSVC)

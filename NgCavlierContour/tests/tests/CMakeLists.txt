@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.21)
 find_package(GTest REQUIRED)
 
 set(gtesthelper
@@ -22,8 +22,8 @@ macro(cavc_add_test name)
   add_test(NAME ${name} COMMAND ${name})
 endmacro()
 
-cavc_add_test(cavc_pline_tests)
-cavc_add_test(cavc_pline_function_tests)
-cavc_add_test(cavc_parallel_offset_tests)
-cavc_add_test(cavc_combine_plines_tests)
-cavc_add_test(staticspatialindex_tests)
+cavc_add_test(TEST_cavc_pline)
+cavc_add_test(TEST_cavc_pline_function)
+cavc_add_test(TEST_cavc_parallel_offset)
+cavc_add_test(TEST_cavc_combine_plines)
+cavc_add_test(TEST_staticspatialindex)

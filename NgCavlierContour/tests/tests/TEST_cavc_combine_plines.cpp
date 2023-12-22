@@ -39,9 +39,7 @@ struct CombinePlinesTestCase
         combineMode(combineMode), plineA(plineA), plineB(plineB),
 
         expectedRemaining(std::move(expectedRemaining)),
-        expectedSubtracted(std::move(expectedSubtracted))
-    {
-    }
+        expectedSubtracted(std::move(expectedSubtracted)){};
 };
 
 std::ostream &operator<<(std::ostream &os, CombinePlinesTestCase const &c)
