@@ -2,6 +2,7 @@
 #define CAVC_STATICSPATIALINDEX_HPP
 #include <algorithm>
 #include <cmath>
+#include <cstdint>
 #include <limits>
 #include <memory>
 #include <stack>
