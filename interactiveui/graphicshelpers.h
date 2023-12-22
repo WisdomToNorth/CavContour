@@ -5,11 +5,12 @@
 
 class QSGGeometryNode;
 
-namespace gh {
+namespace gh
+{
 QColor indexToColor(std::size_t index);
 
 QSGGeometryNode *createSimpleGeomNode(int vertexCount, QColor const &color, float width,
                                       QSGGeometry::DrawingMode mode);
-}
+} // namespace gh
 
 #endif // GRAPHICSHELPERS_H
