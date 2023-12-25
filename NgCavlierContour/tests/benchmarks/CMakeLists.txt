@@ -2,22 +2,29 @@ cmake_minimum_required(VERSION 3.21)
 
 find_package(benchmark REQUIRED)
 
-set(ClipperFile
-${CMAKE_CURRENT_SOURCE_DIR}/clipper/clipper.cpp
-${CMAKE_CURRENT_SOURCE_DIR}/clipper/clipper.hpp
-${CMAKE_CURRENT_SOURCE_DIR}/clipper/clipper_export.hpp
+set(HelperFile
+    benchmarkprofiles.h
+    clipper/clipper.cpp
+    clipper/clipper.hpp
+    clipper/clipper_export.hpp
 )
 
+include_directories(
+    ${PROJECT_SOURCE_DIR}/build/include
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/clipper
+    )
+
 macro(add_benchmark name)
-  add_executable(${name} ${name}.cpp ${ClipperFile})
-  target_link_libraries(${name}
-    PRIVATE ${CAVC_CPP_HEADER_ONLY_LIB})
-  target_link_libraries(${name}
-    PRIVATE PolylineFactory)
-  target_link_libraries(${name}
-    PRIVATE benchmark::benchmark)
-	if (MSVC)
-      target_link_options(${name} PRIVATE $<$<CONFIG:RELWITHDEBINFO>:/PROFILE>)
+    add_executable(${name} ${name}.cpp ${HelperFile})
+    target_link_libraries(${name}
+    PRIVATE
+        ${CAVC_CPP_HEADER_ONLY_LIB}
+        PolylineFactory
+        benchmark::benchmark)
+
+    if (MSVC)
+        target_link_options(${name} PRIVATE $<$<CONFIG:RELWITHDEBINFO>:/PROFILE>)
     endif()
 endmacro()
 
@@ -28,7 +35,5 @@ add_benchmark(areabenchmarks)
 add_benchmark(pathlengthbenchmarks)
 add_benchmark(windingnumberbenchmarks)
 add_benchmark(combinebenchmarks)
-
 add_benchmark(clipperbenchmarks)
-# target_link_libraries(clipperbenchmarks
-#   PRIVATE clipper_static)
+

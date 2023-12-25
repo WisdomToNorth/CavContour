@@ -2,7 +2,7 @@
 #include <string>
 #include <vector>
 
-#include "cavaliercontours.h"
+#include "cavc_c/cavaliercontours.h"
 #include "include/c_api_test_helpers.hpp"
 
 namespace t = testing;
@@ -11,9 +11,7 @@ struct cavc_plineFunctionsTestCase
     cavc_plineFunctionsTestCase(std::string name, std::vector<cavc_vertex> vertexes,
                                 bool isClosed) :
         name(std::move(name)),
-        pline(plineFromVertexes(vertexes, isClosed)), plineVertexes(std::move(vertexes))
-    {
-    }
+        pline(plineFromVertexes(vertexes, isClosed)), plineVertexes(std::move(vertexes)){};
 
     // simple name for the test case
     std::string name;

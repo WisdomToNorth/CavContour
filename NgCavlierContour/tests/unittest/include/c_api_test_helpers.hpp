@@ -2,7 +2,7 @@
 #define CAVC_API_TEST_HELPERS_HPP
 #include <iostream>
 
-#include "cavaliercontours.h"
+#include "cavc_c/cavaliercontours.h"
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
 #include "testhelpers.hpp"

@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.21)
 add_subdirectory(polylinefactory)
-add_subdirectory(tests)
+add_subdirectory(unittest)
+add_subdirectory(examples)
 add_subdirectory(benchmarks)

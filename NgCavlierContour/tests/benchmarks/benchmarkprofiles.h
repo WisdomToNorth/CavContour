@@ -1,15 +1,14 @@
 #include <benchmark/benchmark.h>
 
 #include "cavc/polyline.hpp"
+
 struct TestProfile
 {
     std::size_t offsetCount;
     double offsetDelta;
     cavc::Polyline<double> pline;
     TestProfile(std::size_t offsetCount, double offsetDelta, cavc::Polyline<double> pline) :
-        offsetCount(offsetCount), offsetDelta(offsetDelta), pline(pline)
-    {
-    }
+        offsetCount(offsetCount), offsetDelta(offsetDelta), pline(pline){};
 };
 
 inline TestProfile square()

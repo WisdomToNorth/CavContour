@@ -3,7 +3,7 @@
 #include <cmath>
 #include <iostream>
 
-#include "cavaliercontours.h"
+#include "cavc_c/cavaliercontours.h"
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
 constexpr inline cavc_real PI()

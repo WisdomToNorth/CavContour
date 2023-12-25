@@ -1,6 +1,6 @@
 #include <vector>
 
-#include "cavaliercontours.h"
+#include "cavc_c/cavaliercontours.h"
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
 #include "include/c_api_test_helpers.hpp"

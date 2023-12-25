@@ -1,10 +1,12 @@
-add_library(PolylineFactory src/polylinefactory.cpp)
+add_library(PolylineFactory
+STATIC
+    polylinefactory.hpp
+    polylinefactory.cpp)
 
 target_include_directories(PolylineFactory
-  PUBLIC include/)
+    PUBLIC ${PROJECT_SOURCE_DIR}/build/include)
 
 target_link_libraries(PolylineFactory
-  PUBLIC ${CAVC_CPP_HEADER_ONLY_LIB})
-
-target_link_libraries(PolylineFactory
-  PUBLIC ${CAVC_C_API_LIB})
+    PUBLIC
+        ${CAVC_CPP_HEADER_ONLY_LIB}
+        ${CAVC_C_API_LIB})
