@@ -6,10 +6,7 @@ if (NOT DEFINED PROJECT_NAME)
   set(NOT_SUBPROJECT ON)
 endif()
 
-project(CavalierContours VERSION 0.1)
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
+message(STATUS "CMAKE_BUILD_TYPE: ${PROJECT_SOURCE_DIR}")
 # CPP Header only library
 # Copy hpp files to build/include
 set(CAVC_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/build/include/cavc)
