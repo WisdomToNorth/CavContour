@@ -1,8 +1,17 @@
 cmake_minimum_required(VERSION 3.21)
-project(CavalierContoursDev)
+project(
+    NgPolyDebugger
+    VERSION 0.1.1
+    LANGUAGES CXX)
 
-SET(CAVC_HEADER_ONLY ON CACHE BOOL "using headers only")
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+enable_language(C)
 
-# add subdir projects
-add_subdirectory(NgCavlierContour)
-add_subdirectory(interactiveui)
+add_subdirectory(cavc)
+add_subdirectory(CavcDev)
+add_subdirectory(clipper2)
+add_subdirectory(ngpoly)
+
+add_subdirectory(GuiDebugger)

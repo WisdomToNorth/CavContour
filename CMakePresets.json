@@ -7,15 +7,73 @@
     },
     "configurePresets": [
         {
+            "name": "mac-xcode-debug",
+            "displayName": "Xcode Debug",
+            "description": "Mac Xcode",
+            "hidden": false,
+            "generator": "Xcode",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "installDir": "${sourceDir}/install/${presetName}",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "YES"
+            },
+            "environment": {
+                "CC": "/usr/bin/clang",
+                "CXX": "/usr/bin/clang++"
+            },
+            "vendor": {
+                "microsoft.com/VisualStudioSettings/CMake/1.0": {
+                    "hostOS": [
+                        "macOS"
+                    ],
+                    "intelliSenseMode": "ios-clang-arm64"
+                }
+            }
+        },
+        {
+            "name": "mac-xcode-release",
+            "displayName": "Xcode Release",
+            "description": "Mac Xcode",
+            "hidden": false,
+            "generator": "Xcode",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "installDir": "${sourceDir}/install/${presetName}",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "YES"
+            },
+            "environment": {
+                "CC": "/usr/bin/clang",
+                "CXX": "/usr/bin/clang++"
+            },
+            "vendor": {
+                "microsoft.com/VisualStudioSettings/CMake/1.0": {
+                    "hostOS": [
+                        "macOS"
+                    ],
+                    "intelliSenseMode": "ios-clang-arm64"
+                }
+            }
+        },
+        {
             "name": "windows-msvc-22",
             "displayName": "msvc 22",
             "description": "windows msvc 2022",
             "generator": "Visual Studio 17 2022",
             "binaryDir": "${sourceDir}/build/${presetName}",
+            "installDir": "${sourceDir}/install/${presetName}",
+            "architecture": {
+                "value": "x64",
+                "strategy": "set"
+            },
             "cacheVariables": {
                 "CMAKE_INSTALL_PREFIX": "${sourceDir}/install/${presetName}"
             },
             "vendor": {
+                "jetbrains.com/clion": {
+                    "toolchain": "Visual Studio"
+                },
                 "microsoft.com/VisualStudioSettings/CMake/1.0": {
                     "hostOS": [
                         "Windows"
@@ -34,6 +92,9 @@
                 "CMAKE_INSTALL_PREFIX": "${sourceDir}/install/${presetName}"
             },
             "vendor": {
+                "jetbrains.com/clion": {
+                    "toolchain": "Visual Studio"
+                },
                 "microsoft.com/VisualStudioSettings/CMake/1.0": {
                     "hostOS": [
                         "Windows"
@@ -58,10 +119,10 @@
                 "CMAKE_C_COMPILER": "cl.exe",
                 "CMAKE_CXX_COMPILER": "cl.exe"
             },
-            "architecture": {
-                "value": "x64"
-            },
             "vendor": {
+                "jetbrains.com/clion": {
+                    "toolchain": "Visual Studio"
+                },
                 "microsoft.com/VisualStudioSettings/CMake/1.0": {
                     "hostOS": [
                         "Windows"
@@ -86,10 +147,10 @@
                 "CMAKE_C_COMPILER": "cl.exe",
                 "CMAKE_CXX_COMPILER": "cl.exe"
             },
-            "architecture": {
-                "value": "x64"
-            },
             "vendor": {
+                "jetbrains.com/clion": {
+                    "toolchain": "Visual Studio"
+                },
                 "microsoft.com/VisualStudioSettings/CMake/1.0": {
                     "hostOS": [
                         "Windows"
@@ -105,8 +166,27 @@
             "binaryDir": "${sourceDir}/build/${presetName}",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release",
-                "CMAKE_C_COMPILER": "/opt/intel/oneapi/compiler/latest/bin/icx",
-                "CMAKE_CXX_COMPILER": "/opt/intel/oneapi/compiler/latest/bin/icpx"
+                "CMAKE_C_COMPILER": "icx",
+                "CMAKE_CXX_COMPILER": "icpx"
+            },
+            "vendor": {
+                "microsoft.com/VisualStudioSettings/CMake/1.0": {
+                    "hostOS": [
+                        "Linux"
+                    ],
+                    "intelliSenseMode": "linux-gcc-x64"
+                }
+            }
+        },
+        {
+            "name": "icc_linux_debug",
+            "displayName": "icc linux debug",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_C_COMPILER": "icx",
+                "CMAKE_CXX_COMPILER": "icpx"
             },
             "vendor": {
                 "microsoft.com/VisualStudioSettings/CMake/1.0": {
@@ -124,8 +204,10 @@
             "binaryDir": "${sourceDir}/build/${presetName}",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Debug",
-                "CMAKE_C_COMPILER": "/usr/bin/gcc",
-                "CMAKE_CXX_COMPILER": "/usr/bin/g++"
+                "CMAKE_C_COMPILER": "gcc",
+                "CMAKE_CXX_COMPILER": "g++",
+                "CMAKE_C_COMPILER_LAUNCHER": "ccache",
+                "CMAKE_CXX_COMPILER_LAUNCHER": "ccache"
             },
             "vendor": {
                 "microsoft.com/VisualStudioSettings/CMake/1.0": {
@@ -143,8 +225,10 @@
             "binaryDir": "${sourceDir}/build/${presetName}",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release",
-                "CMAKE_C_COMPILER": "/usr/bin/gcc",
-                "CMAKE_CXX_COMPILER": "/usr/bin/g++"
+                "CMAKE_C_COMPILER": "gcc",
+                "CMAKE_CXX_COMPILER": "g++",
+                "CMAKE_C_COMPILER_LAUNCHER": "ccache",
+                "CMAKE_CXX_COMPILER_LAUNCHER": "ccache"
             },
             "vendor": {
                 "microsoft.com/VisualStudioSettings/CMake/1.0": {
@@ -162,8 +246,10 @@
             "binaryDir": "${sourceDir}/build/${presetName}",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Debug",
-                "CMAKE_C_COMPILER": "/usr/bin/clang",
-                "CMAKE_CXX_COMPILER": "/usr/bin/clang++"
+                "CMAKE_C_COMPILER": "clang",
+                "CMAKE_CXX_COMPILER": "clang++",
+                "CMAKE_C_COMPILER_LAUNCHER": "ccache",
+                "CMAKE_CXX_COMPILER_LAUNCHER": "ccache"
             },
             "vendor": {
                 "microsoft.com/VisualStudioSettings/CMake/1.0": {
@@ -182,7 +268,9 @@
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release",
                 "CMAKE_C_COMPILER": "/usr/bin/clang",
-                "CMAKE_CXX_COMPILER": "/usr/bin/clang++"
+                "CMAKE_CXX_COMPILER": "/usr/bin/clang++",
+                "CMAKE_C_COMPILER_LAUNCHER": "ccache",
+                "CMAKE_CXX_COMPILER_LAUNCHER": "ccache"
             },
             "vendor": {
                 "microsoft.com/VisualStudioSettings/CMake/1.0": {
@@ -201,7 +289,9 @@
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Debug",
                 "CMAKE_C_COMPILER": "/usr/bin/gcc-13",
-                "CMAKE_CXX_COMPILER": "/usr/bin/g++-13"
+                "CMAKE_CXX_COMPILER": "/usr/bin/g++-13",
+                "CMAKE_C_COMPILER_LAUNCHER": "ccache",
+                "CMAKE_CXX_COMPILER_LAUNCHER": "ccache"
             },
             "vendor": {
                 "microsoft.com/VisualStudioSettings/CMake/1.0": {
@@ -221,10 +311,9 @@
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Debug",
                 "CMAKE_C_COMPILER": "/usr/bin/clang",
-                "CMAKE_CXX_COMPILER": "/usr/bin/clang++"
-            },
-            "architecture": {
-                "value": "x64"
+                "CMAKE_CXX_COMPILER": "/usr/bin/clang++",
+                "CMAKE_C_COMPILER_LAUNCHER": "ccache",
+                "CMAKE_CXX_COMPILER_LAUNCHER": "ccache"
             },
             "vendor": {
                 "microsoft.com/VisualStudioSettings/CMake/1.0": {
@@ -245,10 +334,9 @@
                 "CMAKE_BUILD_TYPE": "Release",
                 "CMAKE_INSTALL_PREFIX": "${sourceDir}/install/${presetName}",
                 "CMAKE_C_COMPILER": "/usr/bin/clang",
-                "CMAKE_CXX_COMPILER": "/usr/bin/clang++"
-            },
-            "architecture": {
-                "value": "x64"
+                "CMAKE_CXX_COMPILER": "/usr/bin/clang++",
+                "CMAKE_C_COMPILER_LAUNCHER": "ccache",
+                "CMAKE_CXX_COMPILER_LAUNCHER": "ccache"
             },
             "vendor": {
                 "microsoft.com/VisualStudioSettings/CMake/1.0": {
@@ -269,10 +357,9 @@
                 "CMAKE_BUILD_TYPE": "Release",
                 "CMAKE_INSTALL_PREFIX": "${sourceDir}/install/${presetName}",
                 "CMAKE_C_COMPILER": "/usr/bin/gcc",
-                "CMAKE_CXX_COMPILER": "/usr/bin/g++"
-            },
-            "architecture": {
-                "value": "x64"
+                "CMAKE_CXX_COMPILER": "/usr/bin/g++",
+                "CMAKE_C_COMPILER_LAUNCHER": "ccache",
+                "CMAKE_CXX_COMPILER_LAUNCHER": "ccache"
             },
             "vendor": {
                 "microsoft.com/VisualStudioSettings/CMake/1.0": {
@@ -293,10 +380,9 @@
                 "CMAKE_BUILD_TYPE": "Debug",
                 "CMAKE_INSTALL_PREFIX": "${sourceDir}/install/${presetName}",
                 "CMAKE_C_COMPILER": "/usr/bin/gcc",
-                "CMAKE_CXX_COMPILER": "/usr/bin/g++"
-            },
-            "architecture": {
-                "value": "x64"
+                "CMAKE_CXX_COMPILER": "/usr/bin/g++",
+                "CMAKE_C_COMPILER_LAUNCHER": "ccache",
+                "CMAKE_CXX_COMPILER_LAUNCHER": "ccache"
             },
             "vendor": {
                 "microsoft.com/VisualStudioSettings/CMake/1.0": {
@@ -354,6 +440,12 @@
             "description": "",
             "displayName": "",
             "configurePreset": "icc_linux_release"
+        },
+        {
+            "name": "linux_icc_debug",
+            "description": "",
+            "displayName": "",
+            "configurePreset": "icc_linux_debug"
         },
         {
             "name": "linux_gcc13_debug",
@@ -432,19 +524,13 @@
             "name": "test_mac_gcc_release",
             "description": "",
             "displayName": "",
-            "configurePreset": "Mac_Clang_Release"
+            "configurePreset": "Mac_Gcc_Release"
         },
         {
             "name": "test_mac_gcc_debug",
             "description": "",
             "displayName": "",
             "configurePreset": "Mac_Gcc_Debug"
-        },
-        {
-            "name": "test_mac_gcc_release",
-            "description": "",
-            "displayName": "",
-            "configurePreset": "Mac_Gcc_Release"
         },
         {
             "name": "test_gcc_linux_debug",
@@ -463,6 +549,12 @@
             "description": "",
             "displayName": "",
             "configurePreset": "icc_linux_release"
+        },
+        {
+            "name": "test_icc_linux_debug",
+            "description": "",
+            "displayName": "",
+            "configurePreset": "icc_linux_debug"
         },
         {
             "name": "test_clang_linux_debug",
