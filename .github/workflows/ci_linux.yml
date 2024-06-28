@@ -15,6 +15,13 @@ jobs:
         - name: Checkout
           uses: actions/checkout@v4
 
+        - name: Install Qt
+          uses: jurplel/install-qt-action@v3
+          with:
+            version: 6.5.3
+            cache: true
+            cache-key-prefix: QtCache
+
         - name: Cache brew
           id: env-cache
           uses: actions/cache@v3
@@ -43,7 +50,6 @@ jobs:
                 brew install fmt
                 brew install mesa
                 brew install ninja
-                brew install qt@6
 
         - name: Setup Env
           working-directory: ${{github.workspace}}
@@ -72,7 +78,3 @@ jobs:
           run: |
                 ctest -T test -j 2 --output-on-failure
 
-        - name: Execute Unit Tests
-          working-directory: ${{github.workspace}}/build/Linux_Ninja_Release
-          run: |
-                cpack -C Release

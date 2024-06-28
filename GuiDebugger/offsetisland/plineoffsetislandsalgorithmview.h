@@ -3,10 +3,10 @@
 
 #include <vector>
 
-#include "cavc/polyline.hpp"
+#include "viewer/geometrycanvasitem.h"
 
-#include "adaptor/geometrycanvasitem.h"
 #include "casedata.h"
+#include "cavc/polyline.hpp"
 
 class QSGOpacityNode;
 namespace debugger

@@ -7,21 +7,24 @@ FlatColorGeometryNode::FlatColorGeometryNode(bool useUInt32Index)
     , qsg_geometry_(QSGGeometry::defaultAttributes_Point2D(), 0, 0,
                     useUInt32Index ? QSGGeometry::UnsignedIntType : QSGGeometry::UnsignedShortType)
 {
-    qsg_geometry_.setLineWidth(1);
-    qsg_geometry_.setDrawingMode(QSGGeometry::DrawLineStrip);
+    qsg_geometry_.setLineWidth(style_.width);
+    qsg_geometry_.setDrawingMode(style_.mode);
     setGeometry(&qsg_geometry_);
-    material_.setColor(Qt::darkGreen);
+
+    material_.setColor(style_.color);
     setMaterial(&material_);
 }
 
 const QColor &FlatColorGeometryNode::color() const
 {
-    return material_.color();
+    return style_.color;
 }
 
 void FlatColorGeometryNode::setColor(const QColor &color)
 {
-    material_.setColor(color);
+    style_.color = color;
+    material_.setColor(style_.color);
+
     markDirty(QSGNode::DirtyMaterial);
 }
 

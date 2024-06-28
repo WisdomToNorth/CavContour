@@ -4,12 +4,13 @@
 #include <QSGNode>
 #include <QSGTransformNode>
 
-#include "adaptor/plinesegmentnode.h"
-#include "adaptor/pointsetnode.h"
-#include "adaptor/viewmodel.h"
+#include "viewer/graphicshelpers.h"
+#include "viewer/plinesegmentnode.h"
+#include "viewer/pointsetnode.h"
+#include "viewer/viewmodel.h"
+
 #include "cavc/internal/diagnostics.hpp"
 #include "cavc/polylineoffset.hpp"
-#include "graphicshelpers.h"
 #include "rawoffsetsegmentsnode.h"
 #include "spatialindexboundingboxesnode.h"
 

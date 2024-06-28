@@ -2,6 +2,7 @@
 #define SIMPLECIRCLENODE_H
 
 #include "flatcolorgeometrynode.h"
+
 namespace debugger
 {
 class SimpleCircleNode : public FlatColorGeometryNode

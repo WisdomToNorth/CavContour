@@ -4,11 +4,12 @@
 #include <QSGOpacityNode>
 #include <QSGTransformNode>
 
-#include "adaptor/pointsetnode.h"
-#include "adaptor/viewmodel.h"
+#include "viewer/graphicshelpers.h"
+#include "viewer/pointsetnode.h"
+#include "viewer/viewmodel.h"
+
 #include "cavc/polylinecombine.hpp"
 #include "cavc/polylineintersects.hpp"
-#include "graphicshelpers.h"
 
 namespace debugger
 {

@@ -3,7 +3,7 @@
 
 #include <QQuickItem>
 
-#include "adaptor/geometrycanvasitem.h"
+#include "viewer/geometrycanvasitem.h"
 
 namespace debugger
 {

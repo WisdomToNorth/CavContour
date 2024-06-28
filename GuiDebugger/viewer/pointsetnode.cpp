@@ -2,8 +2,8 @@
 
 #include <iostream>
 
-#include "graphicshelpers.h"
-#include "simplecirclenode.h"
+#include "viewer/graphicshelpers.h"
+#include "viewer/simplecirclenode.h"
 
 namespace debugger
 {

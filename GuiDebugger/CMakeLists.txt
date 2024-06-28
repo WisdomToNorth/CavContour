@@ -33,29 +33,28 @@ add_executable(PolyGui
     offset/PlineOffsetScene.qml
     offset/spatialindexboundingboxesnode.h
 
-    adaptor/geometrycanvasitem.cpp
-    adaptor/geometrycanvasitem.h
-    adaptor/plinesegmentnode.cpp
-    adaptor/plinesegmentnode.h
-    adaptor/pointsetnode.cpp
-    adaptor/pointsetnode.h
-    adaptor/viewmodel.h
-    adaptor/viewmodel.cpp
+    viewer/geometrycanvasitem.cpp
+    viewer/geometrycanvasitem.h
+    viewer/plinesegmentnode.cpp
+    viewer/plinesegmentnode.h
+    viewer/pointsetnode.cpp
+    viewer/pointsetnode.h
+    viewer/viewmodel.h
+    viewer/viewmodel.cpp
 
     casedata.cpp
     casedata.h
     datamanager.h
-    datamanager.cpp
 
-    flatcolorgeometrynode.cpp
-    flatcolorgeometrynode.h
-    graphicshelpers.cpp
-    graphicshelpers.h
+    viewer/flatcolorgeometrynode.cpp
+    viewer/flatcolorgeometrynode.h
+    viewer/graphicshelpers.cpp
+    viewer/graphicshelpers.h
+    viewer/simplecirclenode.cpp
+    viewer/simplecirclenode.h
+    viewer/GeometrySceneView.qml
+
     main.cpp
-    simplecirclenode.cpp
-    simplecirclenode.h
-
-    GeometrySceneView.qml
     main.qml
     qml.qrc
 )

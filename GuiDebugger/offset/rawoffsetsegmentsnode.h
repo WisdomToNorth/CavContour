@@ -5,10 +5,10 @@
 
 #include <QSGOpacityNode>
 
+#include "viewer/plinesegmentnode.h"
+
 #include "cavc/polyline.hpp"
 #include "cavc/polylineoffset.hpp"
-
-#include "adaptor/plinesegmentnode.h"
 namespace debugger
 {
 class RawOffsetSegmentsNode : public QSGOpacityNode

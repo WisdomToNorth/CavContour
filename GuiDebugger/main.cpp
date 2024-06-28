@@ -20,8 +20,6 @@ int main(int argc, char *argv[])
 
     qmlRegisterType<PlineOffsetAlgorithmView>("Polyline", 1, 0, "PlineOffsetAlgorithmView");
 
-    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-
     QGuiApplication app(argc, argv);
     QFont defaultFont(app.font().family(), 12);
     app.setFont(defaultFont);

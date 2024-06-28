@@ -1,6 +1,7 @@
 #include "plinesegmentnode.h"
 
-#include "graphicshelpers.h"
+#include "viewer/graphicshelpers.h"
+
 namespace debugger
 {
 void PlineSegmentNode::updateGeometry(const cavc::PlineVertex<double> &v1,

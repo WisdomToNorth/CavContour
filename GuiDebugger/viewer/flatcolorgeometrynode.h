@@ -9,6 +9,14 @@ namespace debugger
 class FlatColorGeometryNode : public QSGGeometryNode
 {
 public:
+    struct Style
+    {
+        QColor color = Qt::GlobalColor::darkGreen;
+        QSGGeometry::DrawingMode mode = QSGGeometry::DrawingMode::DrawLineStrip;
+        float width = 1.0f;
+    };
+
+public:
     FlatColorGeometryNode(bool useUInt32Index = false);
 
     QColor const &color() const;
@@ -20,9 +28,10 @@ public:
     bool isSubtreeBlocked() const override;
 
 protected:
-    bool visible_;
     QSGGeometry qsg_geometry_;
     QSGFlatColorMaterial material_;
+    bool visible_;
+    Style style_;
 };
 } // namespace debugger
 #endif // FLATCOLORGEOMETRYNODE_H

@@ -1,12 +1,14 @@
 #include "geometrycanvasitem.h"
 
-#include "cavc/mathutils.hpp"
+#include <cavc/mathutils.hpp>
 
 namespace debugger
 {
 using namespace cavc;
 
-GeometryCanvasItem::GeometryCanvasItem(QQuickItem *parent) : QQuickItem(parent), m_uiScaleFactor(20)
+GeometryCanvasItem::GeometryCanvasItem(QQuickItem *parent)
+    : QQuickItem(parent)
+    , m_uiScaleFactor(20)
 {
     setFlag(ItemHasContents, true);
     setAcceptedMouseButtons(Qt::LeftButton);
@@ -57,8 +59,8 @@ std::size_t GeometryCanvasItem::vertexUnderPosition(QPointF uiGlobalPos,
 {
     auto containsVertex = [&](const QPointF &vPosInGlobal)
     {
-        return utils::fuzzyEqual(vPosInGlobal.x(), uiGlobalPos.x(), 5.0)
-               && utils::fuzzyEqual(vPosInGlobal.y(), uiGlobalPos.y(), 5.0);
+        return utils::fuzzyEqual(vPosInGlobal.x(), uiGlobalPos.x(), 5.0) &&
+               utils::fuzzyEqual(vPosInGlobal.y(), uiGlobalPos.y(), 5.0);
     };
 
     std::size_t vertexGrabbed = std::numeric_limits<std::size_t>::max();
@@ -88,8 +90,8 @@ std::size_t GeometryCanvasItem::vertexUnderPosition(QPointF uiGlobalPos,
 {
     auto containsVertex = [&](const QPointF &vPosInGlobal)
     {
-        return utils::fuzzyEqual(vPosInGlobal.x(), uiGlobalPos.x(), 5.0)
-               && utils::fuzzyEqual(vPosInGlobal.y(), uiGlobalPos.y(), 5.0);
+        return utils::fuzzyEqual(vPosInGlobal.x(), uiGlobalPos.x(), 5.0) &&
+               utils::fuzzyEqual(vPosInGlobal.y(), uiGlobalPos.y(), 5.0);
     };
 
     std::size_t vertexGrabbed = std::numeric_limits<std::size_t>::max();

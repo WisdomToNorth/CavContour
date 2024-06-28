@@ -1,9 +1,10 @@
 #ifndef PLINESEGMENTNODE_H
 #define PLINESEGMENTNODE_H
 
+#include "viewer/flatcolorgeometrynode.h"
+
 #include "cavc/polyline.hpp"
 
-#include "flatcolorgeometrynode.h"
 namespace debugger
 {
 class PlineSegmentNode : public FlatColorGeometryNode

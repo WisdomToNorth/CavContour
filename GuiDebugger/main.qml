@@ -6,6 +6,7 @@ import QtQuick.Window 2.13
 import "combine"
 import "offset"
 import "settings"
+import "viewer"
 
 ApplicationWindow {
     id: mainWindow

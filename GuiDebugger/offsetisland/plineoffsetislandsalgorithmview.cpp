@@ -2,19 +2,22 @@
 
 #include <QSGTransformNode>
 
-#include "cavc/polylineoffsetislands.hpp"
+#include <cavc/polylineoffsetislands.hpp>
 
-// #include "adaptor/polylinenode.h"
-#include "adaptor/viewmodel.h"
+#include "viewer/viewmodel.h"
+
 #include "datamanager.h"
 #include "settings/settings.h"
 
 using namespace cavc;
 namespace debugger
 {
-OffsetIslandsView::OffsetIslandsView(QQuickItem *parent) :
-    GeometryCanvasItem(parent), m_showVertexes(true), m_offsetDelta(1), m_offsetCount(20),
-    m_vertexGrabbed(std::numeric_limits<std::size_t>::max())
+OffsetIslandsView::OffsetIslandsView(QQuickItem *parent)
+    : GeometryCanvasItem(parent)
+    , m_showVertexes(true)
+    , m_offsetDelta(1)
+    , m_offsetCount(20)
+    , m_vertexGrabbed(std::numeric_limits<std::size_t>::max())
 {
     auto &docData = DocumetData::getInstance();
     docData.changeData("default1");
@@ -209,8 +212,8 @@ void OffsetIslandsView::mousePressEvent(QMouseEvent *event)
         {
             QPointF vPosInGlobal =
                 convertToGlobalUICoord(QPointF(std::get<0>(data[j]), std::get<1>(data[j])));
-            if (utils::fuzzyEqual(vPosInGlobal.x(), mouse_pick_pt_.x(), 5.0)
-                && utils::fuzzyEqual(vPosInGlobal.y(), mouse_pick_pt_.y(), 5.0))
+            if (utils::fuzzyEqual(vPosInGlobal.x(), mouse_pick_pt_.x(), 5.0) &&
+                utils::fuzzyEqual(vPosInGlobal.y(), mouse_pick_pt_.y(), 5.0))
             {
                 vertex_pick_index_ = std::make_pair(i, j);
                 break;

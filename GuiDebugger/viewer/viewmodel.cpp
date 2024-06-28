@@ -2,10 +2,10 @@
 
 #include <QDebug>
 
-#include "flatcolorgeometrynode.h"
-#include "graphicshelpers.h"
 #include "pointsetnode.h"
 #include "settings/settings.h"
+#include "viewer/flatcolorgeometrynode.h"
+#include "viewer/graphicshelpers.h"
 
 namespace debugger
 {
@@ -19,9 +19,14 @@ void setOpacityNodeVisibility(QSGOpacityNode *node, bool isVisible)
 }
 } // namespace
 
-NgViewModel::NgViewModel() :
-    path_visible_(true), vertexes_visible_(false), path_node_(nullptr), vertexes_(nullptr),
-    path_color_(Qt::blue), vertexes_color_(Qt::red), visible_(true)
+NgViewModel::NgViewModel()
+    : path_visible_(true)
+    , vertexes_visible_(false)
+    , path_node_(nullptr)
+    , vertexes_(nullptr)
+    , path_color_(Qt::blue)
+    , vertexes_color_(Qt::red)
+    , visible_(true)
 {
 }
 void NgViewModel::clearVmData()
@@ -79,8 +84,8 @@ void NgViewModel::updateGeometry()
                 else
                 {
                     // generate multiple points along the segment for dashes
-                    double length = cavc::length(cavc::Vector2<double>(para.x1, para.y1)
-                                                 - cavc::Vector2<double>(para.x0, para.y0));
+                    double length = cavc::length(cavc::Vector2<double>(para.x1, para.y1) -
+                                                 cavc::Vector2<double>(para.x0, para.y0));
                     double dashSpacing = 0.5;
                     int dashCount = static_cast<int>(std::ceil(length / dashSpacing));
                     for (int i = 0; i < dashCount; ++i)

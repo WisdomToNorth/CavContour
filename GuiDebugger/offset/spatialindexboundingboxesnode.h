@@ -3,9 +3,10 @@
 
 #include <QSGOpacityNode>
 
+#include "viewer/flatcolorgeometrynode.h"
+#include "viewer/graphicshelpers.h"
+
 #include "cavc/staticspatialindex.hpp"
-#include "flatcolorgeometrynode.h"
-#include "graphicshelpers.h"
 
 namespace debugger
 {

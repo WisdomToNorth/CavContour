@@ -165,13 +165,13 @@ IncludeCategories:
     CaseSensitive: true
 
 # third party
-  - Regex: '^<(kdbindings/|magic_enum/|assimp/|ompl/|gtest/|boost/|kdl/|Eigen/).*>'
+  - Regex: '^<(kdbindings/|cavc/|assimp/|ompl/|gtest/|boost/|kdl/|Eigen/).*>'
     Priority: 5
     SortPriority: 0
     CaseSensitive: true
 
 # Generated headfile
-  - Regex: '^\"(rfgeo3d/|rfio/|rflog/|rfrobot/|rfbase/|rfapp/|rfgraphics/|rfdb/|generated/).*\.h\"'
+  - Regex: '^\"(rfgeo3d/|rflog/|rfrobot/|viewer/|rfapp/|rfgraphics/|rfdb/|generated/).*\.h\"'
     Priority: 6
     SortPriority: 0
     CaseSensitive: true
