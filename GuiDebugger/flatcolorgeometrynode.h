@@ -3,6 +3,7 @@
 
 #include <QSGFlatColorMaterial>
 #include <QSGGeometryNode>
+
 namespace debugger
 {
 class FlatColorGeometryNode : public QSGGeometryNode
