@@ -1,0 +1,78 @@
+name: Linux
+
+on:
+    push:
+        paths:
+            - '**.cpp'
+            - '**.h'
+
+jobs:
+    gcc-release:
+        runs-on: ubuntu-latest
+        env:
+            targetName: Gui
+        steps:
+        - name: Checkout
+          uses: actions/checkout@v4
+
+        - name: Cache brew
+          id: env-cache
+          uses: actions/cache@v3
+          with:
+           path: |
+                ~/linuxbrew
+                /home/linuxbrew/.linuxbrew
+                /home/linuxbrew/*
+           key: brew-cache-linuxci
+           restore-keys: |
+                 brew-cache-linuxci
+
+        - name: Install brew and dependencies
+          if: steps.env-cache.outputs.cache-hit != 'true'
+          run: |
+                sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)"
+                test -d ~/.linuxbrew && eval $(~/.linuxbrew/bin/brew shellenv)
+                test -d /home/linuxbrew/.linuxbrew && eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+                test -r ~/.profile
+                echo "eval \$($(brew --prefix)/bin/brew shellenv)" >>~/.profile
+                echo "export PATH=\"$(brew --prefix)/bin:$PATH\"" >>~/.profile
+                source ~/.profile
+                brew install googletest
+                brew install spdlog
+                brew install boost
+                brew install fmt
+                brew install mesa
+                brew install ninja
+                brew install qt@6
+
+        - name: Setup Env
+          working-directory: ${{github.workspace}}
+          run: |
+                sudo apt-get install build-essential procps curl file git
+                sudo apt-get install libgl1-mesa-dev
+                echo 'export PATH="/home/linuxbrew/.linuxbrew/opt/qt@5/bin:$PATH"' >> ~/.profile
+                echo 'export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"' >> ~/.profile
+
+        - name: Ninja gcc build Release
+          working-directory: ${{github.workspace}}
+          run: |
+                source ~/.profile
+                cmake --no-warn-unused-cli \
+                -DCMAKE_BUILD_TYPE:STRING=Release \
+                -DCMAKE_CXX_STANDARD=20 \
+                -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE \
+                -DCMAKE_C_COMPILER:FILEPATH=/usr/bin/gcc \
+                -DCMAKE_CXX_COMPILER=/usr/bin/g++ \
+                -B${{github.workspace}}/build/Linux_Ninja_Release \
+                -S${{github.workspace}} -G Ninja
+                cmake --build ${{github.workspace}}/build/Linux_Ninja_Release --config Release --target all --
+
+        - name: Execute Unit Tests
+          working-directory: ${{github.workspace}}/build/Linux_Ninja_Release
+          run: |
+                ctest -T test -j 2 --output-on-failure
+
+        - name: Execute Unit Tests
+          working-directory: ${{github.workspace}}/build/Linux_Ninja_Release
+          run: |
+                cpack -C Release

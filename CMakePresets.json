@@ -83,27 +83,6 @@
             }
         },
         {
-            "name": "windows-msvc-19",
-            "displayName": "msvc 19",
-            "description": "windows msvc 2019",
-            "generator": "Visual Studio 16 2019",
-            "binaryDir": "${sourceDir}/build/${presetName}",
-            "cacheVariables": {
-                "CMAKE_INSTALL_PREFIX": "${sourceDir}/install/${presetName}"
-            },
-            "vendor": {
-                "jetbrains.com/clion": {
-                    "toolchain": "Visual Studio"
-                },
-                "microsoft.com/VisualStudioSettings/CMake/1.0": {
-                    "hostOS": [
-                        "Windows"
-                    ],
-                    "intelliSenseMode": "windows-msvc-x64"
-                }
-            }
-        },
-        {
             "name": "msvc-ninja-release",
             "displayName": "msvc 22 ninja release",
             "description": "windows msvc 2022",
@@ -396,22 +375,12 @@
     ],
     "buildPresets": [
         {
-            "name": "msvc_debug_19",
-            "configurePreset": "windows-msvc-19",
-            "configuration": "Debug"
-        },
-        {
-            "name": "msvc_release_19",
-            "configurePreset": "windows-msvc-19",
-            "configuration": "Release"
-        },
-        {
-            "name": "msvc_debug_22",
+            "name": "msvc_native_debug",
             "configurePreset": "windows-msvc-22",
             "configuration": "Debug"
         },
         {
-            "name": "msvc_release_22",
+            "name": "msvc_native_release",
             "configurePreset": "windows-msvc-22",
             "configuration": "Release"
         },

@@ -5,7 +5,6 @@ import QtQuick.Layouts 1.13
 import QtQuick.Window 2.13
 import "combine"
 import "offset"
-import "offsetisland"
 import "settings"
 
 ApplicationWindow {
@@ -42,9 +41,6 @@ ApplicationWindow {
                 anchors.fill: parent
                 anchors.margins: 2
                 currentIndex: tabBar.currentIndex
-
-                PlineOffsetIslandsScene {
-                }
 
                 PlineOffsetScene {
                 }

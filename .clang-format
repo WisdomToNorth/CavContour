@@ -1,6 +1,6 @@
 # 语言: None, Cpp, Java, JavaScript, ObjC, Proto, TableGen, TextProto
 Language: Cpp
-# BasedOnStyle: LLVM
+BasedOnStyle: LLVM
 
 # 访问说明符(public、private等)的偏移
 AccessModifierOffset: -4
@@ -89,7 +89,7 @@ SplitEmptyRecord: false
 # 分离空命名空间
 SplitEmptyNamespace: false
 # 在二元运算符前换行: None(在操作符后换行), NonAssignment(在非赋值的操作符前换行), All(在操作符前换行)
-BreakBeforeBinaryOperators: NonAssignment
+BreakBeforeBinaryOperators: None
 
 # 在大括号前换行: Attach(始终将大括号附加到周围的上下文), Linux(除函数、命名空间和类定义，与Attach类似),
 #   Mozilla(除枚举、函数、记录定义，与Attach类似), Stroustrup(除函数定义、catch、else，与Attach类似),
@@ -101,7 +101,7 @@ BreakBeforeBraces: Allman
 BreakBeforeTernaryOperators: false
 
 # 在构造函数的初始化列表的冒号后换行
-BreakConstructorInitializers: AfterColon
+BreakConstructorInitializers: BeforeComma
 
 BreakStringLiterals: false
 
@@ -171,7 +171,7 @@ IncludeCategories:
     CaseSensitive: true
 
 # Generated headfile
-  - Regex: '^<(rfviewshape/|rfio/|rflog/|rfrobot/|rfbase/|rfapp/|rfdb/|generated/).*\.h>'
+  - Regex: '^\"(rfgeo3d/|rfio/|rflog/|rfrobot/|rfbase/|rfapp/|rfgraphics/|rfdb/|generated/).*\.h\"'
     Priority: 6
     SortPriority: 0
     CaseSensitive: true
