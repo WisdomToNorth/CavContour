@@ -4,7 +4,6 @@
 #include <QSGOpacityNode>
 
 #include "cavc/staticspatialindex.hpp"
-
 #include "flatcolorgeometrynode.h"
 #include "graphicshelpers.h"
 
@@ -31,7 +30,7 @@ public:
             }
 
             bbNode->setIsVisible(true);
-            bbNode->setColor(gh::indexToColor(level + 3));
+            bbNode->setColor(QSGNodeCreator::indexToColor(level + 3));
 
             QSGGeometry::Point2D *vertexes = bbNode->geometry()->vertexDataAsPoint2D();
             vertexes[0].set(minX, minY);

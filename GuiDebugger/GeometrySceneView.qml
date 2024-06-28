@@ -14,8 +14,10 @@ Rectangle {
         width: 20000
         height: 20000
         // initially center (0, 0)
-        x: (1680 - 300) / 2 - 10000
-        y: 1050 / 2 - 10000
+        property real cur_window_x: rect.width
+        property real cur_window_y: rect.height
+        x: cur_window_x / 2 - width / 2
+        y: cur_window_y / 2 - height / 2
         border.width: 1 / scaler.xScale
         border.color: "blue"
 
@@ -64,13 +66,13 @@ Rectangle {
                         pinchArea.m_y2 = mouseY;
                         var newZoom;
                         if (wheel.angleDelta.y > 0) {
-                            newZoom = pinchArea.m_zoom1 + 0.15;
+                            newZoom = pinchArea.m_zoom1 + 0.2;
                             if (newZoom <= pinchArea.m_max)
                                 pinchArea.m_zoom2 = newZoom;
                             else
                                 pinchArea.m_zoom2 = pinchArea.m_max;
                         } else {
-                            newZoom = pinchArea.m_zoom1 - 0.15;
+                            newZoom = pinchArea.m_zoom1 - 0.2;
                             if (newZoom >= pinchArea.m_min)
                                 pinchArea.m_zoom2 = newZoom;
                             else

@@ -4,24 +4,32 @@
 #include <QSGOpacityNode>
 #include <QSGTransformNode>
 
-#include "cavc/polylinecombine.hpp"
-#include "cavc/polylineintersects.hpp"
-
 #include "adaptor/pointsetnode.h"
 #include "adaptor/viewmodel.h"
+#include "cavc/polylinecombine.hpp"
+#include "cavc/polylineintersects.hpp"
 #include "graphicshelpers.h"
 
 namespace debugger
 {
 using namespace cavc;
 
-PlineCombineAlgorithmView::PlineCombineAlgorithmView(QQuickItem *parent) :
-    GeometryCanvasItem(parent), m_polylineANode(nullptr), m_polylineBNode(nullptr),
-    m_testPointNode(nullptr), m_intersectsNode(nullptr), m_dynamicPlinesParentNode(nullptr),
-    m_windingNumber(0), m_vertexGrabbed(std::numeric_limits<std::size_t>::max()),
-    polyline_grabbed_(nullptr), m_interacting(false), m_showIntersects(true),
-    m_plineCombineMode(NoCombine), m_showVertexes(true), m_flipArgOrder(false),
-    m_showWindingNumberPoint(false)
+PlineCombineAlgorithmView::PlineCombineAlgorithmView(QQuickItem *parent)
+    : GeometryCanvasItem(parent)
+    , m_polylineANode(nullptr)
+    , m_polylineBNode(nullptr)
+    , m_testPointNode(nullptr)
+    , m_intersectsNode(nullptr)
+    , m_dynamicPlinesParentNode(nullptr)
+    , m_windingNumber(0)
+    , m_vertexGrabbed(std::numeric_limits<std::size_t>::max())
+    , polyline_grabbed_(nullptr)
+    , m_interacting(false)
+    , m_showIntersects(true)
+    , m_plineCombineMode(NoCombine)
+    , m_showVertexes(true)
+    , m_flipArgOrder(false)
+    , m_showWindingNumberPoint(false)
 {
     m_plineA.addVertex(0, 1, 1);
     m_plineA.addVertex(10, 1, 1);
@@ -253,7 +261,7 @@ QSGNode *PlineCombineAlgorithmView::updatePaintNode(QSGNode *oldNode,
                 plineNode = new NgViewModel();
                 m_dynamicPlinesParentNode->appendChildNode(plineNode);
             }
-            plineNode->setColor(gh::indexToColor(sliceIndex));
+            plineNode->setColor(QSGNodeCreator::indexToColor(sliceIndex));
             plineNode->setIsVisible(true);
             plineNode->setVertexesVisible(false);
             plineNode->updateVM(pline, is_hole);

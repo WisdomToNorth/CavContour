@@ -5,27 +5,8 @@
 
 namespace debugger
 {
-QSGGeometryNode *gh::createSimpleGeomNode(int vertexCount, const QColor &color, float width,
-                                          QSGGeometry::DrawingMode mode)
-{
-    QSGGeometryNode *node = new QSGGeometryNode();
-    node->setFlag(QSGNode::OwnedByParent);
 
-    QSGGeometry *geometry = new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), vertexCount);
-    geometry->setDrawingMode(mode);
-    geometry->setLineWidth(width);
-    node->setGeometry(geometry);
-    node->setFlag(QSGNode::OwnsGeometry);
-
-    QSGFlatColorMaterial *material = new QSGFlatColorMaterial();
-    material->setColor(color);
-    node->setMaterial(material);
-    node->setFlag(QSGNode::OwnsMaterial);
-
-    return node;
-}
-
-QColor gh::indexToColor(std::size_t index)
+QColor QSGNodeCreator::indexToColor(std::size_t index)
 {
     switch (index % 11)
     {
@@ -44,4 +25,25 @@ QColor gh::indexToColor(std::size_t index)
 
     return QColor("black");
 }
+
+QSGGeometryNode *QSGNodeCreator::createSimpleGeomNode(int vertexCount, const QColor &color,
+                                                      float width, QSGGeometry::DrawingMode mode)
+{
+    QSGGeometryNode *node = new QSGGeometryNode();
+    node->setFlag(QSGNode::OwnedByParent);
+
+    QSGGeometry *geometry = new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), vertexCount);
+    geometry->setDrawingMode(mode);
+    geometry->setLineWidth(width);
+    node->setGeometry(geometry);
+    node->setFlag(QSGNode::OwnsGeometry);
+
+    QSGFlatColorMaterial *material = new QSGFlatColorMaterial();
+    material->setColor(color);
+    node->setMaterial(material);
+    node->setFlag(QSGNode::OwnsMaterial);
+
+    return node;
+}
+
 } // namespace debugger

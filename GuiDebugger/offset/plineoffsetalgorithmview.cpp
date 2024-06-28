@@ -4,12 +4,11 @@
 #include <QSGNode>
 #include <QSGTransformNode>
 
-#include "cavc/internal/diagnostics.hpp"
-#include "cavc/polylineoffset.hpp"
-
 #include "adaptor/plinesegmentnode.h"
 #include "adaptor/pointsetnode.h"
 #include "adaptor/viewmodel.h"
+#include "cavc/internal/diagnostics.hpp"
+#include "cavc/polylineoffset.hpp"
 #include "graphicshelpers.h"
 #include "rawoffsetsegmentsnode.h"
 #include "spatialindexboundingboxesnode.h"
@@ -18,18 +17,33 @@ namespace debugger
 {
 using namespace cavc;
 
-PlineOffsetAlgorithmView::PlineOffsetAlgorithmView(QQuickItem *parent) :
-    GeometryCanvasItem(parent), m_origPolylineNode(nullptr), m_rawOffsetPolylineNode(nullptr),
-    m_dualRawOffsetPolylineNode(nullptr), m_untrimmedSegmentsParentNode(nullptr),
-    m_selfIntersectsNode(nullptr), m_boundingBoxesNode(nullptr), m_slicesParentNode(nullptr),
-    m_repeatOffsetsParentNode(nullptr), m_endPointIntersectCirclesNode(nullptr),
-    m_arcApproxError(0.005), mouse_pick_pt_(),
-    m_vertexGrabbed(std::numeric_limits<std::size_t>::max()), m_interacting(false),
-    m_showOrigPlineVertexes(true), m_showRawOffsetSegments(false), m_showRawOffsetPolyline(false),
-    m_showRawOffsetPlineVertexes(false), m_plineOffset(0.5), m_offsetCount(10),
-    m_spatialIndexTarget(None), m_selfIntersectsTarget(None), m_finishedPolyline(NoFinishedPline),
-    m_showEndPointIntersectCircles(false), m_showDualRawOffsetPolyline(false),
-    m_showLastPrunedRawOffsets(false)
+PlineOffsetAlgorithmView::PlineOffsetAlgorithmView(QQuickItem *parent)
+    : GeometryCanvasItem(parent)
+    , m_origPolylineNode(nullptr)
+    , m_rawOffsetPolylineNode(nullptr)
+    , m_dualRawOffsetPolylineNode(nullptr)
+    , m_untrimmedSegmentsParentNode(nullptr)
+    , m_selfIntersectsNode(nullptr)
+    , m_boundingBoxesNode(nullptr)
+    , m_slicesParentNode(nullptr)
+    , m_repeatOffsetsParentNode(nullptr)
+    , m_endPointIntersectCirclesNode(nullptr)
+    , m_arcApproxError(0.005)
+    , mouse_pick_pt_()
+    , m_vertexGrabbed(std::numeric_limits<std::size_t>::max())
+    , m_interacting(false)
+    , m_showOrigPlineVertexes(true)
+    , m_showRawOffsetSegments(false)
+    , m_showRawOffsetPolyline(false)
+    , m_showRawOffsetPlineVertexes(false)
+    , m_plineOffset(0.5)
+    , m_offsetCount(10)
+    , m_spatialIndexTarget(None)
+    , m_selfIntersectsTarget(None)
+    , m_finishedPolyline(NoFinishedPline)
+    , m_showEndPointIntersectCircles(false)
+    , m_showDualRawOffsetPolyline(false)
+    , m_showLastPrunedRawOffsets(false)
 {
     input_polyline_.addVertex(0, 25, 1);
     input_polyline_.addVertex(0, 0, 0);
@@ -399,10 +413,11 @@ QSGNode *PlineOffsetAlgorithmView::updatePaintNode(QSGNode *oldNode,
         QSGGeometryNode *endNode;
         if (!startNode)
         {
-            startNode =
-                gh::createSimpleGeomNode(50, QColor("orange"), 1, QSGGeometry::DrawLineLoop);
+            startNode = QSGNodeCreator::createSimpleGeomNode(50, QColor("orange"), 1,
+                                                             QSGGeometry::DrawLineLoop);
             m_endPointIntersectCirclesNode->appendChildNode(startNode);
-            endNode = gh::createSimpleGeomNode(50, QColor("orange"), 1, QSGGeometry::DrawLineLoop);
+            endNode = QSGNodeCreator::createSimpleGeomNode(50, QColor("orange"), 1,
+                                                           QSGGeometry::DrawLineLoop);
             m_endPointIntersectCirclesNode->appendChildNode(endNode);
         }
         else
@@ -490,7 +505,7 @@ QSGNode *PlineOffsetAlgorithmView::updatePaintNode(QSGNode *oldNode,
                 sliceNode = new NgViewModel();
                 m_slicesParentNode->appendChildNode(sliceNode);
             }
-            sliceNode->setColor(gh::indexToColor(sliceIndex));
+            sliceNode->setColor(QSGNodeCreator::indexToColor(sliceIndex));
             sliceNode->setIsVisible(true);
             sliceNode->setVertexesVisible(false);
             sliceNode->setArcApproxError(m_arcApproxError);
@@ -603,8 +618,8 @@ QSGNode *PlineOffsetAlgorithmView::updatePaintNode(QSGNode *oldNode,
                                                         return false;
                                                     }
                                                     double a = getArea(pline);
-                                                    return ((a > 0) != (origPlineA > 0))
-                                                           || std::abs(a) < 1e-4;
+                                                    return ((a > 0) != (origPlineA > 0)) ||
+                                                           std::abs(a) < 1e-4;
                                                 }),
                                  newOffsets.end());
 

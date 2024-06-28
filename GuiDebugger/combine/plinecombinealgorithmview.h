@@ -1,9 +1,8 @@
 #ifndef PLINECOMBINEALGORITHMVIEW_H
 #define PLINECOMBINEALGORITHMVIEW_H
 
-#include "cavc/polyline.hpp"
-
 #include "adaptor/geometrycanvasitem.h"
+#include "cavc/polyline.hpp"
 
 class QSGGeometryNode;
 class QSGOpacityNode;

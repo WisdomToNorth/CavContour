@@ -4,14 +4,16 @@
 #include <QSGGeometry>
 
 class QSGGeometryNode;
+
 namespace debugger
 {
-namespace gh
+class QSGNodeCreator
 {
-QColor indexToColor(std::size_t index);
+public:
+    static QColor indexToColor(std::size_t index);
 
-QSGGeometryNode *createSimpleGeomNode(int vertexCount, QColor const &color, float width,
-                                      QSGGeometry::DrawingMode mode);
-} // namespace gh
+    static QSGGeometryNode *createSimpleGeomNode(int vertexCount, QColor const &color, float width,
+                                                 QSGGeometry::DrawingMode mode);
+}; // namespace gh
 } // namespace debugger
 #endif // GRAPHICSHELPERS_H
