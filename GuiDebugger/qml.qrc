@@ -2,9 +2,7 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>viewer/GeometrySceneView.qml</file>
-        <file>offset/PlineOffsetScene.qml</file>
-        <file>combine/PlineCombineScene.qml</file>
-        <file>offsetisland/PlineOffsetIslandsScene.qml</file>
+        <file>offsetisland/OffsetScene.qml</file>
         <file>settings/DebuggerSettings.qml</file>
     </qresource>
 </RCC>

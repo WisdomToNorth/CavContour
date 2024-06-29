@@ -1,5 +1,5 @@
-#ifndef PLINEOFFSETISLANDSALGORITHMVIEW_H
-#define PLINEOFFSETISLANDSALGORITHMVIEW_H
+#ifndef PLINEOFFSETVIEW_H
+#define PLINEOFFSETVIEW_H
 
 #include <vector>
 
@@ -12,7 +12,7 @@
 class QSGOpacityNode;
 namespace debugger
 {
-class OffsetIslandsView : public GeoCanvasHelper
+class OffsetView : public GeoCanvasHelper
 {
     Q_OBJECT
     Q_PROPERTY(bool showVertexes READ showVertexes WRITE setShowVertexes NOTIFY showVertexesChanged)
@@ -21,7 +21,7 @@ class OffsetIslandsView : public GeoCanvasHelper
     Q_PROPERTY(QString caseIndex READ caseIndex WRITE setCaseIndex NOTIFY changeCaseDataSignal)
 
 public:
-    explicit OffsetIslandsView(QQuickItem *parent = nullptr);
+    explicit OffsetView(QQuickItem *parent = nullptr);
 
     bool showVertexes() const;
     void setShowVertexes(bool showVertexes);

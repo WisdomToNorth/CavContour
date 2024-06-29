@@ -1,4 +1,3 @@
-import Polyline 1.0
 import QtQuick 2.13
 
 Rectangle {

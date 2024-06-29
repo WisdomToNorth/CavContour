@@ -10,19 +10,13 @@ namespace debugger
 class DocumetData
 {
 public:
-    CaseData case_data_;
-    CavcPolygonSet cavc_polygonset_;
+    SCaseData case_data_;
     QString case_index_;
 
     static DocumetData &getInstance()
     {
         static DocumetData instance;
         return instance;
-    }
-
-    void changeData(QString caseindex)
-    {
-        DataUtils::createData(case_data_, caseindex);
     }
 
 private:

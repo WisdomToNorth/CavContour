@@ -1,5 +1,5 @@
 import ".."
-import NgSettings 1.0
+import PolyDebugger 1.0
 import QtQuick 2.13
 import QtQuick.Controls 2.13
 import QtQuick.Layouts 1.13

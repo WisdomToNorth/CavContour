@@ -1,5 +1,5 @@
 import "../viewer"
-import Polyline 1.0
+import PolyDebugger 1.0
 import QtQuick 2.13
 import QtQuick.Controls 2.13
 import QtQuick.Controls.Material 2.12
@@ -19,7 +19,7 @@ SplitView {
     GeometrySceneView {
         implicitWidth: splitViewHorizontal.width * 0.8 // 80% of the SplitView's width
 
-        OffsetIslandsView {
+        OffsetView  {
             id: algorithmView
 
             anchors.fill: parent

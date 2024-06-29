@@ -24,24 +24,6 @@ set(CMAKE_AUTORCC ON)
 
 
 add_executable(PolyGui
-    offsetisland/plineoffsetislandsalgorithmview.cpp
-    offsetisland/plineoffsetislandsalgorithmview.h
-    offsetisland/PlineOffsetIslandsScene.qml
-
-    # combine/plinecombinealgorithmview.cpp
-    # combine/plinecombinealgorithmview.h
-    # combine/PlineCombineScene.qml
-
-    settings/settings.h
-    settings/settings.cpp
-    settings/DebuggerSettings.qml
-
-    # offset/plineoffsetalgorithmview.cpp
-    # offset/plineoffsetalgorithmview.h
-    # offset/rawoffsetsegmentsnode.cpp
-    # offset/rawoffsetsegmentsnode.h
-    # offset/PlineOffsetScene.qml
-    # offset/spatialindexboundingboxesnode.h
 
     viewer/GeoCanvasHelper.cpp
     viewer/GeoCanvasHelper.h
@@ -55,22 +37,24 @@ add_executable(PolyGui
     viewer/drawstyle.cpp
     viewer/vmparameter.h
     viewer/vmparameter.cpp
-
-    casedata.cpp
-    casedata.h
-    datamanager.h
-
     viewer/flatcolorgeometrynode.cpp
     viewer/flatcolorgeometrynode.h
     viewer/graphicshelpers.cpp
     viewer/graphicshelpers.h
     viewer/simplecirclenode.cpp
     viewer/simplecirclenode.h
-    viewer/GeometrySceneView.qml
 
+    casedata.cpp
+    casedata.h
+    datamanager.h
     main.cpp
-    main.qml
     qml.qrc
+
+    settings/settings.h
+    settings/settings.cpp
+
+    offsetisland/offsetview.h
+    offsetisland/offsetview.cpp
 )
 
 target_include_directories(PolyGui

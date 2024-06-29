@@ -5,19 +5,17 @@
 
 // #include "combine/plinecombinealgorithmview.h"
 // #include "offset/plineoffsetalgorithmview.h"
-#include "offsetisland/plineoffsetislandsalgorithmview.h"
+#include "offsetisland/offsetview.h"
 #include "settings/settings.h"
 
 using namespace debugger;
 
 int main(int argc, char *argv[])
 {
-    qmlRegisterType<NgSettings>("NgSettings", 1, 0, "NgSettings");
+    qmlRegisterType<NgSettings>("PolyDebugger", 1, 0, "NgSettings");
+    qmlRegisterType<OffsetView>("PolyDebugger", 1, 0, "OffsetView");
 
     // qmlRegisterType<PlineCombineAlgorithmView>("Polyline", 1, 0, "PlineCombineAlgorithmView");
-
-    qmlRegisterType<OffsetIslandsView>("Polyline", 1, 0, "OffsetIslandsView");
-
     // qmlRegisterType<PlineOffsetAlgorithmView>("Polyline", 1, 0, "PlineOffsetAlgorithmView");
 
     QGuiApplication app(argc, argv);

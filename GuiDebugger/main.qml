@@ -43,7 +43,7 @@ ApplicationWindow {
                 anchors.margins: 2
                 currentIndex: tabBar.currentIndex
 
-                PlineOffsetIslandsScene {
+                OffsetScene {
                 }
 
                 // PlineCombineScene {

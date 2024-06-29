@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.21)
 
-set(CMAKE_TOOLCHAIN_FILE D:/CODE/vcpkg/scripts/buildsystems/vcpkg.cmake)
+if(WIN32)
+  include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/SetupVcpkg.cmake)
+endif()
 
 project(
     NgPolyDebugger

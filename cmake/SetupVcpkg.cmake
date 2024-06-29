@@ -1,0 +1,5 @@
+set(USER_SET_FILE ${CMAKE_CURRENT_SOURCE_DIR}/WinUserSetting.cmake)
+if(NOT EXISTS ${USER_SET_FILE})
+    file(WRITE ${USER_SET_FILE} "# set(CMAKE_TOOLCHAIN_FILE D:/CODE/vcpkg/scripts/buildsystems/vcpkg.cmake)")
+endif()
+include(${USER_SET_FILE})

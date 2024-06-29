@@ -6,33 +6,27 @@
 
 #include <QString>
 
-#include <cavc/polyline.hpp>
-
 #include "viewer/viewmodel.h"
 
 namespace debugger
 {
-typedef std::vector<std::tuple<double, double, double>> PlineData;
 typedef bool IsHole; // cw
-typedef std::vector<std::pair<PlineData, IsHole>> CaseData;
-
-/*cavc*/
-typedef std::vector<std::pair<cavc::Polyline<double>, IsHole>> CavcPolygonSet;
+typedef std::vector<std::pair<SPline, IsHole>> SCaseData;
+typedef std::vector<std::pair<Pline, IsHole>> CaseData;
 
 struct DataUtils
 {
 public:
-    static void createData(CaseData &data, QString caseindex);
+    static void createData(std::vector<NgViewModel *> &viewdata, QString caseindex);
 
-    static void buildCavcCase(const CaseData &casedata, CavcPolygonSet &cavc_polygonset);
-    static void buildViewModel(const CaseData &data, std::vector<ViewData *> &viewdata);
-    static void buildCase0(std::vector<NgViewModel *> &viewdata);
-
-    static cavc::Polyline<double> buildCavcPline(const PlineData &data, IsHole is_hole);
+public:
+    static void buildVMFromSCase(const SCaseData &casedata, std::vector<NgViewModel *> &viewdata);
+    static void buildVMFromCase(const CaseData &casedata, std::vector<NgViewModel *> &viewdata);
 
 private:
-    static void buildCase1(CaseData &data);
-    static void buildCase2(CaseData &data);
+    static void buildSCase1(SCaseData &data);
+    static void buildSCase2(SCaseData &data);
+    static void buildCase0(CaseData &data);
 };
 } // namespace debugger
 #endif // CASEDATA_H
