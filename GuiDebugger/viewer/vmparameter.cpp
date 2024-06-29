@@ -4,11 +4,6 @@
 
 namespace debugger
 {
-void VMParameterUtils::PlineToSPline(const Pline &pline, SPline &spline)
-{
-    spline.clear();
-    // TODO
-}
 
 VMParameter VMParameterUtils::fromBulge(const double x0, const double y0, const double x1,
                                         const double y1, const double bulge)

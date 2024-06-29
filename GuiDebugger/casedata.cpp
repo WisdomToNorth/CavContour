@@ -1,10 +1,13 @@
 #include "casedata.h"
 
+#include <cmath>
+
 #include <QMap>
 #include <QString>
 
-#include <cavc/mathutils.hpp>
-#include <cavc/polyline.hpp>
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
 
 namespace debugger
 {
@@ -80,29 +83,30 @@ void DataUtils::buildSCase1(SCaseData &case_data)
     std::vector<VMSimpleParameter> data1;
     for (std::size_t i = 0; i < segmentCount; ++i)
     {
-        double angle = static_cast<double>(i) * cavc::utils::tau<double>() / segmentCount;
-        data1.push_back(VMSimpleParameter(radius * std::cos(angle) + centerX,
-                                          radius * std::sin(angle) + centerY, i % 2 == 0 ? 1 : -1));
+        double angle = 2 * M_PI / segmentCount;
+        data1.push_back(VMSimpleParameter{radius * std::cos(angle) + centerX,
+                                          radius * std::sin(angle) + centerY,
+                                          (i % 2 == 0 ? 1.0 : -1.0)});
     }
     /*hole*/
     std::vector<VMSimpleParameter> data2{
-        VMSimpleParameter(-7, -25, 0), VMSimpleParameter(-4, -25, 0), VMSimpleParameter(-4, -15, 0),
-        VMSimpleParameter(-7, -15, 0)};
+        VMSimpleParameter{-7, -25, 0}, VMSimpleParameter{-4, -25, 0}, VMSimpleParameter{-4, -15, 0},
+        VMSimpleParameter{-7, -15, 0}};
 
     /*hole*/
-    std::vector<VMSimpleParameter> data3{VMSimpleParameter(22, -20, 1),
-                                         VMSimpleParameter(27, -20, 1)};
+    std::vector<VMSimpleParameter> data3{VMSimpleParameter{22, -20, 1},
+                                         VMSimpleParameter{27, -20, 1}};
     /*hole*/
-    std::vector<VMSimpleParameter> data4{VMSimpleParameter(0, 25, 1),
-                                         VMSimpleParameter(-4, 0, 0),
-                                         VMSimpleParameter(2, 0, 1),
-                                         VMSimpleParameter(10, 0, -0.5),
-                                         VMSimpleParameter(8, 9, 0.374794619217547),
-                                         VMSimpleParameter(21, 0, 0),
-                                         VMSimpleParameter(23, 0, 1),
-                                         VMSimpleParameter(32, 0, -0.5),
-                                         VMSimpleParameter(28, 0, 0.5),
-                                         VMSimpleParameter(28, 12, 0.5)};
+    std::vector<VMSimpleParameter> data4{VMSimpleParameter{0, 25, 1},
+                                         VMSimpleParameter{-4, 0, 0},
+                                         VMSimpleParameter{2, 0, 1},
+                                         VMSimpleParameter{10, 0, -0.5},
+                                         VMSimpleParameter{8, 9, 0.374794619217547},
+                                         VMSimpleParameter{21, 0, 0},
+                                         VMSimpleParameter{23, 0, 1},
+                                         VMSimpleParameter{32, 0, -0.5},
+                                         VMSimpleParameter{28, 0, 0.5},
+                                         VMSimpleParameter{28, 12, 0.5}};
 
     case_data.push_back(std::make_pair(data1, false));
     case_data.push_back(std::make_pair(data2, true));
@@ -115,14 +119,14 @@ void DataUtils::buildSCase2(SCaseData &case_data)
     case_data.clear();
     /*outboundry*/
 
-    std::vector<VMSimpleParameter> data1{VMSimpleParameter(0, 0, 0), VMSimpleParameter(0, 10, 0),
-                                         VMSimpleParameter(10, 10, 0), VMSimpleParameter(10, 0, 0),
-                                         VMSimpleParameter(0, 0, 0)};
+    std::vector<VMSimpleParameter> data1{VMSimpleParameter{0, 0, 0}, VMSimpleParameter{0, 10, 0},
+                                         VMSimpleParameter{10, 10, 0}, VMSimpleParameter{10, 0, 0},
+                                         VMSimpleParameter{0, 0, 0}};
 
     /*hole*/
-    std::vector<VMSimpleParameter> data2{VMSimpleParameter(2, 2, -1), VMSimpleParameter(2, 8, -1),
-                                         VMSimpleParameter(8, 8, -1), VMSimpleParameter(8, 2, -1),
-                                         VMSimpleParameter(2, 2, -1)};
+    std::vector<VMSimpleParameter> data2{VMSimpleParameter{2, 2, -1}, VMSimpleParameter{2, 8, -1},
+                                         VMSimpleParameter{8, 8, -1}, VMSimpleParameter{8, 2, -1},
+                                         VMSimpleParameter{2, 2, -1}};
 
     case_data.push_back(std::make_pair(data1, true));
     case_data.push_back(std::make_pair(data2, false));

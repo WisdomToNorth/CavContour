@@ -1,7 +1,5 @@
 #include "viewmodel.h"
 
-#include <QDebug>
-
 #include "viewer/flatcolorgeometrynode.h"
 #include "viewer/graphicshelpers.h"
 

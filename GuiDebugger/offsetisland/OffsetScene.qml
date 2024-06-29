@@ -16,7 +16,7 @@ SplitView {
     Material.foreground: Material.Black
     orientation: Qt.Horizontal
 
-    GeometrySceneView {
+    SceneView2d {
         implicitWidth: splitViewHorizontal.width * 0.8 // 80% of the SplitView's width
 
         OffsetView  {

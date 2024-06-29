@@ -33,7 +33,6 @@ typedef std::vector<Pline> ViewData;
 class VMParameterUtils
 {
 public:
-    static void PlineToSPline(const Pline &pline, SPline &spline);
     static void SPlineToPline(const SPline &spline, Pline &pline);
 
 private:

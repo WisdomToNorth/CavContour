@@ -1,7 +1,7 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
-        <file>viewer/GeometrySceneView.qml</file>
+        <file>viewer/SceneView2d.qml</file>
         <file>offsetisland/OffsetScene.qml</file>
         <file>settings/DebuggerSettings.qml</file>
     </qresource>

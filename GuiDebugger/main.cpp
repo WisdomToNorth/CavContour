@@ -3,8 +3,6 @@
 #include <QQmlContext>
 #include <QSurfaceFormat>
 
-// #include "combine/plinecombinealgorithmview.h"
-// #include "offset/plineoffsetalgorithmview.h"
 #include "offsetisland/offsetview.h"
 #include "settings/settings.h"
 
@@ -14,9 +12,6 @@ int main(int argc, char *argv[])
 {
     qmlRegisterType<NgSettings>("PolyDebugger", 1, 0, "NgSettings");
     qmlRegisterType<OffsetView>("PolyDebugger", 1, 0, "OffsetView");
-
-    // qmlRegisterType<PlineCombineAlgorithmView>("Polyline", 1, 0, "PlineCombineAlgorithmView");
-    // qmlRegisterType<PlineOffsetAlgorithmView>("Polyline", 1, 0, "PlineOffsetAlgorithmView");
 
     QGuiApplication app(argc, argv);
     QFont defaultFont(app.font().family(), 12);

@@ -1,10 +1,7 @@
 #include "GeoCanvasHelper.h"
 
-#include <cavc/mathutils.hpp>
-
 namespace debugger
 {
-using namespace cavc;
 
 GeoCanvasHelper::GeoCanvasHelper(QQuickItem *parent)
     : QQuickItem(parent)
