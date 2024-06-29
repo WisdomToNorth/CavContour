@@ -6,7 +6,9 @@
 
 #include <QString>
 
-#include "cavc/polyline.hpp"
+#include <cavc/polyline.hpp>
+
+#include "viewer/viewmodel.h"
 
 namespace debugger
 {
@@ -23,6 +25,8 @@ public:
     static void createData(CaseData &data, QString caseindex);
 
     static void buildCavcCase(const CaseData &casedata, CavcPolygonSet &cavc_polygonset);
+    static void buildViewModel(const CaseData &data, std::vector<ViewData *> &viewdata);
+    static void buildCase0(std::vector<NgViewModel *> &viewdata);
 
     static cavc::Polyline<double> buildCavcPline(const PlineData &data, IsHole is_hole);
 

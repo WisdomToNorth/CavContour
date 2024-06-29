@@ -3,8 +3,8 @@
 #include <QQmlContext>
 #include <QSurfaceFormat>
 
-#include "combine/plinecombinealgorithmview.h"
-#include "offset/plineoffsetalgorithmview.h"
+// #include "combine/plinecombinealgorithmview.h"
+// #include "offset/plineoffsetalgorithmview.h"
 #include "offsetisland/plineoffsetislandsalgorithmview.h"
 #include "settings/settings.h"
 
@@ -14,11 +14,11 @@ int main(int argc, char *argv[])
 {
     qmlRegisterType<NgSettings>("NgSettings", 1, 0, "NgSettings");
 
-    qmlRegisterType<PlineCombineAlgorithmView>("Polyline", 1, 0, "PlineCombineAlgorithmView");
+    // qmlRegisterType<PlineCombineAlgorithmView>("Polyline", 1, 0, "PlineCombineAlgorithmView");
 
     qmlRegisterType<OffsetIslandsView>("Polyline", 1, 0, "OffsetIslandsView");
 
-    qmlRegisterType<PlineOffsetAlgorithmView>("Polyline", 1, 0, "PlineOffsetAlgorithmView");
+    // qmlRegisterType<PlineOffsetAlgorithmView>("Polyline", 1, 0, "PlineOffsetAlgorithmView");
 
     QGuiApplication app(argc, argv);
     QFont defaultFont(app.font().family(), 12);

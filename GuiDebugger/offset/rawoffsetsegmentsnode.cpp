@@ -19,7 +19,7 @@ void RawOffsetSegmentsNode::updateGeometry(
 
         segNode->setIsVisible(true);
 
-        segNode->updateGeometry(seg.v1, seg.v2, arcApproxError);
+        // segNode->updateGeometry(seg.v1, seg.v2, arcApproxError);
         if (seg.collapsedArc)
         {
             // collapsed arc

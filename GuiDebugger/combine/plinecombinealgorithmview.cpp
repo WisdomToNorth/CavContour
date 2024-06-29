@@ -4,8 +4,8 @@
 #include <QSGOpacityNode>
 #include <QSGTransformNode>
 
+#include "viewer/PlineGraphicItem.h"
 #include "viewer/graphicshelpers.h"
-#include "viewer/pointsetnode.h"
 #include "viewer/viewmodel.h"
 
 #include "cavc/polylinecombine.hpp"
@@ -16,7 +16,7 @@ namespace debugger
 using namespace cavc;
 
 PlineCombineAlgorithmView::PlineCombineAlgorithmView(QQuickItem *parent)
-    : GeometryCanvasItem(parent)
+    : GeoCanvasHelper(parent)
     , m_polylineANode(nullptr)
     , m_polylineBNode(nullptr)
     , m_testPointNode(nullptr)
@@ -185,7 +185,7 @@ QSGNode *PlineCombineAlgorithmView::updatePaintNode(QSGNode *oldNode,
     {
         rootNode = static_cast<QSGTransformNode *>(oldNode);
     }
-    rootNode->setMatrix(m_realToUICoord);
+    rootNode->setMatrix(real_to_ui_coord_);
 
     setWindingNumber(cavc::getWindingNumber(m_plineA, m_testPoint[0].pos()));
 
@@ -220,7 +220,7 @@ QSGNode *PlineCombineAlgorithmView::updatePaintNode(QSGNode *oldNode,
     {
         if (!m_intersectsNode)
         {
-            m_intersectsNode = new PointSetNode();
+            m_intersectsNode = new PlineGraphicItem();
             m_intersectsNode->setColor(Qt::darkCyan);
             rootNode->appendChildNode(m_intersectsNode);
         }
@@ -380,7 +380,7 @@ void PlineCombineAlgorithmView::mouseMoveEvent(QMouseEvent *event)
     QPointF mouseDelta = QPointF(event->globalX(), event->globalY()) - mouse_pick_pt_;
     QPointF newGlobalVertexPos = mouseDelta + m_origVertexGlobalPos;
     QPointF newLocalVertexPos = mapFromGlobal(newGlobalVertexPos);
-    QPointF newRealVertexPos = m_uiToRealCoord * newLocalVertexPos;
+    QPointF newRealVertexPos = ui_to_real_coord_ * newLocalVertexPos;
 
     if (polyline_grabbed_ == &m_plineA)
     {

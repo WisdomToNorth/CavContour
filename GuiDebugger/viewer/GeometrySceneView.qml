@@ -30,7 +30,7 @@ Rectangle {
             property real m_x2: 0
             property real m_zoom1: 1
             property real m_zoom2: 1
-            property real m_max: 10
+            property real m_max: 100
             property real m_min: 0.05
 
             anchors.fill: parent
@@ -42,6 +42,7 @@ Rectangle {
                 plineSceneItem.x = plineSceneItem.x + (pinchArea.m_x1 - pinchArea.m_x2) * (1 - pinchArea.m_zoom1);
                 plineSceneItem.y = plineSceneItem.y + (pinchArea.m_y1 - pinchArea.m_y2) * (1 - pinchArea.m_zoom1);
             }
+
             onPinchUpdated: {
                 m_zoom1 = scaler.xScale;
                 var dz = pinch.scale - pinch.previousScale;

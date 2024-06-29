@@ -1,7 +1,6 @@
 import "../viewer"
 import Polyline 1.0
 import QtQuick 2.13
-import QtQuick.Controls 1.4
 import QtQuick.Controls 2.13
 import QtQuick.Controls.Material 2.12
 import QtQuick.Layouts 1.13
@@ -34,75 +33,7 @@ SplitView {
         orientation: Qt.Vertical
         implicitWidth: splitViewHorizontal.width * 0.2
 
-        TreeView {
-            id: fileSystemView
 
-            implicitHeight: splitViewVertical.height * 0.3
-
-            TableViewColumn {
-                title: "Name"
-                role: "fileName"
-                width: fileSystemView.width * 0.7
-                resizable: false
-            }
-
-            TableViewColumn {
-                title: "info"
-                role: "filePermissions"
-                width: fileSystemView.width * 0.25
-                resizable: false
-            }
-
-            model: ListModel {
-                ListElement {
-                    fileName: "File 1"
-                    filePermissions: "Read-Write"
-                }
-
-                ListElement {
-                    fileName: "File 2"
-                    filePermissions: "Read-Only"
-                }
-
-                ListElement {
-                    fileName: "File 3"
-                    filePermissions: "Read-Write"
-                }
-
-            }
-            // 50% of the SplitView's height
-
-            itemDelegate: Item {
-                width: parent.width
-                height: 20
-
-                Loader {
-                    sourceComponent: styleData.column === 0 ? checkBoxComponent : textComponent
-                    anchors.verticalCenter: parent.verticalCenter
-                }
-
-                Component {
-                    id: checkBoxComponent
-
-                    CheckBox {
-                        checked: model.checked
-                        text: model.fileName
-                    }
-
-                }
-
-                Component {
-                    id: textComponent
-
-                    Text {
-                        text: model.filePermissions
-                    }
-
-                }
-
-            }
-
-        }
 
         GroupBox {
             id: controlPanel

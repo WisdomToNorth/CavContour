@@ -3,8 +3,8 @@ import QtQuick.Controls 2.13
 import QtQuick.Controls.Material 2.12
 import QtQuick.Layouts 1.13
 import QtQuick.Window 2.13
-import "combine"
-import "offset"
+//import "combine"
+import "offsetisland"
 import "settings"
 import "viewer"
 
@@ -43,11 +43,11 @@ ApplicationWindow {
                 anchors.margins: 2
                 currentIndex: tabBar.currentIndex
 
-                PlineOffsetScene {
+                PlineOffsetIslandsScene {
                 }
 
-                PlineCombineScene {
-                }
+                // PlineCombineScene {
+                // }
 
                 DebuggerSettings {
                 }

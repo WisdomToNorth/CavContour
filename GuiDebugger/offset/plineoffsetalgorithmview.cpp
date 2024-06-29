@@ -4,9 +4,9 @@
 #include <QSGNode>
 #include <QSGTransformNode>
 
+#include "viewer/PlineGraphicItem.h"
 #include "viewer/graphicshelpers.h"
-#include "viewer/plinesegmentnode.h"
-#include "viewer/pointsetnode.h"
+#include "viewer/segmentnode.h"
 #include "viewer/viewmodel.h"
 
 #include "cavc/internal/diagnostics.hpp"
@@ -19,7 +19,7 @@ namespace debugger
 using namespace cavc;
 
 PlineOffsetAlgorithmView::PlineOffsetAlgorithmView(QQuickItem *parent)
-    : GeometryCanvasItem(parent)
+    : GeoCanvasHelper(parent)
     , m_origPolylineNode(nullptr)
     , m_rawOffsetPolylineNode(nullptr)
     , m_dualRawOffsetPolylineNode(nullptr)
@@ -299,7 +299,7 @@ QSGNode *PlineOffsetAlgorithmView::updatePaintNode(QSGNode *oldNode,
         rootNode = static_cast<QSGTransformNode *>(oldNode);
     }
 
-    rootNode->setMatrix(m_realToUICoord);
+    rootNode->setMatrix(real_to_ui_coord_);
     const cavc::Polyline<double> &prunedPline =
         pruneSingularities(input_polyline_, utils::realPrecision<double>());
     m_origPolylineNode->setVertexesVisible(m_showOrigPlineVertexes);
@@ -384,7 +384,7 @@ QSGNode *PlineOffsetAlgorithmView::updatePaintNode(QSGNode *oldNode,
     {
         if (!m_selfIntersectsNode)
         {
-            m_selfIntersectsNode = new PointSetNode();
+            m_selfIntersectsNode = new PlineGraphicItem();
             m_selfIntersectsNode->setColor(Qt::darkCyan);
             rootNode->appendChildNode(m_selfIntersectsNode);
         }
@@ -726,7 +726,7 @@ void PlineOffsetAlgorithmView::mouseMoveEvent(QMouseEvent *event)
     QPointF mouseDelta = QPointF(event->globalX(), event->globalY()) - mouse_pick_pt_;
     QPointF newGlobalVertexPos = mouseDelta + m_origVertexGlobalPos;
     QPointF newLocalVertexPos = mapFromGlobal(newGlobalVertexPos);
-    QPointF newRealVertexPos = m_uiToRealCoord * newLocalVertexPos;
+    QPointF newRealVertexPos = ui_to_real_coord_ * newLocalVertexPos;
 
     input_polyline_[m_vertexGrabbed].x() = newRealVertexPos.x();
     input_polyline_[m_vertexGrabbed].y() = newRealVertexPos.y();

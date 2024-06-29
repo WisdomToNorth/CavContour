@@ -4,34 +4,21 @@
 #include <QSGFlatColorMaterial>
 #include <QSGGeometryNode>
 
+#include "drawstyle.h"
 namespace debugger
 {
 class FlatColorGeometryNode : public QSGGeometryNode
 {
 public:
-    struct Style
-    {
-        QColor color = Qt::GlobalColor::darkGreen;
-        QSGGeometry::DrawingMode mode = QSGGeometry::DrawingMode::DrawLineStrip;
-        float width = 1.0f;
-    };
-
-public:
-    FlatColorGeometryNode(bool useUInt32Index = false);
-
-    QColor const &color() const;
-    void setColor(QColor const &color);
-
-    bool isVisible() const;
-    void setIsVisible(bool isVisible);
-
+    FlatColorGeometryNode(const DrawStyle &drawstyle);
+    ~FlatColorGeometryNode() override;
+    DrawStyle &drawStyle();
+    void updateDrawStyle(const DrawStyle &drawstyle);
     bool isSubtreeBlocked() const override;
+    virtual void update() = 0;
 
 protected:
-    QSGGeometry qsg_geometry_;
-    QSGFlatColorMaterial material_;
-    bool visible_;
-    Style style_;
+    DrawStyle draw_style_;
 };
 } // namespace debugger
 #endif // FLATCOLORGEOMETRYNODE_H

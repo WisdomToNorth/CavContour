@@ -3,7 +3,7 @@
 
 #include <QQuickItem>
 
-#include "viewer/geometrycanvasitem.h"
+#include "viewer/drawstyle.h"
 
 namespace debugger
 {
@@ -27,7 +27,10 @@ public:
     {
         return g_machineType;
     }
-
+    static DrawStyle &gDrawStyle()
+    {
+        return g_drawStyle;
+    }
 signals:
     void appAlgorithmCoreChanged(AppAlgorithmCore appAlgorithmCore);
 
@@ -37,18 +40,11 @@ public:
         return g_machineType;
     }
 
-    void setAppAlgorithmCore(AppAlgorithmCore appAlgorithmCore)
-    {
-        if (g_machineType != appAlgorithmCore)
-        {
-            g_machineType = appAlgorithmCore;
-            emit appAlgorithmCoreChanged(appAlgorithmCore);
-            std::cout << "cur algorithm core: " << static_cast<int>(g_machineType) << std::endl;
-        }
-    }
+    void setAppAlgorithmCore(AppAlgorithmCore appAlgorithmCore);
 
 private:
     static AppAlgorithmCore g_machineType;
+    static DrawStyle g_drawStyle;
 };
 } // namespace debugger
 

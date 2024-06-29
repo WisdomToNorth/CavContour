@@ -3,15 +3,16 @@
 
 #include <vector>
 
-#include "viewer/geometrycanvasitem.h"
+#include <cavc/polyline.hpp>
+
+#include "viewer/GeoCanvasHelper.h"
 
 #include "casedata.h"
-#include "cavc/polyline.hpp"
 
 class QSGOpacityNode;
 namespace debugger
 {
-class OffsetIslandsView : public GeometryCanvasItem
+class OffsetIslandsView : public GeoCanvasHelper
 {
     Q_OBJECT
     Q_PROPERTY(bool showVertexes READ showVertexes WRITE setShowVertexes NOTIFY showVertexesChanged)
@@ -50,12 +51,8 @@ protected:
     void mouseReleaseEvent(QMouseEvent *event) override;
 
 private:
-    // CaseData case_data_;
+    std::vector<NgViewModel *> case_vm_;
 
-    CavcPolygonSet cavc_polygonset_;
-
-private:
-    QSGOpacityNode *m_dynamicPlinesParentNode;
     bool m_showVertexes;
     double m_offsetDelta;
     int m_offsetCount;

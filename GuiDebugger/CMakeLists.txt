@@ -5,42 +5,56 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
-find_package(Qt6 REQUIRED COMPONENTS Core Quick Gui)
-set(Qt_LIBRARIES Qt6::Core Qt6::Quick Qt6::Gui)
-set(Qt_LIBRARY_DIR ${Qt6_LIBRARY_DIR})
-set(Qt_INCLUDE_DIR ${Qt6_INCLUDE_DIRS})
+# QT
+find_package(QT NAMES Qt6 Qt5 REQUIRED)
 
-include_directories(${PROJECT_SOURCE_DIR}/build/include
-                    ${PROJECT_SOURCE_DIR}/PolyDebugger)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Gui Quick REQUIRED)
+
+set(Qt_LIBRARIES
+    Qt${QT_VERSION_MAJOR}::Core
+    Qt${QT_VERSION_MAJOR}::Quick
+    Qt${QT_VERSION_MAJOR}::Gui)
+
+set(Qt_LIBRARY_DIR ${Qt${QT_VERSION_MAJOR}_LIBRARY_DIR})
+set(Qt_INCLUDE_DIR ${Qt${QT_VERSION_MAJOR}_INCLUDE_DIRS})
+
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTORCC ON)
+
 
 add_executable(PolyGui
     offsetisland/plineoffsetislandsalgorithmview.cpp
     offsetisland/plineoffsetislandsalgorithmview.h
     offsetisland/PlineOffsetIslandsScene.qml
 
-    combine/plinecombinealgorithmview.cpp
-    combine/plinecombinealgorithmview.h
-    combine/PlineCombineScene.qml
+    # combine/plinecombinealgorithmview.cpp
+    # combine/plinecombinealgorithmview.h
+    # combine/PlineCombineScene.qml
 
     settings/settings.h
     settings/settings.cpp
     settings/DebuggerSettings.qml
 
-    offset/plineoffsetalgorithmview.cpp
-    offset/plineoffsetalgorithmview.h
-    offset/rawoffsetsegmentsnode.cpp
-    offset/rawoffsetsegmentsnode.h
-    offset/PlineOffsetScene.qml
-    offset/spatialindexboundingboxesnode.h
+    # offset/plineoffsetalgorithmview.cpp
+    # offset/plineoffsetalgorithmview.h
+    # offset/rawoffsetsegmentsnode.cpp
+    # offset/rawoffsetsegmentsnode.h
+    # offset/PlineOffsetScene.qml
+    # offset/spatialindexboundingboxesnode.h
 
-    viewer/geometrycanvasitem.cpp
-    viewer/geometrycanvasitem.h
-    viewer/plinesegmentnode.cpp
-    viewer/plinesegmentnode.h
-    viewer/pointsetnode.cpp
-    viewer/pointsetnode.h
+    viewer/GeoCanvasHelper.cpp
+    viewer/GeoCanvasHelper.h
+    viewer/segmentnode.cpp
+    viewer/segmentnode.h
+    viewer/PlineGraphicItem.cpp
+    viewer/PlineGraphicItem.h
     viewer/viewmodel.h
     viewer/viewmodel.cpp
+    viewer/drawstyle.h
+    viewer/drawstyle.cpp
+    viewer/vmparameter.h
+    viewer/vmparameter.cpp
 
     casedata.cpp
     casedata.h
@@ -58,6 +72,12 @@ add_executable(PolyGui
     main.qml
     qml.qrc
 )
+
+target_include_directories(PolyGui
+PRIVATE
+    ${Qt_INCLUDE_DIR}
+    ${PROJECT_SOURCE_DIR}/build/include
+    ${PROJECT_SOURCE_DIR}/PolyDebugger)
 
 target_compile_definitions(PolyGui
   PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)

@@ -1,9 +1,12 @@
 #include "offsetisland/plineoffsetislandsalgorithmview.h"
 
+#include <iostream>
+
 #include <QSGTransformNode>
 
 #include <cavc/polylineoffsetislands.hpp>
 
+#include "viewer/simplecirclenode.h"
 #include "viewer/viewmodel.h"
 
 #include "datamanager.h"
@@ -13,7 +16,7 @@ using namespace cavc;
 namespace debugger
 {
 OffsetIslandsView::OffsetIslandsView(QQuickItem *parent)
-    : GeometryCanvasItem(parent)
+    : GeoCanvasHelper(parent)
     , m_showVertexes(true)
     , m_offsetDelta(1)
     , m_offsetCount(20)
@@ -28,7 +31,7 @@ OffsetIslandsView::OffsetIslandsView(QQuickItem *parent)
     {
     case NgSettings::AppAlgorithmCore::kCavc:
     {
-        DataUtils::buildCavcCase(docData.case_data_, cavc_polygonset_);
+        DataUtils::buildCase0(case_vm_);
         break;
     }
     case NgSettings::AppAlgorithmCore::kNGPoly: break;
@@ -53,7 +56,8 @@ void OffsetIslandsView::setCaseIndex(QString caseindex)
     std::cout << "change case data" << std::endl;
 
     DocumetData::getInstance().changeData(caseindex);
-    DataUtils::buildCavcCase(DocumetData::getInstance().case_data_, cavc_polygonset_);
+    CavcPolygonSet cavc_polygonset;
+    DataUtils::buildCavcCase(DocumetData::getInstance().case_data_, cavc_polygonset);
 
     emit changeCaseDataSignal(caseindex);
     update();
@@ -112,87 +116,21 @@ QSGNode *OffsetIslandsView::updatePaintNode(QSGNode *oldNode, QQuickItem::Update
     if (!oldNode)
     {
         rootNode = new QSGTransformNode();
-        m_dynamicPlinesParentNode = new QSGOpacityNode();
-        rootNode->appendChildNode(m_dynamicPlinesParentNode);
-        m_dynamicPlinesParentNode->setOpacity(1);
     }
     else
     {
         rootNode = static_cast<QSGTransformNode *>(oldNode);
     }
-    rootNode->setMatrix(m_realToUICoord);
+    rootNode->setMatrix(real_to_ui_coord_);
 
-    NgViewModel *plineNode = static_cast<NgViewModel *>(m_dynamicPlinesParentNode->firstChild());
-
-    auto addPline = [&](cavc::Polyline<double> const &pline, bool is_hole,
-                        QColor color = QColor("blue"), bool vertexesVisible = false,
-                        QColor vertexesColor = QColor("red"))
+    for (auto &vm : case_vm_)
     {
-        if (!plineNode)
+        std::vector<PlineGraphicItem *> pline_nodes = vm->getNodes();
+        for (auto &node : pline_nodes)
         {
-            plineNode = new NgViewModel();
-            m_dynamicPlinesParentNode->appendChildNode(plineNode);
+            rootNode->appendChildNode(node);
+            node->update();
         }
-        plineNode->setColor(color);
-        plineNode->setIsVisible(true);
-        plineNode->setVertexesVisible(vertexesVisible);
-        plineNode->setVertexesColor(vertexesColor);
-        plineNode->updateVM(pline, is_hole);
-        plineNode = static_cast<NgViewModel *>(plineNode->nextSibling());
-    };
-
-    for (const auto &[data, is_hole] : cavc_polygonset_)
-    {
-        if (is_hole)
-        {
-            addPline(data, true, QColor("red"), m_showVertexes, QColor("red"));
-        }
-        else
-        {
-            addPline(data, false, QColor("blue"), m_showVertexes, QColor("blue"));
-        }
-    }
-
-    if (!utils::fuzzyEqual(m_offsetDelta, 0.0) && m_offsetCount > 0)
-    {
-        ParallelOffsetIslands<double> alg;
-        OffsetLoopSet<double> loopSet;
-        for (const auto &[data, is_hole] : cavc_polygonset_)
-        {
-            if (is_hole)
-            {
-                loopSet.cwLoops.push_back({0, data, createApproxSpatialIndex(data)});
-            }
-            else
-            {
-                loopSet.ccwLoops.push_back({0, data, createApproxSpatialIndex(data)});
-            }
-        }
-
-        int i = 0;
-        while (i < m_offsetCount)
-        {
-            loopSet = alg.compute(loopSet, m_offsetDelta);
-            if (loopSet.cwLoops.size() == 0 && loopSet.ccwLoops.size() == 0)
-            {
-                break;
-            }
-            for (auto const &loop : loopSet.cwLoops)
-            {
-                addPline(loop.polyline, false);
-            }
-            for (auto const &loop : loopSet.ccwLoops)
-            {
-                addPline(loop.polyline, false);
-            }
-            i += 1;
-        }
-    }
-
-    while (plineNode)
-    {
-        plineNode->setIsVisible(false);
-        plineNode = static_cast<NgViewModel *>(plineNode->nextSibling());
     }
 
     return rootNode;
@@ -240,7 +178,7 @@ void OffsetIslandsView::mouseMoveEvent(QMouseEvent *event)
     // convert back from global coordinates to get real delta
     QPointF newGlobalVertexPos = QPointF(event->globalX(), event->globalY());
     QPointF newLocalVertexPos = mapFromGlobal(newGlobalVertexPos);
-    QPointF newRealVertexPos = m_uiToRealCoord * newLocalVertexPos;
+    QPointF newRealVertexPos = ui_to_real_coord_ * newLocalVertexPos;
 
     int pline_index = vertex_pick_index_.first;
     int vertex_index = vertex_pick_index_.second;
@@ -253,17 +191,17 @@ void OffsetIslandsView::mouseMoveEvent(QMouseEvent *event)
     {
     case NgSettings::AppAlgorithmCore::kCavc:
     {
-        ////way 1:  regenerate cavc data
-        IsHole is_hole = DocumetData::getInstance().case_data_[pline_index].second;
-        cavc_polygonset_[pline_index] = {
-            DataUtils::buildCavcPline(DocumetData::getInstance().case_data_[pline_index].first,
-                                      is_hole),
-            is_hole};
+        // ////way 1:  regenerate cavc data
+        // IsHole is_hole = DocumetData::getInstance().case_data_[pline_index].second;
+        // cavc_polygonset_[pline_index] = {
+        //     DataUtils::buildCavcPline(DocumetData::getInstance().case_data_[pline_index].first,
+        //                               is_hole),
+        //     is_hole};
 
-        ////way 2:  update polyline, more efficient, not able to work well if index is 0 or n-1
-        // auto &vertex = cavc_polygonset_[pline_index].first[vertex_index];
-        // vertex.x() = newRealVertexPos.x();
-        // vertex.y() = newRealVertexPos.y();
+        // ////way 2:  update polyline, more efficient, not able to work well if index is 0 or n-1
+        // // auto &vertex = cavc_polygonset_[pline_index].first[vertex_index];
+        // // vertex.x() = newRealVertexPos.x();
+        // // vertex.y() = newRealVertexPos.y();
         break;
     }
     case NgSettings::AppAlgorithmCore::kNGPoly: break;

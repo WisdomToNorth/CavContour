@@ -19,6 +19,24 @@ void DataUtils::createData(CaseData &data, QString caseindex)
     }
 }
 
+void DataUtils::buildViewModel(const CaseData &data, std::vector<ViewData *> &viewdata)
+{
+}
+
+void DataUtils::buildCase0(std::vector<NgViewModel *> &viewdata)
+{
+    viewdata.clear();
+    VMParameter segment1{0, 1, 2, 1, 1, 1, 1.0, true, false};
+    VMParameter segment2{2, 1, 1.6, 1.8, 0, 0, 0, true, true};
+    VMParameter segment3{1.6, 1.8, 1, 2, 0, 0, 0, true, true};
+    VMParameter segment4{1, 2, 0.2, 1.6, 0, 0, 0, true, true};
+    VMParameter segment5{0.2, 1.6, 0, 1, 0, 0, 0, true, true};
+    Pline pline1{segment1, segment2, segment3, segment4, segment5};
+    ViewData viewdata1{pline1};
+
+    viewdata.push_back(new NgViewModel(viewdata1));
+}
+
 void DataUtils::buildCavcCase(const CaseData &casedata, CavcPolygonSet &cavc_polygonset)
 {
     CavcPolygonSet calc_loops;

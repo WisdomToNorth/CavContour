@@ -3,15 +3,15 @@
 
 #include <cavc/polyline.hpp>
 
-#include "viewer/geometrycanvasitem.h"
+#include "viewer/GeoCanvasHelper.h"
 
 class QSGGeometryNode;
 class QSGOpacityNode;
 namespace debugger
 {
 class NgViewModel;
-class PointSetNode;
-class PlineCombineAlgorithmView : public GeometryCanvasItem
+class PlineGraphicItem;
+class PlineCombineAlgorithmView : public GeoCanvasHelper
 {
     Q_OBJECT
     Q_PROPERTY(bool interacting READ interacting NOTIFY interactingChanged)
@@ -84,7 +84,7 @@ private:
     NgViewModel *m_polylineANode;
     NgViewModel *m_polylineBNode;
     NgViewModel *m_testPointNode;
-    PointSetNode *m_intersectsNode;
+    PlineGraphicItem *m_intersectsNode;
 
     void setWindingNumber(int windingNumber);
     void setInteracting(bool interacting);

@@ -1,4 +1,7 @@
 cmake_minimum_required(VERSION 3.21)
+
+set(CMAKE_TOOLCHAIN_FILE D:/CODE/vcpkg/scripts/buildsystems/vcpkg.cmake)
+
 project(
     NgPolyDebugger
     VERSION 0.1.1

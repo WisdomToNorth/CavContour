@@ -1,7 +1,7 @@
 #ifndef PLINEOFFSETALGORITHMVIEW_H
 #define PLINEOFFSETALGORITHMVIEW_H
 
-#include "viewer/geometrycanvasitem.h"
+#include "viewer/GeoCanvasHelper.h"
 
 #include "cavc/polyline.hpp"
 
@@ -11,10 +11,10 @@ namespace debugger
 {
 class SpatialIndexBoundingBoxesNode;
 class NgViewModel;
-class PointSetNode;
+class PlineGraphicItem;
 class RawOffsetSegmentsNode;
 
-class PlineOffsetAlgorithmView : public GeometryCanvasItem
+class PlineOffsetAlgorithmView : public GeoCanvasHelper
 {
     Q_OBJECT
     Q_PROPERTY(bool interacting READ interacting NOTIFY interactingChanged)
@@ -128,7 +128,7 @@ private:
     NgViewModel *m_origPolylineNode;
     NgViewModel *m_rawOffsetPolylineNode;
     NgViewModel *m_dualRawOffsetPolylineNode;
-    PointSetNode *m_selfIntersectsNode;
+    PlineGraphicItem *m_selfIntersectsNode;
 
     RawOffsetSegmentsNode *m_untrimmedSegmentsParentNode;
     SpatialIndexBoundingBoxesNode *m_boundingBoxesNode;
