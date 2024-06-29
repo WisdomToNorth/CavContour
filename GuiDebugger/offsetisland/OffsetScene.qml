@@ -19,12 +19,11 @@ SplitView {
     SceneView2d {
         implicitWidth: splitViewHorizontal.width * 0.8 // 80% of the SplitView's width
 
-        OffsetView  {
+        OffsetView {
             id: algorithmView
 
             anchors.fill: parent
         }
-
     }
 
     SplitView {
@@ -32,8 +31,6 @@ SplitView {
 
         orientation: Qt.Vertical
         implicitWidth: splitViewHorizontal.width * 0.2
-
-
 
         GroupBox {
             id: controlPanel
@@ -51,7 +48,7 @@ SplitView {
                 model: ["default1", "default2", "default3"]
                 currentIndex: 0
                 onCurrentIndexChanged: {
-                    algorithmView.caseIndex = model[currentIndex];
+                    algorithmView.caseIndex = model[currentIndex]
                 }
             }
 
@@ -67,10 +64,10 @@ SplitView {
             Item {
                 id: offsetItem
 
-                anchors.top: offsetDeltaLabel.bottom
                 width: parent.width
                 implicitWidth: offsetSlider.implicitWidth
-                implicitHeight: offsetTextField.implicitHeight + offsetSlider.implicitHeight + minText.implicitHeight
+                implicitHeight: offsetTextField.implicitHeight
+                                + offsetSlider.implicitHeight + minText.implicitHeight
 
                 TextField {
                     id: offsetTextField
@@ -80,17 +77,15 @@ SplitView {
                     anchors.top: offsetItem.top
                     text: parseFloat(offsetSlider.value).toFixed(2)
                     onEditingFinished: {
-                        let f = parseFloat(text);
+                        let f = parseFloat(text)
                         if (!isNaN(f))
-                            offsetSlider.value = f;
-
+                            offsetSlider.value = f
                     }
 
                     validator: DoubleValidator {
                         bottom: offsetSlider.from
                         top: offsetSlider.to
                     }
-
                 }
 
                 Slider {
@@ -102,7 +97,7 @@ SplitView {
                     to: 15
                     value: algorithmView.offsetDelta
                     onValueChanged: {
-                        algorithmView.offsetDelta = value;
+                        algorithmView.offsetDelta = value
                     }
                 }
 
@@ -121,7 +116,6 @@ SplitView {
                     anchors.top: offsetSlider.bottom
                     text: offsetSlider.to
                 }
-
             }
 
             Label {
@@ -141,18 +135,17 @@ SplitView {
                 text: algorithmView.offsetCount
                 selectByMouse: true // 鼠标可以选中文本
                 onTextChanged: {
-                    let c = parseInt(text);
+                    let c = parseInt(text)
                     if (isNaN(c))
-                        return ;
+                        return
 
-                    algorithmView.offsetCount = c;
+                    algorithmView.offsetCount = c
                 }
 
                 validator: IntValidator {
                     bottom: 0
                     top: 1000
                 }
-
             }
 
             CheckBox {
@@ -161,12 +154,9 @@ SplitView {
                 text: "Show Vertexes"
                 checked: algorithmView.showVertexes
                 onCheckedChanged: {
-                    algorithmView.showVertexes = checked;
+                    algorithmView.showVertexes = checked
                 }
             }
-
         }
-
     }
-
 }

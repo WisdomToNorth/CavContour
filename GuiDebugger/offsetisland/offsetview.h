@@ -67,4 +67,4 @@ private:
     QPointF m_origVertexGlobalPos;
 };
 } // namespace debugger
-#endif // PLINEOFFSETISLANDSALGORITHMVIEW_H
+#endif

@@ -39,8 +39,8 @@ private:
 private:
     Pline pline_;
     DrawStyle drawstyle_;
-    bool draw_vertex_;
-    bool visible_;
+    bool draw_vertex_=true;
+    bool visible_=true;
 };
 } // namespace debugger
 #endif

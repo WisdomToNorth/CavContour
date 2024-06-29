@@ -48,4 +48,4 @@ private:
 };
 } // namespace debugger
 
-#endif // PLINECOMBINEALGORITHMVIEW_H
+#endif

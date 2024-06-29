@@ -34,20 +34,22 @@ Rectangle {
 
             anchors.fill: parent
             onPinchStarted: {
-                m_x1 = scaler.origin.x;
-                m_y1 = scaler.origin.y;
-                m_x2 = pinch.startCenter.x;
-                m_y2 = pinch.startCenter.y;
-                plineSceneItem.x = plineSceneItem.x + (pinchArea.m_x1 - pinchArea.m_x2) * (1 - pinchArea.m_zoom1);
-                plineSceneItem.y = plineSceneItem.y + (pinchArea.m_y1 - pinchArea.m_y2) * (1 - pinchArea.m_zoom1);
+                m_x1 = scaler.origin.x
+                m_y1 = scaler.origin.y
+                m_x2 = pinch.startCenter.x
+                m_y2 = pinch.startCenter.y
+                plineSceneItem.x = plineSceneItem.x
+                        + (pinchArea.m_x1 - pinchArea.m_x2) * (1 - pinchArea.m_zoom1)
+                plineSceneItem.y = plineSceneItem.y
+                        + (pinchArea.m_y1 - pinchArea.m_y2) * (1 - pinchArea.m_zoom1)
             }
 
             onPinchUpdated: {
-                m_zoom1 = scaler.xScale;
-                var dz = pinch.scale - pinch.previousScale;
-                var newZoom = m_zoom1 + dz;
+                m_zoom1 = scaler.xScale
+                var dz = pinch.scale - pinch.previousScale
+                var newZoom = m_zoom1 + dz
                 if (newZoom <= m_max && newZoom >= m_min)
-                    m_zoom2 = newZoom;
+                    m_zoom2 = newZoom
             }
 
             MouseArea {
@@ -57,31 +59,31 @@ Rectangle {
                 anchors.fill: parent
                 drag.target: plineSceneItem
                 drag.filterChildren: true
-                onWheel: {
-                    function handleWheel(wheel) {
-                        pinchArea.m_x1 = scaler.origin.x;
-                        pinchArea.m_y1 = scaler.origin.y;
-                        pinchArea.m_zoom1 = scaler.xScale;
-                        pinchArea.m_x2 = mouseX;
-                        pinchArea.m_y2 = mouseY;
-                        var newZoom;
-                        if (wheel.angleDelta.y > 0) {
-                            newZoom = pinchArea.m_zoom1 + 0.2;
-                            if (newZoom <= pinchArea.m_max)
-                                pinchArea.m_zoom2 = newZoom;
-                            else
-                                pinchArea.m_zoom2 = pinchArea.m_max;
-                        } else {
-                            newZoom = pinchArea.m_zoom1 - 0.2;
-                            if (newZoom >= pinchArea.m_min)
-                                pinchArea.m_zoom2 = newZoom;
-                            else
-                                pinchArea.m_zoom2 = pinchArea.m_min;
-                        }
-                        plineSceneItem.x = plineSceneItem.x + (pinchArea.m_x1 - pinchArea.m_x2) * (1 - pinchArea.m_zoom1);
-                        plineSceneItem.y = plineSceneItem.y + (pinchArea.m_y1 - pinchArea.m_y2) * (1 - pinchArea.m_zoom1);
+
+                onWheel: function (wheel) {
+                    pinchArea.m_x1 = scaler.origin.x
+                    pinchArea.m_y1 = scaler.origin.y
+                    pinchArea.m_zoom1 = scaler.xScale
+                    pinchArea.m_x2 = mouseX
+                    pinchArea.m_y2 = mouseY
+                    var newZoom
+                    if (wheel.angleDelta.y > 0) {
+                        newZoom = pinchArea.m_zoom1 + 0.2
+                        if (newZoom <= pinchArea.m_max)
+                            pinchArea.m_zoom2 = newZoom
+                        else
+                            pinchArea.m_zoom2 = pinchArea.m_max
+                    } else {
+                        newZoom = pinchArea.m_zoom1 - 0.2
+                        if (newZoom >= pinchArea.m_min)
+                            pinchArea.m_zoom2 = newZoom
+                        else
+                            pinchArea.m_zoom2 = pinchArea.m_min
                     }
-                    handleWheel(wheel);
+                    plineSceneItem.x = plineSceneItem.x
+                            + (pinchArea.m_x1 - pinchArea.m_x2) * (1 - pinchArea.m_zoom1)
+                    plineSceneItem.y = plineSceneItem.y
+                            + (pinchArea.m_y1 - pinchArea.m_y2) * (1 - pinchArea.m_zoom1)
                 }
 
                 MouseArea {

@@ -15,6 +15,19 @@
 using namespace cavc;
 namespace debugger
 {
+namespace
+{
+QPoint getMouseEventGlobalPoint(QMouseEvent *event)
+{
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    QPointF startPos = event->globalPosition();
+#else
+    QPointF startPos = event->globalPos();
+#endif
+    return QPoint(int(startPos.x()), int(startPos.y()));
+}
+} // namespace
+
 OffsetView::OffsetView(QQuickItem *parent)
     : GeoCanvasHelper(parent)
     , m_showVertexes(true)
@@ -27,7 +40,7 @@ OffsetView::OffsetView(QQuickItem *parent)
     {
     case NgSettings::AppAlgorithmCore::kCavc:
     {
-        DataUtils::createData(case_vm_, "default2");
+        DataUtils::createData(case_vm_, "default0");
         break;
     }
     case NgSettings::AppAlgorithmCore::kNGPoly: break;
@@ -130,7 +143,7 @@ QSGNode *OffsetView::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNo
 
 void OffsetView::mousePressEvent(QMouseEvent *event)
 {
-    mouse_pick_pt_ = QPointF(event->globalX(), event->globalY());
+    mouse_pick_pt_ = getMouseEventGlobalPoint(event);
 
     auto &case_data = DocumetData::getInstance().case_data_;
 
