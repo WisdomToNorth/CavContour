@@ -20,7 +20,7 @@ constexpr Real tau()
 } // namespace internal
 
 SimpleCircleNode::SimpleCircleNode(const DrawStyle &drawstyle)
-    : FlatColorGeometryNode(drawstyle)
+    : GeoNode(drawstyle)
 {
     // DrawStyle style = this->draw_style_;
     // style.linetype = QSGGeometry::DrawTriangleFan;
@@ -29,9 +29,9 @@ SimpleCircleNode::SimpleCircleNode(const DrawStyle &drawstyle)
 
 void SimpleCircleNode::setGeometry(qreal x, qreal y, qreal radius)
 {
-    m_xPos = x;
-    m_yPos = y;
-    m_radius = radius;
+    center_x = x;
+    center_y = y;
+    radius_ = radius;
 }
 
 void SimpleCircleNode::update()
@@ -51,8 +51,8 @@ void SimpleCircleNode::update()
     {
         double angle = internal::tau<double>() * static_cast<double>(i - 1) /
                        static_cast<double>(surroundingVertexes);
-        vertexData[i - 1].set(m_xPos + m_radius * std::cos(angle),
-                              m_yPos + m_radius * std::sin(angle));
+        vertexData[i - 1].set(center_x + radius_ * std::cos(angle),
+                              center_y + radius_ * std::sin(angle));
     }
     markDirty(QSGNode::DirtyGeometry);
 }

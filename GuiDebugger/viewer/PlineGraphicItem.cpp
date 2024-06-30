@@ -1,62 +1,88 @@
 #include "PlineGraphicItem.h"
 
+#include <cassert>
 #include <iostream>
-
-#include "viewer/graphicshelpers.h"
-#include "viewer/segmentnode.h"
-#include "viewer/simplecirclenode.h"
 
 namespace debugger
 {
 PlineGraphicItem::PlineGraphicItem()
+    : QSGOpacityNode()
 {
     this->setOpacity(1.0);
     drawstyle_ = DrawStyle();
 }
 
-void PlineGraphicItem::addSegment(const Segment &seg)
+SegmentNode *PlineGraphicItem::createSegment(const RecordF &seg)
 {
     SegmentNode *newseg = new SegmentNode(drawstyle_);
     appendChildNode(newseg);
     newseg->setFlag(QSGNode::OwnedByParent);
     newseg->setData(seg);
     newseg->update();
+    return newseg;
 }
 
-void PlineGraphicItem::addPoint(qreal x, qreal y)
+SimpleCircleNode *PlineGraphicItem::createPoint(qreal x, qreal y)
 {
     const qreal pointRadius = 0.05;
-    auto newNode = new SimpleCircleNode(drawstyle_);
+    SimpleCircleNode *newNode = new SimpleCircleNode(drawstyle_);
     appendChildNode(newNode);
     newNode->setFlag(QSGNode::OwnedByParent);
     newNode->setGeometry(x, y, pointRadius);
     newNode->update();
+    return newNode;
 }
-
-void PlineGraphicItem::update()
+void PlineGraphicItem::updateNode(size_t index, const RecordF &seg)
 {
-    for (const Segment &seg : pline_)
+    if (index < segments_.size())
     {
-        if (draw_vertex_)
-        {
-            addPoint(seg.x0, seg.y0);
-        }
-        addSegment(seg);
-    }
-
-    if (pline_.size() > 0)
-    {
-        if (draw_vertex_)
-        {
-            addPoint(pline_.back().x1, pline_.back().y1);
-        }
+        segments_[index]->setData(seg);
+        segments_[index]->update();
+        circles_[index]->setGeometry(seg.x0, seg.y0, 0.05);
+        circles_[index]->update();
     }
 }
 
-void PlineGraphicItem::setData(const Pline &pline)
+void PlineGraphicItem::updateData(const Pline &pline)
 {
-    clear();
-    pline_ = pline;
+    if (draw_vertex_ && (circles_.size() > 0))
+    {
+        assert(circles_.size() == segments_.size());
+        // TODO: draw last point
+        // assert(circles_.size() == segments_.size() + 1);
+    }
+
+    if (segments_.size() < pline.size())
+    {
+        for (size_t i = segments_.size(); i < pline.size(); i++)
+        {
+            segments_.emplace_back(createSegment(pline[i]));
+            circles_.emplace_back(createPoint(pline[i].x0, pline[i].y0));
+        }
+        // TODO: draw last point
+        // if ((pline.size() > 0) && draw_vertex_)
+        // {
+        //     addPoint(pline_.back().x1, pline_.back().y1);
+        // }
+    }
+    else if (segments_.size() > pline.size())
+    {
+        for (size_t i = segments_.size(); i > pline.size(); i--)
+        {
+            delete segments_[i - 1];
+            segments_.pop_back();
+            delete circles_[i - 1];
+            circles_.pop_back();
+        }
+    }
+
+    for (size_t i = 0; i < pline.size(); i++)
+    {
+        segments_[i]->setData(pline[i]);
+        segments_[i]->update();
+        circles_[i]->setGeometry(pline[i].x0, pline[i].y0, 0.05);
+        circles_[i]->update();
+    }
 }
 
 DrawStyle PlineGraphicItem::drawStyle() const
@@ -84,7 +110,6 @@ void PlineGraphicItem::setVisible(bool visible)
 {
     visible_ = visible;
     this->setOpacity(visible ? 1.0 : 0.0);
-    // TODO: may set all sub nodes visible
 }
 
 void PlineGraphicItem::clear()

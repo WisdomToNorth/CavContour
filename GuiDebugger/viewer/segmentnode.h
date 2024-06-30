@@ -1,18 +1,18 @@
 #ifndef PLINESEGMENTNODE_H
 #define PLINESEGMENTNODE_H
 
-#include "viewer/flatcolorgeometrynode.h"
+#include "viewer/GeoNode.h"
 
 #include "drawstyle.h"
 #include "vmparameter.h"
 
 namespace debugger
 {
-class SegmentNode : public FlatColorGeometryNode
+class SegmentNode : public GeoNode
 {
 public:
     SegmentNode(const DrawStyle &drawstyle);
-    void setData(const Segment &segment);
+    void setData(const RecordF &segment);
     void update() override;
 
 private:
@@ -23,7 +23,7 @@ private:
     void drawLine(const double &p1_x, const double &p1_y, const double &p2_x, const double &p2_y);
 
 private:
-    Segment data_;
+    RecordF data_;
 };
 } // namespace debugger
 #endif // PLINESEGMENTNODE_H

@@ -6,19 +6,24 @@
 #include "PlineGraphicItem.h"
 #include "drawstyle.h"
 #include "vmparameter.h"
+
 namespace debugger
 {
-class NgViewModel
+class CaseViewModel
 {
 public:
-    NgViewModel();
-    NgViewModel(const ViewData &viewdata);
-    ~NgViewModel();
+    CaseViewModel();
+    CaseViewModel(const ViewData &viewdata);
+    ~CaseViewModel();
 
-    void setData(const ViewData &viewdata);
-    void update();
+    void updateData(const ViewData &viewdata);
     void clearData();
-    std::vector<PlineGraphicItem *> getNodes() const
+
+    std::vector<PlineGraphicItem *> getPlineNodes()
+    {
+        return pline_nodes_;
+    }
+    std::vector<PlineGraphicItem *> &plineNodes()
     {
         return pline_nodes_;
     }

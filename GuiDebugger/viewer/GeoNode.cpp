@@ -1,37 +1,36 @@
-#include "flatcolorgeometrynode.h"
+#include "GeoNode.h"
 
 namespace debugger
 {
-FlatColorGeometryNode::FlatColorGeometryNode(const DrawStyle &drawstyle)
+GeoNode::GeoNode(const DrawStyle &drawstyle)
     : draw_style_(drawstyle)
 {
     auto geotype =
         drawstyle.useUInt32Index ? QSGGeometry::UnsignedIntType : QSGGeometry::UnsignedShortType;
 
-    setGeometry(new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), 0, 0, geotype));
-    setMaterial(new QSGFlatColorMaterial);
+    QSGGeometry *geometry =
+        new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), 0, 0, geotype);
+    setGeometry(geometry);
+    geometry->setDrawingMode(draw_style_.linetype);
+    geometry->setLineWidth(draw_style_.width);
+    this->setFlag(QSGNode::OwnsGeometry);
 
-    auto qsg_geometry_ = geometry();
-    qsg_geometry_->setDrawingMode(draw_style_.linetype);
-    qsg_geometry_->setLineWidth(draw_style_.width);
-
-    auto material_ = static_cast<QSGFlatColorMaterial *>(material());
-    material_->setColor(draw_style_.color);
+    QSGFlatColorMaterial *material = new QSGFlatColorMaterial();
+    material->setColor(draw_style_.color);
+    setMaterial(material);
+    this->setFlag(QSGNode::OwnsMaterial);
 }
 
-FlatColorGeometryNode::~FlatColorGeometryNode()
+GeoNode::~GeoNode()
 {
-    auto material_ = static_cast<QSGFlatColorMaterial *>(material());
-    delete material_;
-    delete geometry();
 }
 
-DrawStyle &FlatColorGeometryNode::drawStyle()
+DrawStyle &GeoNode::drawStyle()
 {
     return draw_style_;
 }
 
-void FlatColorGeometryNode::updateDrawStyle(const DrawStyle &drawstyle)
+void GeoNode::updateDrawStyle(const DrawStyle &drawstyle)
 {
     auto qsg_geometry_ = geometry();
     bool geo_dirty = false;
@@ -72,7 +71,7 @@ void FlatColorGeometryNode::updateDrawStyle(const DrawStyle &drawstyle)
     }
 }
 
-bool FlatColorGeometryNode::isSubtreeBlocked() const
+bool GeoNode::isSubtreeBlocked() const
 {
     return !draw_style_.visible;
 }

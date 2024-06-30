@@ -1,14 +1,15 @@
 #include "vmparameter.h"
 
 #include <cmath>
+#include <iostream>
 
 namespace debugger
 {
 
-VMParameter VMParameterUtils::fromBulge(const double x0, const double y0, const double x1,
-                                        const double y1, const double bulge)
+RecordF PlineUtils::fromBulge(const double x0, const double y0, const double x1, const double y1,
+                              const double bulge)
 {
-    VMParameter parameter;
+    RecordF parameter;
     parameter.x0 = x0;
     parameter.y0 = y0;
     parameter.x1 = x1;
@@ -48,10 +49,16 @@ VMParameter VMParameterUtils::fromBulge(const double x0, const double y0, const 
     }
 }
 
-void VMParameterUtils::SPlineToPline(const SPline &spline, Pline &pline)
+void PlineUtils::PlineToSPline(const Pline &, SPline &)
+{
+    // TODO:
+    std::cerr << "PlineToSPline not implemented" << std::endl;
+}
+
+void PlineUtils::SPlineToPline(const SPline &spline, Pline &pline)
 {
     pline.clear();
-    VMParameter segment;
+    RecordF segment;
     for (size_t i = 0; i < spline.size() - 1; i++)
     {
         segment =

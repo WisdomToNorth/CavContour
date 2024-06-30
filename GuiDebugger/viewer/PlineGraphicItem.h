@@ -2,6 +2,9 @@
 #define PLINEGRAPHICITEM_H
 #include <QSGOpacityNode>
 
+#include "viewer/segmentnode.h"
+#include "viewer/simplecirclenode.h"
+
 #include "drawstyle.h"
 #include "vmparameter.h"
 
@@ -11,8 +14,9 @@ class PlineGraphicItem : public QSGOpacityNode
 {
 public:
     PlineGraphicItem();
-    void setData(const Pline &pline);
-    void update();
+
+    void updateData(const Pline &pline);
+    void updateNode(size_t index, const RecordF &seg);
 
     DrawStyle drawStyle() const;
     void setDrawStyle(const DrawStyle &drawstyle);
@@ -32,15 +36,18 @@ public:
     }
 
 private:
-    void addPoint(qreal x, qreal y);
-    void addSegment(const Segment &seg);
+    SimpleCircleNode *createPoint(qreal x, qreal y);
+    SegmentNode *createSegment(const RecordF &seg);
+
     void clear();
 
 private:
-    Pline pline_;
+    std::vector<SegmentNode *> segments_;
+    std::vector<SimpleCircleNode *> circles_;
+
     DrawStyle drawstyle_;
-    bool draw_vertex_=true;
-    bool visible_=true;
+    bool draw_vertex_ = true;
+    bool visible_ = true;
 };
 } // namespace debugger
 #endif

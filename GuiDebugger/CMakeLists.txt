@@ -25,28 +25,27 @@ set(CMAKE_AUTORCC ON)
 
 add_executable(PolyGui
 
-    viewer/GeoCanvasHelper.cpp
-    viewer/GeoCanvasHelper.h
     viewer/segmentnode.cpp
     viewer/segmentnode.h
     viewer/PlineGraphicItem.cpp
     viewer/PlineGraphicItem.h
-    viewer/viewmodel.h
-    viewer/viewmodel.cpp
+    viewer/caseviewmodel.h
+    viewer/caseviewmodel.cpp
     viewer/drawstyle.h
     viewer/drawstyle.cpp
     viewer/vmparameter.h
     viewer/vmparameter.cpp
-    viewer/flatcolorgeometrynode.cpp
-    viewer/flatcolorgeometrynode.h
-    viewer/graphicshelpers.cpp
-    viewer/graphicshelpers.h
+    viewer/GeoNode.cpp
+    viewer/GeoNode.h
     viewer/simplecirclenode.cpp
     viewer/simplecirclenode.h
 
-    casedata.cpp
-    casedata.h
-    datamanager.h
+    CaseCreator.h
+    CaseCreator.cpp
+    DocManager.cpp
+    DocManager.h
+    DocData.h
+    DocData.cpp
     main.cpp
     qml.qrc
 

@@ -5,8 +5,6 @@
 
 #include <QSGGeometry>
 
-#include "viewer/graphicshelpers.h"
-
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
 #endif
@@ -66,11 +64,11 @@ double arcAngle(double angle1, double angle2, bool ccw)
 } // namespace
 
 SegmentNode::SegmentNode(const DrawStyle &drawstyle)
-    : FlatColorGeometryNode(drawstyle)
+    : GeoNode(drawstyle)
 {
 }
 
-void SegmentNode::setData(const Segment &segment)
+void SegmentNode::setData(const RecordF &segment)
 {
     data_ = segment;
 }

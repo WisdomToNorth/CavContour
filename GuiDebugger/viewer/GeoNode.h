@@ -1,17 +1,18 @@
-#ifndef FLATCOLORGEOMETRYNODE_H
-#define FLATCOLORGEOMETRYNODE_H
+#ifndef GEONODE_H
+#define GEONODE_H
 
 #include <QSGFlatColorMaterial>
 #include <QSGGeometryNode>
 
 #include "drawstyle.h"
+
 namespace debugger
 {
-class FlatColorGeometryNode : public QSGGeometryNode
+class GeoNode : public QSGGeometryNode
 {
 public:
-    FlatColorGeometryNode(const DrawStyle &drawstyle);
-    ~FlatColorGeometryNode() override;
+    GeoNode(const DrawStyle &drawstyle);
+    ~GeoNode() override;
     DrawStyle &drawStyle();
     void updateDrawStyle(const DrawStyle &drawstyle);
     bool isSubtreeBlocked() const override;

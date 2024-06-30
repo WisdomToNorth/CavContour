@@ -13,12 +13,9 @@ struct DrawStyle
     float width = 1.0f;
     bool visible = true;
     bool useUInt32Index = true;
-    bool operator==(const DrawStyle &other) const
-    {
-        return color == other.color && linetype == other.linetype &&
-               arcApproxError == other.arcApproxError && width == other.width &&
-               visible == other.visible && useUInt32Index == other.useUInt32Index;
-    }
+    bool operator==(const DrawStyle &other) const;
+
+    static QColor indexToColor(std::size_t index);
 };
 
 } // namespace debugger

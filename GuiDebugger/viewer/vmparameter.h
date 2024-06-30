@@ -5,7 +5,7 @@
 
 namespace debugger
 {
-struct VMParameter
+struct RecordF
 {
     double x0 = 0.0;
     double y0 = 0.0;
@@ -18,26 +18,26 @@ struct VMParameter
     bool is_line = true;
 };
 
-struct VMSimpleParameter
+struct SRecordF
 {
     double x = 0.0;
     double y = 0.0;
     double bulge = 0.0;
 };
 
-typedef VMParameter Segment;
-typedef std::vector<VMParameter> Pline;
-typedef std::vector<VMSimpleParameter> SPline;
+typedef std::vector<RecordF> Pline;
+typedef std::vector<SRecordF> SPline;
+
 typedef std::vector<Pline> ViewData;
 
-class VMParameterUtils
+class PlineUtils
 {
 public:
     static void SPlineToPline(const SPline &spline, Pline &pline);
+    static void PlineToSPline(const Pline &, SPline &);
 
-private:
-    static VMParameter fromBulge(const double x0, const double y0, const double x1, const double y1,
-                                 const double bulge);
+    static RecordF fromBulge(const double x0, const double y0, const double x1, const double y1,
+                             const double bulge);
 };
 
 } // namespace debugger

@@ -6,64 +6,35 @@
 
 #include <cavc/polylineoffsetislands.hpp>
 
+#include "viewer/caseviewmodel.h"
 #include "viewer/simplecirclenode.h"
-#include "viewer/viewmodel.h"
 
-#include "datamanager.h"
+#include "DocManager.h"
 #include "settings/settings.h"
 
 using namespace cavc;
 namespace debugger
 {
-namespace
-{
-QPoint getMouseEventGlobalPoint(QMouseEvent *event)
-{
-#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
-    QPointF startPos = event->globalPosition();
-#else
-    QPointF startPos = event->globalPos();
-#endif
-    return QPoint(int(startPos.x()), int(startPos.y()));
-}
-} // namespace
-
 OffsetView::OffsetView(QQuickItem *parent)
-    : GeoCanvasHelper(parent)
+    : QQuickItem(parent)
     , m_showVertexes(true)
     , m_offsetDelta(1)
     , m_offsetCount(20)
-    , m_vertexGrabbed(std::numeric_limits<std::size_t>::max())
 {
-    auto machine_type = NgSettings::AppAlgorithmCore();
-    switch (machine_type)
-    {
-    case NgSettings::AppAlgorithmCore::kCavc:
-    {
-        DataUtils::createData(case_vm_, "default0");
-        break;
-    }
-    case NgSettings::AppAlgorithmCore::kNGPoly: break;
-    case NgSettings::AppAlgorithmCore::kClipper: break;
+    setFlag(ItemHasContents, true);
+    setAcceptedMouseButtons(Qt::AllButtons);
 
-    default: break;
-    }
+    updateCoordMatrices(width(), height());
+    DocManager::instance().setCurDoc("case2");
 }
 
 QString OffsetView::caseIndex() const
 {
-    return DocumetData::getInstance().case_index_;
+    return "TODO";
 }
 
 void OffsetView::setCaseIndex(QString caseindex)
 {
-    std::cout << "caseindex: " << caseindex.toStdString() << std::endl;
-    if (caseindex == DocumetData::getInstance().case_index_)
-    {
-        return;
-    }
-    std::cout << "change case data" << std::endl;
-
     emit changeCaseDataSignal(caseindex);
     update();
 }
@@ -125,16 +96,31 @@ QSGNode *OffsetView::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNo
     else
     {
         rootNode = static_cast<QSGTransformNode *>(oldNode);
+        // clear old nodes
+        // auto oldChild = dyn_parent_node_->firstChild();
+        // while (oldChild)
+        // {
+        //     auto next = oldChild->nextSibling();
+        //     dyn_parent_node_->removeChildNode(oldChild);
+        //     delete oldChild;
+        //     oldChild = next;
+        // }
     }
-    rootNode->setMatrix(real_to_ui_coord_);
 
-    for (auto &vm : case_vm_)
+    rootNode->setMatrix(real_to_ui_coord_);
+    DocData *cur_doc = DocManager::instance().getCurDoc();
+    if (cur_doc)
     {
-        std::vector<PlineGraphicItem *> pline_nodes = vm->getNodes();
-        for (auto &node : pline_nodes)
+        CaseViewModel *case_vm_ = cur_doc->getVMData();
+        const std::vector<PlineGraphicItem *> &pline_nodes = case_vm_->getPlineNodes();
+        for (PlineGraphicItem *node : pline_nodes)
         {
+            if (added_.find(node) != added_.end())
+            {
+                continue;
+            }
             rootNode->appendChildNode(node);
-            node->update();
+            added_.insert(node);
         }
     }
 
@@ -143,104 +129,104 @@ QSGNode *OffsetView::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNo
 
 void OffsetView::mousePressEvent(QMouseEvent *event)
 {
-    mouse_pick_pt_ = getMouseEventGlobalPoint(event);
-
-    auto &case_data = DocumetData::getInstance().case_data_;
-
-    // find if pick to point in case_data_, record to vertex_pick_index_. if not find, put {-1, -1}
-    // for (int i = 0; i < case_data.size(); i++)
-    // {
-    //     auto const &data = case_data[i].first;
-    //     for (int j = 0; j < data.size(); j++)
-    //     {
-    //         QPointF vPosInGlobal =
-    //             convertToGlobalUICoord(QPointF(std::get<0>(data[j]), std::get<1>(data[j])));
-    //         if (utils::fuzzyEqual(vPosInGlobal.x(), mouse_pick_pt_.x(), 5.0) &&
-    //             utils::fuzzyEqual(vPosInGlobal.y(), mouse_pick_pt_.y(), 5.0))
-    //         {
-    //             vertex_pick_index_ = std::make_pair(i, j);
-    //             break;
-    //         }
-    //     }
-    // }
-
-    if (!isVertexGrabbed())
+    if (DocData *doc = DocManager::instance().getCurDoc(); doc)
     {
-        event->ignore();
-        return;
+        QPointF mouse_pick_pt = getMouseEventGlobalPoint(event);
+        QPointF pick = convertFromGlobalUICoord(mouse_pick_pt);
+        const auto &pick_res = doc->hitTest(pick.x(), pick.y(), pick_tol_);
+        if (pick_res.size() > 0)
+        {
+            doc->setEditing(pick_res);
+            editing_vertex_ = true;
+            event->accept();
+        }
     }
-
-    event->accept();
+    else
+    {
+        QQuickItem::mousePressEvent(event);
+    }
 }
 
 void OffsetView::mouseMoveEvent(QMouseEvent *event)
 {
-    if (!isVertexGrabbed())
+    if (editing_vertex_)
     {
-        return;
+        QPointF cur_mouse = getMouseEventGlobalPoint(event);
+        QPointF cur_pick = convertFromGlobalUICoord(cur_mouse);
+        if (DocData *doc = DocManager::instance().getCurDoc(); doc)
+        {
+            doc->editData(cur_pick.x(), cur_pick.y(), pick_tol_);
+            update();
+        }
     }
-
-    // // convert back from global coordinates to get real delta
-    // QPointF newGlobalVertexPos = QPointF(event->globalX(), event->globalY());
-    // QPointF newLocalVertexPos = mapFromGlobal(newGlobalVertexPos);
-    // QPointF newRealVertexPos = ui_to_real_coord_ * newLocalVertexPos;
-
-    // int pline_index = vertex_pick_index_.first;
-    // int vertex_index = vertex_pick_index_.second;
-    // auto &case_changed = DocumetData::getInstance().case_data_[pline_index].first[vertex_index];
-
-    // std::get<0>(case_changed) = newRealVertexPos.x();
-    // std::get<1>(case_changed) = newRealVertexPos.y();
-
-    // switch (NgSettings::AppAlgorithmCore())
-    // {
-    // case NgSettings::AppAlgorithmCore::kCavc:
-    // {
-    //     // ////way 1:  regenerate cavc data
-    //     // IsHole is_hole = DocumetData::getInstance().case_data_[pline_index].second;
-    //     // cavc_polygonset_[pline_index] = {
-    //     // DataUtils::buildCavcPline(DocumetData::getInstance().case_data_[pline_index].first,
-    //     //                               is_hole),
-    //     //     is_hole};
-
-    //     // ////way 2:  update polyline, more efficient, not able to work well if index is 0 or
-    //     n-1
-    //     // // auto &vertex = cavc_polygonset_[pline_index].first[vertex_index];
-    //     // // vertex.x() = newRealVertexPos.x();
-    //     // // vertex.y() = newRealVertexPos.y();
-    //     break;
-    // }
-    // case NgSettings::AppAlgorithmCore::kNGPoly: break;
-    // case NgSettings::AppAlgorithmCore::kClipper: break;
-
-    // default: break;
-    // }
-
-    update();
+    else
+    {
+        QQuickItem::mouseMoveEvent(event);
+    }
 }
 
 void OffsetView::mouseReleaseEvent(QMouseEvent *event)
 {
-    if (!isVertexGrabbed())
+    if (editing_vertex_)
     {
-        return;
-    }
-    else
-    {
-        m_vertexGrabbed = std::numeric_limits<std::size_t>::max();
+        editing_vertex_ = false;
         event->accept();
-        resetVertexGrabbed();
+        if (DocData *doc = DocManager::instance().getCurDoc(); doc)
+        {
+            doc->resetEditing();
+        }
     }
+    QQuickItem::mouseReleaseEvent(event);
 }
 
-bool OffsetView::isVertexGrabbed()
+void OffsetView::setUiScaleFactor(double scale_factor)
 {
-    return vertex_pick_index_.first != -1 && vertex_pick_index_.second != -1;
+    ui_scale_factor_ = scale_factor;
+    updateCoordMatrices(width(), height());
+    update();
 }
 
-void OffsetView::resetVertexGrabbed()
+void OffsetView::updateCoordMatrices(qreal width, qreal height)
 {
-    vertex_pick_index_ = std::make_pair(-1, -1);
+    real_to_ui_coord_.setToIdentity();
+    real_to_ui_coord_.translate(static_cast<float>(width / 2), static_cast<float>(height / 2));
+    real_to_ui_coord_.scale(static_cast<float>(ui_scale_factor_),
+                            static_cast<float>(-ui_scale_factor_));
+    ui_to_real_coord_ = real_to_ui_coord_.inverted();
 }
 
+QPoint OffsetView::getMouseEventGlobalPoint(QMouseEvent *event)
+{
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    QPointF startPos = event->globalPosition();
+#else
+    QPointF startPos = event->globalPos();
+#endif
+    return QPoint(int(startPos.x()), int(startPos.y()));
+}
+
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 6, 0) && QT_VERSION < QT_VERSION_CHECK(6, 1, 0))
+void OffsetView::geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry)
+{
+    QQuickItem::geometryChanged(newGeometry, oldGeometry);
+#elif (QT_VERSION >= QT_VERSION_CHECK(6, 1, 0))
+void OffsetView::geometryChange(const QRectF &newGeometry, const QRectF &oldGeometry)
+{
+    QQuickItem::geometryChange(newGeometry, oldGeometry);
+#endif
+    Q_UNUSED(oldGeometry)
+
+    updateCoordMatrices(newGeometry.width(), newGeometry.height());
+    update();
+}
+
+QPointF OffsetView::convertToGlobalUICoord(const QPointF &pt)
+{
+    return mapToGlobal(real_to_ui_coord_.map(pt));
+}
+
+QPointF OffsetView::convertFromGlobalUICoord(const QPointF &pt)
+{
+    return ui_to_real_coord_.map(mapFromGlobal(pt));
+}
 } // namespace debugger

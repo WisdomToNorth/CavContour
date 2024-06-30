@@ -1,11 +1,11 @@
 #ifndef SIMPLECIRCLENODE_H
 #define SIMPLECIRCLENODE_H
 
-#include "flatcolorgeometrynode.h"
+#include "GeoNode.h"
 #
 namespace debugger
 {
-class SimpleCircleNode : public FlatColorGeometryNode
+class SimpleCircleNode : public GeoNode
 {
 public:
     SimpleCircleNode(const DrawStyle &drawstyle);
@@ -13,9 +13,9 @@ public:
     void update() override;
 
 private:
-    qreal m_radius;
-    qreal m_xPos;
-    qreal m_yPos;
+    qreal radius_;
+    qreal center_x;
+    qreal center_y;
 };
 } // namespace debugger
 
