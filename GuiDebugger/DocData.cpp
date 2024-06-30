@@ -1,7 +1,7 @@
 #include "DocData.h"
 
+#include <cmath>
 #include <iostream>
-
 namespace debugger
 {
 
