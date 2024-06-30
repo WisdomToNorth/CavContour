@@ -25,7 +25,7 @@ OffsetView::OffsetView(QQuickItem *parent)
     setAcceptedMouseButtons(Qt::AllButtons);
 
     updateCoordMatrices(width(), height());
-    DocManager::instance().setCurDoc("case2");
+    DocManager::instance().setCurDoc("case0");
 }
 
 QString OffsetView::caseIndex() const

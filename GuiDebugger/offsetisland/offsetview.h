@@ -69,7 +69,7 @@ private:
     int m_offsetCount;
 
 private:
-    double ui_scale_factor_ = 10;
+    double ui_scale_factor_ = 100;
     QMatrix4x4 real_to_ui_coord_;
     QMatrix4x4 ui_to_real_coord_;
     double pick_tol_ = 0.05;

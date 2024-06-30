@@ -38,6 +38,9 @@ public:
 
     static RecordF fromBulge(const double x0, const double y0, const double x1, const double y1,
                              const double bulge);
+    static SRecordF toBulge(const RecordF &record);
+    static RecordF moveEndpoint(const RecordF &record, bool moveFirstEndpoint, double newX,
+                                double newY);
 };
 
 } // namespace debugger

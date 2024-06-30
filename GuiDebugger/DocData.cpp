@@ -174,23 +174,9 @@ void DocData::editCaseData(const double x, const double y, const double tol)
             assert(false);
             continue;
         }
-        RecordF &record = pline[seg_index];
 
-        if (pt_index == 0)
-        {
-            record.x0 = x;
-            record.y0 = y;
-        }
-        else if (pt_index == 1)
-        {
-            record.x1 = x;
-            record.y1 = y;
-        }
-        else
-        {
-            assert(false);
-            continue;
-        }
+        RecordF &record = pline[seg_index];
+        record = PlineUtils::moveEndpoint(record, pt_index == 0, x, y);
     }
 
     if (pre_calc_viewdata_)
