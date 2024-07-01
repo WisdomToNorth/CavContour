@@ -124,10 +124,11 @@ void SegmentNode::drawArc(const double &p1_x, const double &p1_y, const double &
 
     QSGGeometry &qsg_geometry_ = *geometry();
     qsg_geometry_.allocate(static_cast<int>(segmentCount + 1));
+    double dir = ccw ? 1.0 : -1.0;
 
     for (std::size_t i = 0; i <= segmentCount; ++i)
     {
-        double angle = i * segmentSubAngle + startAngle;
+        double angle = dir * i * segmentSubAngle + startAngle;
         qsg_geometry_.vertexDataAsPoint2D()[i].set(
             static_cast<float>(radius * std::cos(angle) + center_x),
             static_cast<float>(radius * std::sin(angle) + center_y));

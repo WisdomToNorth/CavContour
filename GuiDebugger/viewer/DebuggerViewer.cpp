@@ -9,6 +9,7 @@
 #include "viewer/caseviewmodel.h"
 #include "viewer/simplecirclenode.h"
 
+#include "CaseCreator.h"
 #include "DocManager.h"
 #include "settings/settings.h"
 
@@ -17,15 +18,23 @@ namespace debugger
 {
 SceneViewer::SceneViewer(QQuickItem *parent)
     : QQuickItem(parent)
-    , m_showVertexes(true)
-    , m_offsetDelta(1)
-    , m_offsetCount(20)
 {
     setFlag(ItemHasContents, true);
     setAcceptedMouseButtons(Qt::AllButtons);
 
     updateCoordMatrices(width(), height());
-    DocManager::instance().setCurDoc("case0");
+    DocManager::instance().setCurDoc("case9");
+}
+
+QStringList SceneViewer::caseList() const
+{
+    QStringList case_list;
+    for (const std::string &name : CaseCreator::getCaseNames())
+    {
+        case_list.append(QString::fromStdString(name));
+    }
+
+    return case_list;
 }
 
 QString SceneViewer::caseIndex() const
@@ -35,81 +44,32 @@ QString SceneViewer::caseIndex() const
 
 void SceneViewer::setCaseIndex(QString caseindex)
 {
-    emit changeCaseDataSignal(caseindex);
+    emit caseIndexChangedSig(caseindex);
     update();
 }
 
-bool SceneViewer::showVertexes() const
+bool SceneViewer::showVertex() const
 {
-    return m_showVertexes;
+    return show_vertex_;
 }
 
-void SceneViewer::setShowVertexes(bool showVertexes)
+void SceneViewer::setShowVertexes(bool show_vertex)
 {
-    if (m_showVertexes == showVertexes)
+    if (show_vertex_ == show_vertex)
         return;
 
-    m_showVertexes = showVertexes;
+    show_vertex_ = show_vertex;
     update();
-    emit showVertexesChanged(m_showVertexes);
+    emit showVertexChangedSig(show_vertex_);
 }
 
-double SceneViewer::offsetDelta() const
+QSGNode *SceneViewer::updatePaintNode(QSGNode *old_node, QQuickItem::UpdatePaintNodeData *)
 {
-    return m_offsetDelta;
-}
+    QSGTransformNode *root_node =
+        !old_node ? new QSGTransformNode() : static_cast<QSGTransformNode *>(old_node);
+    root_node->setMatrix(real_to_ui_coord_);
 
-void SceneViewer::setOffsetDelta(double offsetDelta)
-{
-    if (qFuzzyCompare(m_offsetDelta, offsetDelta))
-    {
-        return;
-    }
-
-    m_offsetDelta = offsetDelta;
-    update();
-    emit offsetDeltaChanged(m_offsetDelta);
-}
-
-int SceneViewer::offsetCount() const
-{
-    return m_offsetCount;
-}
-
-void SceneViewer::setOffsetCount(int offsetCount)
-{
-    if (m_offsetCount == offsetCount)
-        return;
-
-    m_offsetCount = offsetCount;
-    update();
-    emit offsetCountChanged(m_offsetCount);
-}
-
-QSGNode *SceneViewer::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNodeData *)
-{
-    QSGTransformNode *rootNode = nullptr;
-    if (!oldNode)
-    {
-        rootNode = new QSGTransformNode();
-    }
-    else
-    {
-        rootNode = static_cast<QSGTransformNode *>(oldNode);
-        // clear old nodes
-        // auto oldChild = dyn_parent_node_->firstChild();
-        // while (oldChild)
-        // {
-        //     auto next = oldChild->nextSibling();
-        //     dyn_parent_node_->removeChildNode(oldChild);
-        //     delete oldChild;
-        //     oldChild = next;
-        // }
-    }
-
-    rootNode->setMatrix(real_to_ui_coord_);
-    DocData *cur_doc = DocManager::instance().getCurDoc();
-    if (cur_doc)
+    if (DocData *cur_doc = DocManager::instance().getCurDoc(); cur_doc)
     {
         CaseViewModel *case_vm_ = cur_doc->getVMData();
         const std::vector<PlineGraphicItem *> &pline_nodes = case_vm_->getPlineNodes();
@@ -119,12 +79,23 @@ QSGNode *SceneViewer::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintN
             {
                 continue;
             }
-            rootNode->appendChildNode(node);
+            root_node->appendChildNode(node);
             added_.insert(node);
+            std::cout << "Add new item: " << added_.size() << std::endl;
         }
     }
 
-    return rootNode;
+    return root_node;
+
+    //// clear old nodes
+    // auto oldChild = root_node->firstChild();
+    // while (oldChild)
+    // {
+    //     auto next = oldChild->nextSibling();
+    //     root_node->removeChildNode(oldChild);
+    //     delete oldChild;
+    //     oldChild = next;
+    // }
 }
 
 void SceneViewer::mousePressEvent(QMouseEvent *event)

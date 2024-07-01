@@ -48,8 +48,6 @@ void PlineGraphicItem::updateData(const Pline &pline)
     if (draw_vertex_ && (circles_.size() > 0))
     {
         assert(circles_.size() == segments_.size());
-        // TODO: draw last point
-        // assert(circles_.size() == segments_.size() + 1);
     }
 
     if (segments_.size() < pline.size())
@@ -59,11 +57,6 @@ void PlineGraphicItem::updateData(const Pline &pline)
             segments_.emplace_back(createSegment(pline[i]));
             circles_.emplace_back(createPoint(pline[i].x0, pline[i].y0));
         }
-        // TODO: draw last point
-        // if ((pline.size() > 0) && draw_vertex_)
-        // {
-        //     addPoint(pline_.back().x1, pline_.back().y1);
-        // }
     }
     else if (segments_.size() > pline.size())
     {

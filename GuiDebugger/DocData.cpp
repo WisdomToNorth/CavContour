@@ -87,7 +87,7 @@ DocData::hitTestCaseData(const double x, const double y, const double tol)
     for (size_t i = 0; i < case_data_.size(); i++)
     {
         const Pline &pline = case_data_[i].first;
-        for (size_t j = 1; j < pline.size(); j++)
+        for (size_t j = 0; j < pline.size(); j++)
         {
             const RecordF &record = pline[j];
             if (ptSame(record.x0, record.y0, x, y, tol))

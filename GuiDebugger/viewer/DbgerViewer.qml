@@ -19,7 +19,7 @@ SplitView {
         implicitHeight: splitViewVertical.height * 0.94
 
         SceneViewer {
-            id: algorithmView
+            id: viewer
 
             anchors.fill: parent
         }
@@ -36,19 +36,19 @@ SplitView {
             ComboBox {
                 id: caseIndexComboBox
                 Layout.fillWidth: true
-                model: ["default1", "default2", "default3"]
+                model: viewer.caseList
                 currentIndex: 0
                 onCurrentIndexChanged: {
-                    algorithmView.caseIndex = model[currentIndex]
+                    viewer.caseIndex = model[currentIndex]
                 }
             }
 
             CheckBox {
                 text: "Show Vertexes"
                 Layout.fillWidth: true
-                checked: algorithmView.showVertexes
+                checked: viewer.showVertex
                 onCheckedChanged: {
-                    algorithmView.showVertexes = checked
+                    viewer.showVertex = checked
                 }
             }
         }
