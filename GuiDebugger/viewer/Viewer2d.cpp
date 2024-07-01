@@ -110,12 +110,10 @@ void SceneViewer::mousePressEvent(QMouseEvent *event)
             doc->setEditing(pick_res);
             editing_vertex_ = true;
             event->accept();
+            return;
         }
     }
-    else
-    {
-        QQuickItem::mousePressEvent(event);
-    }
+    event->ignore();
 }
 
 void SceneViewer::mouseMoveEvent(QMouseEvent *event)
@@ -128,12 +126,11 @@ void SceneViewer::mouseMoveEvent(QMouseEvent *event)
         {
             doc->editData(cur_pick.x(), cur_pick.y(), pick_tol_);
             update();
+            return;
         }
     }
-    else
-    {
-        QQuickItem::mouseMoveEvent(event);
-    }
+
+    event->ignore();
 }
 
 void SceneViewer::mouseReleaseEvent(QMouseEvent *event)
@@ -145,9 +142,11 @@ void SceneViewer::mouseReleaseEvent(QMouseEvent *event)
         if (DocData *doc = DocManager::instance().getCurDoc(); doc)
         {
             doc->resetEditing();
+            return;
         }
     }
-    QQuickItem::mouseReleaseEvent(event);
+
+    event->ignore();
 }
 
 void SceneViewer::setUiScaleFactor(double scale_factor)

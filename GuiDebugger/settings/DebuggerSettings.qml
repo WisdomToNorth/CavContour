@@ -3,18 +3,9 @@ import PolyDebugger 1.0
 import QtQuick 2.13
 import QtQuick.Controls 2.13
 import QtQuick.Layouts 1.13
-import QtQuick.Controls.Material 2.12
 
-SplitView {
+Rectangle {
     id: settings
-
-    Material.theme: Material.Light
-    Material.accent: Material.Indigo
-    Material.primary: Material.Indigo
-    Material.elevation: 5
-    Material.background: Material.White
-    Material.foreground: Material.Black
-    orientation: Qt.Horizontal
 
     Rectangle {
         id: columnWrapper
