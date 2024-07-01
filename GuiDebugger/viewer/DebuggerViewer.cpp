@@ -1,4 +1,4 @@
-#include "offsetisland/offsetview.h"
+#include "viewer/DebuggerViewer.h"
 
 #include <iostream>
 
@@ -15,7 +15,7 @@
 using namespace cavc;
 namespace debugger
 {
-OffsetView::OffsetView(QQuickItem *parent)
+SceneViewer::SceneViewer(QQuickItem *parent)
     : QQuickItem(parent)
     , m_showVertexes(true)
     , m_offsetDelta(1)
@@ -28,23 +28,23 @@ OffsetView::OffsetView(QQuickItem *parent)
     DocManager::instance().setCurDoc("case0");
 }
 
-QString OffsetView::caseIndex() const
+QString SceneViewer::caseIndex() const
 {
     return "TODO";
 }
 
-void OffsetView::setCaseIndex(QString caseindex)
+void SceneViewer::setCaseIndex(QString caseindex)
 {
     emit changeCaseDataSignal(caseindex);
     update();
 }
 
-bool OffsetView::showVertexes() const
+bool SceneViewer::showVertexes() const
 {
     return m_showVertexes;
 }
 
-void OffsetView::setShowVertexes(bool showVertexes)
+void SceneViewer::setShowVertexes(bool showVertexes)
 {
     if (m_showVertexes == showVertexes)
         return;
@@ -54,12 +54,12 @@ void OffsetView::setShowVertexes(bool showVertexes)
     emit showVertexesChanged(m_showVertexes);
 }
 
-double OffsetView::offsetDelta() const
+double SceneViewer::offsetDelta() const
 {
     return m_offsetDelta;
 }
 
-void OffsetView::setOffsetDelta(double offsetDelta)
+void SceneViewer::setOffsetDelta(double offsetDelta)
 {
     if (qFuzzyCompare(m_offsetDelta, offsetDelta))
     {
@@ -71,12 +71,12 @@ void OffsetView::setOffsetDelta(double offsetDelta)
     emit offsetDeltaChanged(m_offsetDelta);
 }
 
-int OffsetView::offsetCount() const
+int SceneViewer::offsetCount() const
 {
     return m_offsetCount;
 }
 
-void OffsetView::setOffsetCount(int offsetCount)
+void SceneViewer::setOffsetCount(int offsetCount)
 {
     if (m_offsetCount == offsetCount)
         return;
@@ -86,7 +86,7 @@ void OffsetView::setOffsetCount(int offsetCount)
     emit offsetCountChanged(m_offsetCount);
 }
 
-QSGNode *OffsetView::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNodeData *)
+QSGNode *SceneViewer::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNodeData *)
 {
     QSGTransformNode *rootNode = nullptr;
     if (!oldNode)
@@ -127,7 +127,7 @@ QSGNode *OffsetView::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNo
     return rootNode;
 }
 
-void OffsetView::mousePressEvent(QMouseEvent *event)
+void SceneViewer::mousePressEvent(QMouseEvent *event)
 {
     if (DocData *doc = DocManager::instance().getCurDoc(); doc)
     {
@@ -147,7 +147,7 @@ void OffsetView::mousePressEvent(QMouseEvent *event)
     }
 }
 
-void OffsetView::mouseMoveEvent(QMouseEvent *event)
+void SceneViewer::mouseMoveEvent(QMouseEvent *event)
 {
     if (editing_vertex_)
     {
@@ -165,7 +165,7 @@ void OffsetView::mouseMoveEvent(QMouseEvent *event)
     }
 }
 
-void OffsetView::mouseReleaseEvent(QMouseEvent *event)
+void SceneViewer::mouseReleaseEvent(QMouseEvent *event)
 {
     if (editing_vertex_)
     {
@@ -179,14 +179,14 @@ void OffsetView::mouseReleaseEvent(QMouseEvent *event)
     QQuickItem::mouseReleaseEvent(event);
 }
 
-void OffsetView::setUiScaleFactor(double scale_factor)
+void SceneViewer::setUiScaleFactor(double scale_factor)
 {
     ui_scale_factor_ = scale_factor;
     updateCoordMatrices(width(), height());
     update();
 }
 
-void OffsetView::updateCoordMatrices(qreal width, qreal height)
+void SceneViewer::updateCoordMatrices(qreal width, qreal height)
 {
     real_to_ui_coord_.setToIdentity();
     real_to_ui_coord_.translate(static_cast<float>(width / 2), static_cast<float>(height / 2));
@@ -195,7 +195,7 @@ void OffsetView::updateCoordMatrices(qreal width, qreal height)
     ui_to_real_coord_ = real_to_ui_coord_.inverted();
 }
 
-QPoint OffsetView::getMouseEventGlobalPoint(QMouseEvent *event)
+QPoint SceneViewer::getMouseEventGlobalPoint(QMouseEvent *event)
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
     QPointF startPos = event->globalPosition();
@@ -206,11 +206,11 @@ QPoint OffsetView::getMouseEventGlobalPoint(QMouseEvent *event)
 }
 
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 6, 0) && QT_VERSION < QT_VERSION_CHECK(6, 1, 0))
-void OffsetView::geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry)
+void SceneViewer::geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry)
 {
     QQuickItem::geometryChanged(newGeometry, oldGeometry);
 #elif (QT_VERSION >= QT_VERSION_CHECK(6, 1, 0))
-void OffsetView::geometryChange(const QRectF &newGeometry, const QRectF &oldGeometry)
+void SceneViewer::geometryChange(const QRectF &newGeometry, const QRectF &oldGeometry)
 {
     QQuickItem::geometryChange(newGeometry, oldGeometry);
 #endif
@@ -220,12 +220,12 @@ void OffsetView::geometryChange(const QRectF &newGeometry, const QRectF &oldGeom
     update();
 }
 
-QPointF OffsetView::convertToGlobalUICoord(const QPointF &pt)
+QPointF SceneViewer::convertToGlobalUICoord(const QPointF &pt)
 {
     return mapToGlobal(real_to_ui_coord_.map(pt));
 }
 
-QPointF OffsetView::convertFromGlobalUICoord(const QPointF &pt)
+QPointF SceneViewer::convertFromGlobalUICoord(const QPointF &pt)
 {
     return ui_to_real_coord_.map(mapFromGlobal(pt));
 }

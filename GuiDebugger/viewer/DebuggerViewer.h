@@ -1,5 +1,5 @@
-#ifndef PLINEOFFSETVIEW_H
-#define PLINEOFFSETVIEW_H
+#ifndef DEBUGGER_VIEWER_H
+#define DEBUGGER_VIEWER_H
 
 #include <unordered_set>
 #include <vector>
@@ -14,16 +14,14 @@ class QSGOpacityNode;
 namespace debugger
 {
 class PlineGraphicItem;
-class OffsetView : public QQuickItem
+class SceneViewer : public QQuickItem
 {
     Q_OBJECT
     Q_PROPERTY(bool showVertexes READ showVertexes WRITE setShowVertexes NOTIFY showVertexesChanged)
-    Q_PROPERTY(double offsetDelta READ offsetDelta WRITE setOffsetDelta NOTIFY offsetDeltaChanged)
-    Q_PROPERTY(int offsetCount READ offsetCount WRITE setOffsetCount NOTIFY offsetCountChanged)
     Q_PROPERTY(QString caseIndex READ caseIndex WRITE setCaseIndex NOTIFY changeCaseDataSignal)
 
 public:
-    explicit OffsetView(QQuickItem *parent = nullptr);
+    explicit SceneViewer(QQuickItem *parent = nullptr);
 
     bool showVertexes() const;
     void setShowVertexes(bool showVertexes);

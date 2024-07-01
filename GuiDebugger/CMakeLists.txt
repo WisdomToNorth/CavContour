@@ -39,6 +39,8 @@ add_executable(PolyGui
     viewer/GeoNode.h
     viewer/simplecirclenode.cpp
     viewer/simplecirclenode.h
+    viewer/DebuggerViewer.h
+    viewer/DebuggerViewer.cpp
 
     CaseCreator.h
     CaseCreator.cpp
@@ -52,8 +54,6 @@ add_executable(PolyGui
     settings/settings.h
     settings/settings.cpp
 
-    offsetisland/offsetview.h
-    offsetisland/offsetview.cpp
 )
 
 target_include_directories(PolyGui

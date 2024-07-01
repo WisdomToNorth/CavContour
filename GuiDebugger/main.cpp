@@ -3,7 +3,8 @@
 #include <QQmlContext>
 #include <QSurfaceFormat>
 
-#include "offsetisland/offsetview.h"
+#include "viewer/DebuggerViewer.h"
+
 #include "settings/settings.h"
 
 using namespace debugger;
@@ -11,7 +12,7 @@ using namespace debugger;
 int main(int argc, char *argv[])
 {
     qmlRegisterType<NgSettings>("PolyDebugger", 1, 0, "NgSettings");
-    qmlRegisterType<OffsetView>("PolyDebugger", 1, 0, "OffsetView");
+    qmlRegisterType<SceneViewer>("PolyDebugger", 1, 0, "SceneViewer");
 
     QGuiApplication app(argc, argv);
     QFont defaultFont(app.font().family(), 12);
