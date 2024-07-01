@@ -15,12 +15,11 @@ SplitView {
     Material.foreground: Material.Black
 
     orientation: Qt.Vertical
-    SceneView2d {
+    ViewScene2d {
         implicitHeight: splitViewVertical.height * 0.94
 
         SceneViewer {
             id: viewer
-
             anchors.fill: parent
         }
     }

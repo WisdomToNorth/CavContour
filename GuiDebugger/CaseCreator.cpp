@@ -42,7 +42,7 @@ DocData *CaseCreator::buildCase0()
 {
     /*Pline line case*/
     CaseData data;
-    RecordF segment1{0, 1, 2, 1, 0, 0, 0, true, true};
+    RecordF segment1{0, 1, 2, 1, 1, 1, 1.0, true, false};
     RecordF segment2{2, 1, 1.6, 1.8, 0, 0, 0, true, true};
     RecordF segment3{1.6, 1.8, 1, 2, 0, 0, 0, true, true};
     RecordF segment4{1, 2, 0.2, 1.6, 0, 0, 0, true, true};

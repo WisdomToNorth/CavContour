@@ -10,7 +10,7 @@ ApplicationWindow {
     id: mainWindow
 
     function adjustFontSize(baseSize) {
-        return baseSize * Screen.pixelDensity;
+        return baseSize * Screen.pixelDensity
     }
 
     Material.theme: Material.Light
@@ -41,16 +41,11 @@ ApplicationWindow {
                 anchors.margins: 2
                 currentIndex: tabBar.currentIndex
 
-                DbgerViewer {
-                }
+                Viewer2d {}
 
-                DebuggerSettings {
-                }
-
+                DebuggerSettings {}
             }
-
         }
-
     }
 
     header: TabBar {
@@ -63,7 +58,5 @@ ApplicationWindow {
         TabButton {
             text: "Debugger Settings"
         }
-
     }
-
 }

@@ -108,14 +108,14 @@ DirF DirF::rotateFor(const DirF &dir, double angle_in_radian)
 {
     double x = dir.x_ * cos(angle_in_radian) - dir.y_ * sin(angle_in_radian);
     double y = dir.x_ * sin(angle_in_radian) + dir.y_ * cos(angle_in_radian);
-    return DirF(x, y);
+    return DirF{x, y};
 }
 
 DirF DirF::normalized(const DirF &dir)
 {
     double length = sqrt(dir.x_ * dir.x_ + dir.y_ * dir.y_);
     assert(std::abs(length - 0) > 1e-6);
-    return DirF(dir.x_ / length, dir.y_ / length);
+    return DirF{dir.x_ / length, dir.y_ / length};
 }
 
 double DirF::norm() const
@@ -136,11 +136,11 @@ DirF RecordF::getOutDir(bool head) const
     {
         if (head)
         {
-            return DirF::normalized(DirF(x1 - x0, y1 - y0));
+            return DirF::normalized(DirF{x1 - x0, y1 - y0});
         }
         else
         {
-            return DirF::normalized(DirF(x0 - x1, y0 - y1));
+            return DirF::normalized(DirF{x0 - x1, y0 - y1});
         }
     }
     else
@@ -148,11 +148,11 @@ DirF RecordF::getOutDir(bool head) const
         double angle_rad = this->is_ccw ? M_PI / 2 : -M_PI / 2;
         if (head)
         {
-            return DirF::rotateFor(DirF(x0 - center_x, y0 - center_y), angle_rad);
+            return DirF::rotateFor(DirF{x0 - center_x, y0 - center_y}, angle_rad);
         }
         else
         {
-            return DirF::rotateFor(DirF(x1 - center_x, y1 - center_y), angle_rad);
+            return DirF::rotateFor(DirF{x1 - center_x, y1 - center_y}, angle_rad);
         }
     }
 }
@@ -170,7 +170,7 @@ static RecordF createArcByTwoPntNDir(const double x0, const double y0, const dou
     double dist_ab = sqrt((x1 - x0) * (x1 - x0) + (y1 - y0) * (y1 - y0));
     double dist_am = dist_ab / 2.0;
 
-    DirF dir_ab(x1 - x0, y1 - y0);
+    DirF dir_ab{x1 - x0, y1 - y0};
     record.is_ccw = dir_ab.cross(start_dir) < 0;
     double angle = DirF::angleAcute(dir_ab, start_dir);
     double radius = dist_am / sin(angle);

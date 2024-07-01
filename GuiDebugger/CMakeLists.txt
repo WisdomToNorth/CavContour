@@ -17,6 +17,7 @@ set(Qt_LIBRARIES
 
 set(Qt_LIBRARY_DIR ${Qt${QT_VERSION_MAJOR}_LIBRARY_DIR})
 set(Qt_INCLUDE_DIR ${Qt${QT_VERSION_MAJOR}_INCLUDE_DIRS})
+set(QML_IMPORT_PATH ${Qt${QT_VERSION_MAJOR}_QML_IMPORT_PATH})
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
@@ -39,8 +40,8 @@ add_executable(PolyGui
     viewer/GeoNode.h
     viewer/simplecirclenode.cpp
     viewer/simplecirclenode.h
-    viewer/DebuggerViewer.h
-    viewer/DebuggerViewer.cpp
+    viewer/Viewer2d.h
+    viewer/Viewer2d.cpp
 
     CaseCreator.h
     CaseCreator.cpp

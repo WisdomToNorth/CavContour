@@ -3,7 +3,7 @@
 #include <QQmlApplicationEngine>
 #include <QSurfaceFormat>
 
-#include "viewer/DebuggerViewer.h"
+#include "viewer/Viewer2d.h"
 
 #include "settings/settings.h"
 

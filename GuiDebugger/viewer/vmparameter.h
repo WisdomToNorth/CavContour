@@ -27,7 +27,7 @@ struct DirF
     }
     DirF negate() const
     {
-        return DirF(-x_, -y_);
+        return DirF{-x_, -y_};
     }
 };
 

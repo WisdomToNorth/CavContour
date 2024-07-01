@@ -32,6 +32,7 @@ SimpleCircleNode *PlineGraphicItem::createPoint(qreal x, qreal y)
     newNode->update();
     return newNode;
 }
+
 void PlineGraphicItem::updateNode(size_t index, const RecordF &seg)
 {
     if (index < segments_.size())

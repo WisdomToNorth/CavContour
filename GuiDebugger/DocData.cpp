@@ -83,20 +83,44 @@ DocData::hitTestSCaseData(const double x, const double y, const double tol)
 std::vector<std::tuple<size_t, size_t, size_t>>
 DocData::hitTestCaseData(const double x, const double y, const double tol)
 {
+    // NOTE: only one point can be hit here. Else, the point should moved by vector, rather than
+    // move to a same point, which may degrade the segments
     std::vector<std::tuple<size_t, size_t, size_t>> res;
     for (size_t i = 0; i < case_data_.size(); i++)
     {
         const Pline &pline = case_data_[i].first;
+
         for (size_t j = 0; j < pline.size(); j++)
         {
             const RecordF &record = pline[j];
             if (ptSame(record.x0, record.y0, x, y, tol))
             {
                 res.emplace_back(i, j, 0);
+                if (j > 0)
+                {
+                    res.emplace_back(i, j - 1, 1);
+                }
+                else
+                {
+                    const RecordF &last_record = pline.back();
+                    if (ptSame(last_record.x1, last_record.y1, x, y, tol))
+                    {
+                        res.emplace_back(i, pline.size() - 1, 1);
+                    }
+                }
+                break;
             }
+
             if (ptSame(record.x1, record.y1, x, y, tol))
             {
                 res.emplace_back(i, j, 1);
+                if (j < pline.size() - 1)
+                {
+                    res.emplace_back(i, j + 1, 0);
+                }
+                // NOTE: if j == pline.size() - 1, the first pt of first segment may hit, but it's
+                // already checked
+                break;
             }
         }
     }

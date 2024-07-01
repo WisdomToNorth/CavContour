@@ -17,7 +17,7 @@ class SceneViewer : public QQuickItem
     Q_OBJECT
     Q_PROPERTY(bool showVertex READ showVertex WRITE setShowVertexes NOTIFY showVertexChangedSig)
     Q_PROPERTY(QString caseIndex READ caseIndex WRITE setCaseIndex NOTIFY caseIndexChangedSig)
-    Q_PROPERTY(QStringList caseList READ caseList)
+    Q_PROPERTY(QStringList caseList READ caseList CONSTANT)
 
 public:
     explicit SceneViewer(QQuickItem *parent = nullptr);
@@ -58,7 +58,7 @@ private:
     QMatrix4x4 real_to_ui_coord_;
     QMatrix4x4 ui_to_real_coord_;
     bool show_vertex_ = true;
-    double pick_tol_ = 0.05;
+    double pick_tol_ = 0.1;
 
     std::unordered_set<PlineGraphicItem *> added_;
     /*Action flag*/
