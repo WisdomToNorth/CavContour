@@ -1,4 +1,5 @@
 import ".."
+import "../controls"
 import PolyDebugger 1.0
 import QtQuick 2.13
 import QtQuick.Controls 2.13
@@ -24,9 +25,8 @@ Rectangle {
             useUInt32Index: useUInt32IndexCheckBox.checked
             colorIndex: colorIndexComboBox.currentIndex
             pickTol: pickTolSlider.value
-            showPrecision:showPrecisionSlider.value
-            uiScaleFactor:uiScaleFactorSlider.value
-
+            showPrecision: showPrecisionSlider.value
+            uiScaleFactor: uiScaleFactorSlider.value
             onAppAlgChangedSig: {
                 polyAlgComboBox.currentIndex = ngsettings.polyAlg;
             }
@@ -104,7 +104,7 @@ Rectangle {
                     Layout.fillWidth: true
                     title: "Point Radius"
                     from: 0.1
-                    to: 10
+                    to: 1
                     stepSize: 0.1
                     value: ngsettings.pointRadius
                     onValueChanged: {

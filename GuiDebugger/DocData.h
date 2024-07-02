@@ -2,7 +2,11 @@
 #define DOCDATA_H
 
 #include <optional>
+#include <string>
 #include <tuple>
+#include <vector>
+
+#include <QString>
 
 #include "viewer/caseviewmodel.h"
 #include "viewer/vmparameter.h"
@@ -27,13 +31,19 @@ private:
 
     CaseViewModel *pre_calc_viewdata_ = nullptr;
     std::vector<std::tuple<size_t, size_t, size_t>> editing_;
+    std::string name_;
 
 public:
-    DocData(const SCaseData &data);
-    DocData(const CaseData &data);
+    DocData(const SCaseData &data, const std::string &name);
+    DocData(const CaseData &data, const std::string &name);
 
     void getSData(SCaseData &data);
     void getData(CaseData &data);
+    std::string getName() const;
+    QString getNameQ() const;
+
+    static DocData *load(const QString &filepath, const QString &name);
+    bool save(const QString &filename);
 
     // return data index of pline, index of segment
     std::vector<std::tuple<size_t, size_t, size_t>> hitTest(const double x, const double y,

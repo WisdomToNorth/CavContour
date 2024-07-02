@@ -3,13 +3,15 @@
 #include <cassert>
 #include <iostream>
 
+#include "settings/settings.h"
+
 namespace debugger
 {
 PlineGraphicItem::PlineGraphicItem()
     : QSGOpacityNode()
 {
     this->setOpacity(1.0);
-    drawstyle_ = DrawStyle();
+    drawstyle_ = Settings::instance().getDrawStyle();
 }
 
 SegmentNode *PlineGraphicItem::createSegment(const RecordF &seg)
@@ -24,7 +26,7 @@ SegmentNode *PlineGraphicItem::createSegment(const RecordF &seg)
 
 SimpleCircleNode *PlineGraphicItem::createPoint(qreal x, qreal y)
 {
-    const qreal pointRadius = 0.05;
+    const qreal pointRadius = Settings::instance().pointRadius();
     SimpleCircleNode *newNode = new SimpleCircleNode(drawstyle_);
     appendChildNode(newNode);
     newNode->setFlag(QSGNode::OwnedByParent);
@@ -39,7 +41,7 @@ void PlineGraphicItem::updateNode(size_t index, const RecordF &seg)
     {
         segments_[index]->setData(seg);
         segments_[index]->update();
-        circles_[index]->setGeometry(seg.x0, seg.y0, 0.05);
+        circles_[index]->setGeometry(seg.x0, seg.y0, Settings::instance().pointRadius());
         circles_[index]->update();
     }
 }
@@ -74,7 +76,7 @@ void PlineGraphicItem::updateData(const Pline &pline)
     {
         segments_[i]->setData(pline[i]);
         segments_[i]->update();
-        circles_[i]->setGeometry(pline[i].x0, pline[i].y0, 0.05);
+        circles_[i]->setGeometry(pline[i].x0, pline[i].y0, Settings::instance().pointRadius());
         circles_[i]->update();
     }
 }

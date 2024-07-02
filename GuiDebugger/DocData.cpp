@@ -5,9 +5,10 @@
 namespace debugger
 {
 
-DocData::DocData(const SCaseData &data)
+DocData::DocData(const SCaseData &data, const std::string &name)
     : scase_data_(data)
     , raw_data_type_(RawDataType::SData)
+    , name_(name)
 {
     // convert spline to pline
     for (const auto &[spline, type] : scase_data_)
@@ -18,10 +19,21 @@ DocData::DocData(const SCaseData &data)
     }
 }
 
-DocData::DocData(const CaseData &data)
+DocData::DocData(const CaseData &data, const std::string &name)
     : case_data_(data)
     , raw_data_type_(RawDataType::Data)
+    , name_(name)
 {
+}
+
+DocData *DocData::load(const QString &filepath, const QString &name)
+{
+    return nullptr;
+}
+
+bool DocData::save(const QString &filename)
+{
+    return false;
 }
 
 void DocData::getSData(SCaseData &data)
@@ -38,6 +50,16 @@ void DocData::getSData(SCaseData &data)
 void DocData::getData(CaseData &data)
 {
     data = case_data_;
+}
+
+std::string DocData::getName() const
+{
+    return name_;
+}
+
+QString DocData::getNameQ() const
+{
+    return QString::fromStdString(name_);
 }
 
 CaseViewModel *DocData::getVMData()

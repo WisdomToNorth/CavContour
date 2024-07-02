@@ -51,7 +51,7 @@ ApplicationWindow {
     header: TabBar {
         id: tabBar
 
-        currentIndex: 1
+        currentIndex: 0
         height: 40
 
         TabButton {

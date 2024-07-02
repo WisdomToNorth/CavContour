@@ -47,8 +47,8 @@ public:
     void setShowDir(bool show_dir);
     bool showDir() const;
 
-    Q_INVOKABLE void loadCase(QString caseindex);
-    Q_INVOKABLE void saveCase(QString caseindex);
+    Q_INVOKABLE void loadCase();
+    Q_INVOKABLE void saveCase();
 
 signals:
     void showVertexChangedSig(bool showVertex);

@@ -133,7 +133,12 @@ bool Settings::load()
         ui_scale_factor_ = 50;
         emit initDone();
 
-        return save();
+        bool save_succ = save();
+        if (!save_succ)
+        {
+            qDebug() << "[ERROR]: Failed to save default settings";
+        }
+        return save_succ;
     }
 
     if (!configFile.open(QIODevice::ReadOnly | QIODevice::Text))

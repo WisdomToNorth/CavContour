@@ -1,8 +1,11 @@
 #include "viewer/Viewer2d.h"
 
 #include <iostream>
+#include <span>
 
+#include <QFileDialog>
 #include <QSGTransformNode>
+#include <QStandardPaths>
 
 #include <cavc/polylineoffsetislands.hpp>
 
@@ -40,7 +43,7 @@ QStringList SceneViewer::caseList() const
 
 QString SceneViewer::caseIndex() const
 {
-    return "TODO";
+    return QString::fromStdString(DocManager::instance().getCurDoc()->getName());
 }
 
 void SceneViewer::setCaseIndex(QString caseindex)
@@ -120,13 +123,53 @@ bool SceneViewer::showDir() const
     return show_dir_;
 }
 
-void SceneViewer::loadCase(QString caseindex)
+void SceneViewer::loadCase()
 {
-    std::cout << "SceneViewer::loadCase: " << caseindex.toStdString() << std::endl;
+    static QStringList type1_suffix{"bmp", "jpeg", "png", "tiff"};
+    static QStringList type2_suffix{"pline", "polyline"};
+    static QStringList type3_suffix{"txt", "poly"};
+    static QString format_name_type1 = "Image";
+    static QString format_name_type2 = "Step";
+    static QString format_name_type3 = "Polyline";
+
+    std::vector<QStringList> enabled_formats = {type1_suffix, type2_suffix, type3_suffix};
+    QString all_filter;
+    for (const auto &suffix_group : enabled_formats)
+    {
+        all_filter += format_name_type1 + " (*.";
+        for (const auto &suffix : suffix_group)
+        {
+            all_filter += suffix + " *.";
+        }
+        all_filter += ");;";
+    }
+
+    QString doc_path = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
+    QString filename = QFileDialog::getOpenFileName(nullptr, "Open file", doc_path, all_filter);
+    if (filename.isEmpty())
+    {
+        return;
+    }
+    std::ignore = DocManager::instance().loadFile(filename);
 }
-void SceneViewer::saveCase(QString caseindex)
+
+void SceneViewer::saveCase()
 {
-    std::cout << "SceneViewer::saveCase: " << caseindex.toStdString() << std::endl;
+    DocData *cur_data = DocManager::instance().getCurDoc();
+    if (cur_data == nullptr)
+    {
+        return;
+    }
+    QString suffix = "poly";
+    QString filter = "Polyline (*." + suffix + ")";
+    QString doc_path = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
+    QString default_name = doc_path + '/' + cur_data->getNameQ() + '.' + suffix;
+    QString filename = QFileDialog::getSaveFileName(nullptr, "Save file", default_name, filter);
+    if (filename.isEmpty())
+    {
+        return;
+    }
+    DocManager::instance().saveCurFile(filename);
 }
 
 QSGNode *SceneViewer::updatePaintNode(QSGNode *old_node, QQuickItem::UpdatePaintNodeData *)

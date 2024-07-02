@@ -1,10 +1,13 @@
+import "../controls"
 import PolyDebugger 1.0
+import Qt.labs.platform 1.1
 import QtQuick 2.13
 import QtQuick.Controls 2.13
 import QtQuick.Layouts 1.15
 
 SplitView {
     id: splitViewHorzontal
+
     orientation: Qt.Horizontal
 
     ColumnLayout {
@@ -12,10 +15,12 @@ SplitView {
 
         GroupBox {
             id: controlPanel
+
             Layout.fillWidth: true
 
             RowLayout {
                 anchors.fill: parent
+
                 RowLayout {
                     Button {
                         text: "Load"
@@ -37,8 +42,10 @@ SplitView {
                         text: "Case:"
                         Layout.fillWidth: false
                     }
+
                     ComboBox {
                         id: caseIndexComboBox
+
                         Layout.fillWidth: false
                         model: viewer.caseList
                         currentIndex: 0
@@ -82,14 +89,18 @@ SplitView {
                             viewer.showDir = checked;
                         }
                     }
+
                 }
 
                 Label {
                     id: locLabel
+
                     text: viewer.mouseLoc
                     Layout.alignment: Qt.AlignRight
                 }
+
             }
+
         }
 
         ViewScene2d {
@@ -98,11 +109,15 @@ SplitView {
 
             SceneViewer {
                 id: viewer
+
                 anchors.fill: parent
-                onMouseLocationChanged: function (location) {
+                onMouseLocationChanged: function(location) {
                     locLabel.text = location;
                 }
             }
+
         }
+
     }
+
 }

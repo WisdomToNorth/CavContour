@@ -49,7 +49,7 @@ DocData *CaseCreator::buildCase0()
     RecordF segment5{0.2, 1.6, 0, 1, 0, 0, 0, true, true};
     Pline pline1{segment1, segment2, segment3, segment4, segment5};
     data.push_back(std::make_pair(pline1, false));
-    DocData *doc_data = new DocData(data);
+    DocData *doc_data = new DocData(data, "case0");
     return doc_data;
 }
 
@@ -62,7 +62,7 @@ DocData *CaseCreator::buildCase1()
                           SRecordF{10, 0, 0}, SRecordF{0, 0, 0}},
                          false});
 
-    DocData *doc_data = new DocData(case_data);
+    DocData *doc_data = new DocData(case_data, "case1");
     return doc_data;
 }
 
@@ -75,35 +75,35 @@ DocData *CaseCreator::buildCase2()
 
     Pline pline1{segment1, segment2};
     data.push_back(std::make_pair(pline1, false));
-    DocData *doc_data = new DocData(data);
+    DocData *doc_data = new DocData(data, "case2");
     return doc_data;
 }
 
 DocData *CaseCreator::buildCase3()
 {
     CaseData data;
-    DocData *doc_data = new DocData(data);
+    DocData *doc_data = new DocData(data, "case3");
     return doc_data;
 }
 
 DocData *CaseCreator::buildCase4()
 {
     CaseData data;
-    DocData *doc_data = new DocData(data);
+    DocData *doc_data = new DocData(data, "case4");
     return doc_data;
 }
 
 DocData *CaseCreator::buildCase5()
 {
     CaseData data;
-    DocData *doc_data = new DocData(data);
+    DocData *doc_data = new DocData(data, "case5");
     return doc_data;
 }
 
 DocData *CaseCreator::buildCase6()
 {
     CaseData data;
-    DocData *doc_data = new DocData(data);
+    DocData *doc_data = new DocData(data, "case6");
     return doc_data;
 }
 DocData *CaseCreator::buildCase7()
@@ -117,7 +117,7 @@ DocData *CaseCreator::buildCase7()
         case_data.push_back(std::make_pair(data, false));
     }
 
-    DocData *doc_data = new DocData(case_data);
+    DocData *doc_data = new DocData(case_data, "case7");
     return doc_data;
 }
 
@@ -134,7 +134,7 @@ DocData *CaseCreator::buildCase8()
 
     case_data.push_back(std::make_pair(data1, true));
     case_data.push_back(std::make_pair(data2, false));
-    DocData *doc_data = new DocData(case_data);
+    DocData *doc_data = new DocData(case_data, "case8");
     return doc_data;
 }
 
@@ -180,7 +180,7 @@ DocData *CaseCreator::buildCase9()
     case_data.push_back(std::make_pair(data2, false));
     // case_data.push_back(std::make_pair(data3, true));
     case_data.push_back(std::make_pair(data4, false));
-    DocData *doc_data = new DocData(case_data);
+    DocData *doc_data = new DocData(case_data, "case9");
     return doc_data;
 }
 

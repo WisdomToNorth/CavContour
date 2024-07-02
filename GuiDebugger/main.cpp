@@ -1,5 +1,5 @@
+#include <QApplication>
 #include <QFont>
-#include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QSurfaceFormat>
 
@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<SettingItem>("PolyDebugger", 1, 0, "SettingItem");
     qmlRegisterType<SceneViewer>("PolyDebugger", 1, 0, "SceneViewer");
 
-    QGuiApplication app(argc, argv);
+    QApplication app(argc, argv);
     QFont defaultFont("Arial", 12);
     app.setFont(defaultFont);
 
