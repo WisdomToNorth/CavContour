@@ -131,11 +131,9 @@ bool Settings::load()
         pick_tol_ = 0.1;
         show_precision_ = 3;
         ui_scale_factor_ = 50;
-        if (save())
-        {
-            emit initDone();
-            return true;
-        }
+        emit initDone();
+
+        return save();
     }
 
     if (!configFile.open(QIODevice::ReadOnly | QIODevice::Text))
