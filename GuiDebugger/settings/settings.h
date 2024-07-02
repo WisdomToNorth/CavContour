@@ -39,6 +39,15 @@ public:
     int colorIndex() const;
     void setColorIndex(int index);
 
+    double pickTol() const;
+    void setPickTol(double tol);
+
+    int showPrecision() const;
+    void setShowPrecision(int precision);
+
+    float uiScaleFactor() const;
+    void setUiScaleFactor(float factor);
+
 signals:
     void initDone();
 
@@ -54,6 +63,9 @@ private:
     double arc_approx_error_ = 0.001;
     bool use_uint32_index_ = true;
     int color_index = 1;
+    double pick_tol_ = 0.1;
+    int show_precision_ = 3;
+    float ui_scale_factor_ = 50;
 
     /*Draw style*/
     const QSGGeometry::DrawingMode line_draw_mode_ = QSGGeometry::DrawingMode::DrawLineStrip;
@@ -72,6 +84,11 @@ public:
     Q_PROPERTY(bool useUInt32Index READ useUInt32Index WRITE setUseUInt32Index NOTIFY
                    useUInt32IndexChangedSig)
     Q_PROPERTY(uint colorIndex READ colorIndex WRITE setColorIndex NOTIFY colorIndexChangedSig)
+    Q_PROPERTY(double pickTol READ pickTol WRITE setPickTol NOTIFY pickTolChangedSig)
+    Q_PROPERTY(
+        int showPrecision READ showPrecision WRITE setShowPrecision NOTIFY showPrecisionChangedSig)
+    Q_PROPERTY(float uiScaleFactor READ uiScaleFactor WRITE setUiScaleFactor NOTIFY
+                   uiScaleFactorChangedSig)
 
 public:
     SettingItem(QQuickItem *parent = nullptr);
@@ -95,6 +112,15 @@ public:
     int colorIndex() const;
     void setColorIndex(int index);
 
+    double pickTol() const;
+    void setPickTol(double tol);
+
+    int showPrecision() const;
+    void setShowPrecision(int precision);
+
+    float uiScaleFactor() const;
+    void setUiScaleFactor(float factor);
+
 signals:
     void appAlgChangedSig(int polyAlg);
     void pointRadiusChangedSig(qreal radius);
@@ -102,6 +128,9 @@ signals:
     void arcApproxErrorChangedSig(double error);
     void useUInt32IndexChangedSig(bool use);
     void colorIndexChangedSig(int index);
+    void pickTolChangedSig(double tol);
+    void showPrecisionChangedSig(int precision);
+    void uiScaleFactorChangedSig(float factor);
 
 private slots:
     void initDone();

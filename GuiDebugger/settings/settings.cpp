@@ -63,6 +63,31 @@ void Settings::setColorIndex(int index)
 {
     color_index = index;
 }
+double Settings::pickTol() const
+{
+    return pick_tol_;
+}
+void Settings::setPickTol(double tol)
+{
+    pick_tol_ = tol;
+}
+
+int Settings::showPrecision() const
+{
+    return show_precision_;
+}
+void Settings::setShowPrecision(int precision)
+{
+    show_precision_ = precision;
+}
+float Settings::uiScaleFactor() const
+{
+    return ui_scale_factor_;
+}
+void Settings::setUiScaleFactor(float factor)
+{
+    ui_scale_factor_ = factor;
+}
 
 bool Settings::save() const
 {
@@ -82,6 +107,9 @@ bool Settings::save() const
     out << "arc_approx_error=" << arc_approx_error_ << "\n";
     out << "use_uint32_index=" << (use_uint32_index_ ? "true" : "false") << "\n";
     out << "color_index=" << color_index << "\n";
+    out << "pick_tol=" << pick_tol_ << "\n";
+    out << "show_precision=" << show_precision_ << "\n";
+    out << "ui_scale_factor=" << ui_scale_factor_ << "\n";
 
     return true;
 }
@@ -100,6 +128,9 @@ bool Settings::load()
         arc_approx_error_ = 0.001;
         use_uint32_index_ = true;
         color_index = 1;
+        pick_tol_ = 0.1;
+        show_precision_ = 3;
+        ui_scale_factor_ = 50;
         if (save())
         {
             emit initDone();
@@ -121,7 +152,7 @@ bool Settings::load()
         {
             QString key = parts[0].trimmed();
             QString value = parts[1].trimmed();
-            qDebug() << "key: " << key << " value: " << value;
+            // qDebug() << "key: " << key << " value: " << value;
             if (key == "app_alg")
             {
                 app_alg_ = value.toInt();
@@ -146,6 +177,18 @@ bool Settings::load()
             {
                 color_index = value.toInt();
             }
+            else if (key == "pick_tol")
+            {
+                pick_tol_ = value.toDouble();
+            }
+            else if (key == "show_precision")
+            {
+                show_precision_ = value.toInt();
+            }
+            else if (key == "ui_scale_factor")
+            {
+                ui_scale_factor_ = value.toFloat();
+            }
         }
     }
 
@@ -166,6 +209,7 @@ DrawStyle Settings::getDrawStyle() const
 
     return style;
 }
+
 SettingItem::SettingItem(QQuickItem *parent)
     : QQuickItem(parent)
 {
@@ -180,6 +224,9 @@ void SettingItem::initDone()
     emit arcApproxErrorChangedSig(Settings::instance().arcApproxError());
     emit useUInt32IndexChangedSig(Settings::instance().useUInt32Index());
     emit colorIndexChangedSig(Settings::instance().colorIndex());
+    emit pickTolChangedSig(Settings::instance().pickTol());
+    emit showPrecisionChangedSig(Settings::instance().showPrecision());
+    emit uiScaleFactorChangedSig(Settings::instance().uiScaleFactor());
 }
 
 int SettingItem::polyAlg() const
@@ -189,7 +236,7 @@ int SettingItem::polyAlg() const
 
 void SettingItem::setAppAlg(int poly_alg)
 {
-    std::cout << "SettingItem::setAppAlg: " << poly_alg << std::endl;
+    // std::cout << "SettingItem::setAppAlg: " << poly_alg << std::endl;
     Settings::instance().setAppAlg(poly_alg);
     emit appAlgChangedSig(poly_alg);
 }
@@ -201,7 +248,7 @@ qreal SettingItem::pointRadius() const
 
 void SettingItem::SettingItem::setPointRadius(qreal radius)
 {
-    std::cout << "SettingItem::setPointRadius: " << radius << std::endl;
+    // std::cout << "SettingItem::setPointRadius: " << radius << std::endl;
     Settings::instance().setPointRadius(radius);
     emit pointRadiusChangedSig(radius);
 }
@@ -213,7 +260,7 @@ float SettingItem::lineWidth() const
 
 void SettingItem::setLineWidth(float width)
 {
-    std::cout << "SettingItem::setLineWidth: " << width << std::endl;
+    // std::cout << "SettingItem::setLineWidth: " << width << std::endl;
     Settings::instance().setLineWidth(width);
     emit lineWidthChangedSig(width);
 }
@@ -225,7 +272,7 @@ double SettingItem::arcApproxError() const
 
 void SettingItem::setArcApproxError(double error)
 {
-    std::cout << "SettingItem::setArcApproxError: " << error << std::endl;
+    // std::cout << "SettingItem::setArcApproxError: " << error << std::endl;
     Settings::instance().setArcApproxError(error);
     emit arcApproxErrorChangedSig(error);
 }
@@ -237,7 +284,7 @@ bool SettingItem::useUInt32Index() const
 
 void SettingItem::setUseUInt32Index(bool use)
 {
-    std::cout << "SettingItem::setUseUInt32Index: " << use << std::endl;
+    // std::cout << "SettingItem::setUseUInt32Index: " << use << std::endl;
     Settings::instance().setUseUInt32Index(use);
     emit useUInt32IndexChangedSig(use);
 }
@@ -249,8 +296,43 @@ int SettingItem::colorIndex() const
 
 void SettingItem::setColorIndex(int index)
 {
-    std::cout << "SettingItem::setColorIndex: " << index << std::endl;
+    // std::cout << "SettingItem::setColorIndex: " << index << std::endl;
     Settings::instance().setColorIndex(index);
     emit colorIndexChangedSig(index);
+}
+double SettingItem::pickTol() const
+{
+    return Settings::instance().pickTol();
+}
+
+void SettingItem::setPickTol(double tol)
+{
+    // std::cout << "SettingItem::setPickTol: " << tol << std::endl;
+    Settings::instance().setPickTol(tol);
+    emit pickTolChangedSig(tol);
+}
+
+int SettingItem::showPrecision() const
+{
+    return Settings::instance().showPrecision();
+}
+
+void SettingItem::setShowPrecision(int precision)
+{
+    // std::cout << "SettingItem::setShowPrecision: " << precision << std::endl;
+    Settings::instance().setShowPrecision(precision);
+    emit showPrecisionChangedSig(precision);
+}
+
+float SettingItem::uiScaleFactor() const
+{
+    return Settings::instance().uiScaleFactor();
+}
+
+void SettingItem::setUiScaleFactor(float factor)
+{
+    // std::cout << "SettingItem::setUiScaleFactor: " << factor << std::endl;
+    Settings::instance().setUiScaleFactor(factor);
+    emit uiScaleFactorChangedSig(factor);
 }
 } // namespace debugger

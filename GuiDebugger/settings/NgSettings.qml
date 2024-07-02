@@ -23,6 +23,10 @@ Rectangle {
             arcApproxError: arcApproxSlider.value
             useUInt32Index: useUInt32IndexCheckBox.checked
             colorIndex: colorIndexComboBox.currentIndex
+            pickTol: pickTolSlider.value
+            showPrecision:showPrecisionSlider.value
+            uiScaleFactor:uiScaleFactorSlider.value
+
             onAppAlgChangedSig: {
                 polyAlgComboBox.currentIndex = ngsettings.polyAlg;
             }
@@ -40,6 +44,15 @@ Rectangle {
             }
             onColorIndexChangedSig: {
                 colorIndexComboBox.currentIndex = ngsettings.colorIndex;
+            }
+            onPickTolChangedSig: {
+                pickTolSlider.value = ngsettings.pickTol;
+            }
+            onShowPrecisionChangedSig: {
+                showPrecisionSlider.value = ngsettings.showPrecision;
+            }
+            onUiScaleFactorChangedSig: {
+                uiScaleFactorSlider.value = ngsettings.uiScaleFactor;
             }
         }
 
@@ -124,6 +137,48 @@ Rectangle {
                     value: ngsettings.arcApproxError
                     onValueChanged: {
                         ngsettings.arcApproxError = arcApproxSlider.value;
+                    }
+                }
+
+                CustomSlider {
+                    id: pickTolSlider
+
+                    Layout.fillWidth: true
+                    title: "Pick Tolerance"
+                    from: 0.001
+                    to: 1
+                    stepSize: 0.001
+                    value: ngsettings.pickTol
+                    onValueChanged: {
+                        ngsettings.pickTol = pickTolSlider.value;
+                    }
+                }
+
+                CustomSlider {
+                    id: showPrecisionSlider
+
+                    Layout.fillWidth: true
+                    title: "Show Precision"
+                    from: 1
+                    to: 16
+                    stepSize: 1
+                    value: ngsettings.showPrecision
+                    onValueChanged: {
+                        ngsettings.showPrecision = showPrecisionSlider.value;
+                    }
+                }
+
+                CustomSlider {
+                    id: uiScaleFactorSlider
+
+                    Layout.fillWidth: true
+                    title: "UI Scale Factor"
+                    from: 10
+                    to: 200
+                    stepSize: 10
+                    value: ngsettings.uiScaleFactor
+                    onValueChanged: {
+                        ngsettings.uiScaleFactor = uiScaleFactorSlider.value;
                     }
                 }
 

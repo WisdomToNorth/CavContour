@@ -9,22 +9,25 @@
 #include <QString>
 #include <QStringList>
 
+#include "AxisGraphicItem.h"
 namespace debugger
 {
 class PlineGraphicItem;
 class SceneViewer : public QQuickItem
 {
     Q_OBJECT
-    Q_PROPERTY(bool showVertex READ showVertex WRITE setShowVertexes NOTIFY showVertexChangedSig)
-    Q_PROPERTY(QString caseIndex READ caseIndex WRITE setCaseIndex NOTIFY caseIndexChangedSig)
+    /*Viewer parameter*/
     Q_PROPERTY(QStringList caseList READ caseList CONSTANT)
+    Q_PROPERTY(QString caseIndex READ caseIndex WRITE setCaseIndex NOTIFY caseIndexChangedSig)
+    Q_PROPERTY(bool showVertex READ showVertex WRITE setShowVertexes NOTIFY showVertexChangedSig)
+    Q_PROPERTY(bool enableSlide READ enableSlide WRITE setEnableSlide NOTIFY enableSlideChangedSig)
+    Q_PROPERTY(bool showAxis READ showAxis WRITE setShowAxis NOTIFY showAxisChangedSig)
+    Q_PROPERTY(bool showDir READ showDir WRITE setShowDir NOTIFY showDirChangedSig)
+    /*Info*/
     Q_PROPERTY(QString mouseLoc READ mouseLoc NOTIFY mouseLocationChanged)
 
 public:
     explicit SceneViewer(QQuickItem *parent = nullptr);
-
-    bool showVertex() const;
-    void setShowVertexes(bool show_vertex);
 
     QString caseIndex() const;
     void setCaseIndex(QString caseindex);
@@ -32,10 +35,28 @@ public:
     QStringList caseList() const;
     QString mouseLoc() const;
 
+    bool showVertex() const;
+    void setShowVertexes(bool show_vertex);
+
+    void setEnableSlide(bool enable_slide);
+    bool enableSlide() const;
+
+    void setShowAxis(bool show_axis);
+    bool showAxis() const;
+
+    void setShowDir(bool show_dir);
+    bool showDir() const;
+
+    Q_INVOKABLE void loadCase(QString caseindex);
+    Q_INVOKABLE void saveCase(QString caseindex);
+
 signals:
     void showVertexChangedSig(bool showVertex);
     void caseIndexChangedSig(QString caseindex);
     void mouseLocationChanged(QString location);
+    void enableSlideChangedSig(bool enableSlide);
+    void showAxisChangedSig(bool showAxis);
+    void showDirChangedSig(bool showDir);
 
 protected:
     QSGNode *updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *) override;
@@ -61,17 +82,14 @@ private:
 
 private:
     /*change by UI*/
-    bool show_vertex_ = true;
     bool enable_slide_ = true;
-
-private:
-    /*change by manual*/
-    const double ui_scale_factor_ = 50;
-    const double pick_tol_ = 0.1;
-    const int show_precision_ = 3;
+    bool show_vertex_ = true;
+    bool show_axis_ = true;
+    bool show_dir_ = true;
 
 private:
     /*app run data*/
+    AxisGraphicItem *axis_;
     std::unordered_set<PlineGraphicItem *> added_;
     QMatrix4x4 real_to_ui_coord_;
     QMatrix4x4 ui_to_real_coord_;

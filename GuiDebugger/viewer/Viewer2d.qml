@@ -4,12 +4,10 @@ import QtQuick.Controls 2.13
 import QtQuick.Layouts 1.15
 
 SplitView {
-
     id: splitViewHorzontal
     orientation: Qt.Horizontal
 
-    ColumnLayout
-    {
+    ColumnLayout {
         anchors.fill: parent
 
         GroupBox {
@@ -19,13 +17,33 @@ SplitView {
             RowLayout {
                 anchors.fill: parent
                 RowLayout {
+                    Button {
+                        text: "Load"
+                        Layout.fillWidth: false
+                        onClicked: {
+                            viewer.loadCase();
+                        }
+                    }
+
+                    Button {
+                        text: "Save"
+                        Layout.fillWidth: false
+                        onClicked: {
+                            viewer.saveCase();
+                        }
+                    }
+
+                    Label {
+                        text: "Case:"
+                        Layout.fillWidth: false
+                    }
                     ComboBox {
                         id: caseIndexComboBox
                         Layout.fillWidth: false
                         model: viewer.caseList
                         currentIndex: 0
                         onCurrentIndexChanged: {
-                            viewer.caseIndex = model[currentIndex]
+                            viewer.caseIndex = model[currentIndex];
                         }
                     }
 
@@ -34,16 +52,42 @@ SplitView {
                         Layout.fillWidth: false
                         checked: viewer.showVertex
                         onCheckedChanged: {
-                            viewer.showVertex = checked
+                            viewer.showVertex = checked;
+                        }
+                    }
+
+                    CheckBox {
+                        text: "Enable Slide"
+                        Layout.fillWidth: false
+                        checked: viewer.enableSlide
+                        onCheckedChanged: {
+                            viewer.enableSlide = checked;
+                        }
+                    }
+
+                    CheckBox {
+                        text: "Show Axis"
+                        Layout.fillWidth: false
+                        checked: viewer.showAxis
+                        onCheckedChanged: {
+                            viewer.showAxis = checked;
+                        }
+                    }
+
+                    CheckBox {
+                        text: "Show Dir"
+                        Layout.fillWidth: false
+                        checked: viewer.showDir
+                        onCheckedChanged: {
+                            viewer.showDir = checked;
                         }
                     }
                 }
-                RowLayout
-                {
-                    Label {
-                        id: locLabel
-                        text: viewer.mouseLoc
-                    }
+
+                Label {
+                    id: locLabel
+                    text: viewer.mouseLoc
+                    Layout.alignment: Qt.AlignRight
                 }
             }
         }
@@ -55,11 +99,10 @@ SplitView {
             SceneViewer {
                 id: viewer
                 anchors.fill: parent
-                onMouseLocationChanged: {
-                    locLabel.text = location
+                onMouseLocationChanged: function (location) {
+                    locLabel.text = location;
                 }
             }
         }
-
     }
 }

@@ -45,6 +45,11 @@ QString SceneViewer::caseIndex() const
 
 void SceneViewer::setCaseIndex(QString caseindex)
 {
+    if (caseIndex() == caseindex)
+    {
+        return;
+    }
+    std::cout << "SceneViewer::setCaseIndex: " << caseindex.toStdString() << std::endl;
     emit caseIndexChangedSig(caseindex);
     update();
 }
@@ -57,11 +62,71 @@ bool SceneViewer::showVertex() const
 void SceneViewer::setShowVertexes(bool show_vertex)
 {
     if (show_vertex_ == show_vertex)
+    {
         return;
-
+    }
+    std::cout << "SceneViewer::setShowVertexes: " << show_vertex << std::endl;
     show_vertex_ = show_vertex;
     update();
     emit showVertexChangedSig(show_vertex_);
+}
+
+void SceneViewer::setEnableSlide(bool enable_slide)
+{
+    if (enable_slide_ == enable_slide)
+    {
+        return;
+    }
+    std::cout << "SceneViewer::setEnableSlide: " << enable_slide << std::endl;
+    enable_slide_ = enable_slide;
+    emit enableSlideChangedSig(enable_slide_);
+}
+
+bool SceneViewer::enableSlide() const
+{
+    return enable_slide_;
+}
+
+void SceneViewer::setShowAxis(bool show_axis)
+{
+    if (show_axis_ == show_axis)
+    {
+        return;
+    }
+    std::cout << "SceneViewer::setShowAxis: " << show_axis << std::endl;
+    show_axis_ = show_axis;
+    emit showAxisChangedSig(show_axis_);
+    update();
+}
+
+bool SceneViewer::showAxis() const
+{
+    return show_axis_;
+}
+
+void SceneViewer::setShowDir(bool show_dir)
+{
+    if (show_dir_ == show_dir)
+        return;
+
+    std::cout << "SceneViewer::setShowDir: " << show_dir << std::endl;
+    show_dir_ = show_dir;
+    emit showDirChangedSig(show_dir_);
+    update();
+}
+
+bool SceneViewer::showDir() const
+{
+    return show_dir_;
+}
+
+void SceneViewer::loadCase(QString caseindex)
+{
+    std::cout << "SceneViewer::loadCase: " << caseindex.toStdString() << std::endl;
+}
+void SceneViewer::saveCase(QString caseindex)
+{
+    std::cout << "SceneViewer::saveCase: " << caseindex.toStdString() << std::endl;
 }
 
 QSGNode *SceneViewer::updatePaintNode(QSGNode *old_node, QQuickItem::UpdatePaintNodeData *)
@@ -105,7 +170,7 @@ void SceneViewer::mousePressEvent(QMouseEvent *event)
     {
         QPointF mouse_pick_pt = getMouseEventGlobalPoint(event);
         QPointF pick = convertFromGlobalUICoord(mouse_pick_pt);
-        const auto &pick_res = doc->hitTest(pick.x(), pick.y(), pick_tol_);
+        const auto &pick_res = doc->hitTest(pick.x(), pick.y(), Settings::instance().pickTol());
         if (pick_res.size() > 0)
         {
             doc->setEditing(pick_res);
@@ -125,10 +190,10 @@ void SceneViewer::mouseMoveEvent(QMouseEvent *event)
         QPointF cur_pick = convertFromGlobalUICoord(cur_mouse);
         if (DocData *doc = DocManager::instance().getCurDoc(); doc)
         {
-            doc->editData(cur_pick.x(), cur_pick.y(), pick_tol_);
+            doc->editData(cur_pick.x(), cur_pick.y(), Settings::instance().pickTol());
             update();
 
-            QString location = getLocLabel(cur_pick, show_precision_);
+            QString location = getLocLabel(cur_pick, Settings::instance().showPrecision());
             emit mouseLocationChanged(location);
             return;
         }
@@ -157,27 +222,33 @@ void SceneViewer::hoverMoveEvent(QHoverEvent *event)
 {
     QPointF mouse_pick_pt = getMouseEventGlobalPoint(event);
     QPointF pick = convertFromGlobalUICoord(mouse_pick_pt);
-    QString location = getLocLabel(pick, show_precision_);
+    QString location = getLocLabel(pick, Settings::instance().showPrecision());
     emit mouseLocationChanged(location);
 }
 
 QString SceneViewer::getLocLabel(const QPointF &pt, int precision)
 {
-    return QString("X: %1, Y: %2").arg(pt.x(), 0, 'f', precision).arg(pt.y(), 0, 'f', precision);
+    // 假设最大整数部分宽度为6，加上小数点和可能的负号
+    int totalWidth = 6 + 1 + precision;
+
+    QString xStr = QString("%1").arg(pt.x(), totalWidth, 'f', precision, ' ');
+    QString yStr = QString("%1").arg(pt.y(), totalWidth, 'f', precision, ' ');
+
+    return QString("X: %1, Y: %2").arg(xStr).arg(yStr);
 }
 
 void SceneViewer::updateCoordMatrices(qreal width, qreal height)
 {
     real_to_ui_coord_.setToIdentity();
     real_to_ui_coord_.translate(static_cast<float>(width / 2), static_cast<float>(height / 2));
-    real_to_ui_coord_.scale(static_cast<float>(ui_scale_factor_),
-                            static_cast<float>(-ui_scale_factor_));
+    real_to_ui_coord_.scale(Settings::instance().uiScaleFactor(),
+                            -Settings::instance().uiScaleFactor());
     ui_to_real_coord_ = real_to_ui_coord_.inverted();
 }
 
 QString SceneViewer::mouseLoc() const
 {
-    return getLocLabel(QPointF(0, 0), show_precision_);
+    return getLocLabel(QPointF(0, 0), Settings::instance().showPrecision());
 }
 
 QPointF SceneViewer::convertToGlobalUICoord(const QPointF &pt)

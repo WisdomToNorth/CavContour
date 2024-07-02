@@ -30,6 +30,8 @@ add_executable(PolyGui
     viewer/segmentnode.h
     viewer/PlineGraphicItem.cpp
     viewer/PlineGraphicItem.h
+    viewer/AxisGraphicItem.h
+    viewer/AxisGraphicItem.cpp
     viewer/caseviewmodel.h
     viewer/caseviewmodel.cpp
     viewer/drawstyle.h
