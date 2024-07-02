@@ -128,7 +128,7 @@ void SceneViewer::mouseMoveEvent(QMouseEvent *event)
             doc->editData(cur_pick.x(), cur_pick.y(), pick_tol_);
             update();
 
-            QString location = getLocLabel(cur_pick);
+            QString location = getLocLabel(cur_pick, show_precision_);
             emit mouseLocationChanged(location);
             return;
         }
@@ -157,20 +157,13 @@ void SceneViewer::hoverMoveEvent(QHoverEvent *event)
 {
     QPointF mouse_pick_pt = getMouseEventGlobalPoint(event);
     QPointF pick = convertFromGlobalUICoord(mouse_pick_pt);
-    QString location = getLocLabel(pick);
+    QString location = getLocLabel(pick, show_precision_);
     emit mouseLocationChanged(location);
 }
 
 QString SceneViewer::getLocLabel(const QPointF &pt, int precision)
 {
     return QString("X: %1, Y: %2").arg(pt.x(), 0, 'f', precision).arg(pt.y(), 0, 'f', precision);
-}
-
-void SceneViewer::setUiScaleFactor(double scale_factor)
-{
-    ui_scale_factor_ = scale_factor;
-    updateCoordMatrices(width(), height());
-    update();
 }
 
 void SceneViewer::updateCoordMatrices(qreal width, qreal height)
@@ -182,29 +175,9 @@ void SceneViewer::updateCoordMatrices(qreal width, qreal height)
     ui_to_real_coord_ = real_to_ui_coord_.inverted();
 }
 
-QPoint SceneViewer::getMouseEventGlobalPoint(QSinglePointEvent *event)
+QString SceneViewer::mouseLoc() const
 {
-#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
-    QPointF startPos = event->globalPosition();
-#else
-    QPointF startPos = event->globalPos();
-#endif
-    return QPoint(int(startPos.x()), int(startPos.y()));
-}
-
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 6, 0) && QT_VERSION < QT_VERSION_CHECK(6, 1, 0))
-void SceneViewer::geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry)
-{
-    QQuickItem::geometryChanged(newGeometry, oldGeometry);
-#elif (QT_VERSION >= QT_VERSION_CHECK(6, 1, 0))
-void SceneViewer::geometryChange(const QRectF &newGeometry, const QRectF &oldGeometry)
-{
-    QQuickItem::geometryChange(newGeometry, oldGeometry);
-#endif
-    Q_UNUSED(oldGeometry)
-
-    updateCoordMatrices(newGeometry.width(), newGeometry.height());
-    update();
+    return getLocLabel(QPointF(0, 0), show_precision_);
 }
 
 QPointF SceneViewer::convertToGlobalUICoord(const QPointF &pt)
@@ -216,4 +189,39 @@ QPointF SceneViewer::convertFromGlobalUICoord(const QPointF &pt)
 {
     return ui_to_real_coord_.map(mapFromGlobal(pt));
 }
+
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 1, 0))
+QPoint SceneViewer::getMouseEventGlobalPoint(QSinglePointEvent *event)
+{
+    return event->globalPosition();
+}
+void SceneViewer::geometryChange(const QRectF &newGeometry, const QRectF &oldGeometry)
+{
+    QQuickItem::geometryChange(newGeometry, oldGeometry);
+    Q_UNUSED(oldGeometry)
+
+    updateCoordMatrices(newGeometry.width(), newGeometry.height());
+    update();
+}
+
+#elif (QT_VERSION >= QT_VERSION_CHECK(5, 6, 0) && QT_VERSION < QT_VERSION_CHECK(6, 1, 0))
+void SceneViewer::geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry)
+{
+    QQuickItem::geometryChanged(newGeometry, oldGeometry);
+    Q_UNUSED(oldGeometry)
+
+    updateCoordMatrices(newGeometry.width(), newGeometry.height());
+    update();
+}
+
+QPointF SceneViewer::getMouseEventGlobalPoint(QMouseEvent *event)
+{
+    return event->globalPos();
+}
+QPointF SceneViewer::getMouseEventGlobalPoint(QHoverEvent *event)
+{
+    QPointF cur_pos = event->posF();
+    return mapToGlobal(cur_pos);
+}
+#endif
 } // namespace debugger

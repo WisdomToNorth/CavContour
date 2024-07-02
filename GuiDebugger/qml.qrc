@@ -3,6 +3,6 @@
         <file>main.qml</file>
         <file>viewer/ViewScene2d.qml</file>
         <file>viewer/Viewer2d.qml</file>
-        <file>settings/DebuggerSettings.qml</file>
+        <file>settings/NgSettings.qml</file>
     </qresource>
 </RCC>

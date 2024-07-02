@@ -11,7 +11,9 @@ using namespace debugger;
 
 int main(int argc, char *argv[])
 {
-    qmlRegisterType<NgSettings>("PolyDebugger", 1, 0, "NgSettings");
+    Settings::instance().load();
+
+    qmlRegisterType<SettingItem>("PolyDebugger", 1, 0, "SettingItem");
     qmlRegisterType<SceneViewer>("PolyDebugger", 1, 0, "SceneViewer");
 
     QGuiApplication app(argc, argv);
@@ -36,5 +38,10 @@ int main(int argc, char *argv[])
 
     engine.load(url);
 
-    return app.exec();
+    int run_result = app.exec();
+    if (run_result == 0)
+    {
+        Settings::instance().save();
+    }
+    return run_result;
 }

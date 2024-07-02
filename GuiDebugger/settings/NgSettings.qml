@@ -20,10 +20,10 @@ Rectangle {
             height: parent.height
             anchors.centerIn: parent
 
-            NgSettings {
+            SettingItem {
                 id: ngsettings
 
-                appAlgorithmCore: algorithmCoreComboBox.currentIndex
+                polyAlg: polyAlgComboBox.currentIndex
             }
 
             GroupBox {
@@ -31,7 +31,7 @@ Rectangle {
                 implicitWidth: parent.width
 
                 ComboBox {
-                    id: algorithmCoreComboBox
+                    id: polyAlgComboBox
 
                     implicitWidth: parent.width
                     model: ["Calc", "NgPoly", "Slipper"]

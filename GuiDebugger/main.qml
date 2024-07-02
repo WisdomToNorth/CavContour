@@ -54,7 +54,7 @@ ApplicationWindow {
                 currentIndex: tabBar.currentIndex
 
                 Viewer2d {}
-                DebuggerSettings {}
+                NgSettings {}
             }
         }
     }
