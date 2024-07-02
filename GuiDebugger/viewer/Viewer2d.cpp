@@ -24,7 +24,7 @@ SceneViewer::SceneViewer(QQuickItem *parent)
 {
     setFlag(ItemHasContents, true);
     setAcceptedMouseButtons(Qt::AllButtons);
-    setAcceptHoverEvents(true);
+    // setAcceptHoverEvents(true);
 
     updateCoordMatrices(width(), height());
     DocManager::instance().setCurDoc("case9");
@@ -267,6 +267,11 @@ void SceneViewer::hoverMoveEvent(QHoverEvent *event)
     QPointF pick = convertFromGlobalUICoord(mouse_pick_pt);
     QString location = getLocLabel(pick, Settings::instance().showPrecision());
     emit mouseLocationChanged(location);
+}
+
+void SceneViewer::hoverEnterEvent(QHoverEvent *event)
+{
+    QQuickItem::hoverEnterEvent(event);
 }
 
 QString SceneViewer::getLocLabel(const QPointF &pt, int precision)

@@ -208,7 +208,7 @@ DrawStyle Settings::getDrawStyle() const
     style.arcApproxError = arc_approx_error_;
     style.width = line_width_;
     style.visible = true;
-    style.useUInt32Index = use_uint32_index_;
+    style.useUInt32Index = true; // TODO:  use_uint32_index_;
 
     return style;
 }

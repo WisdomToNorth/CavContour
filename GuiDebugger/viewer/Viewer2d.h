@@ -64,6 +64,7 @@ protected:
     void mouseMoveEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;
     void hoverMoveEvent(QHoverEvent *event) override;
+    void hoverEnterEvent(QHoverEvent *event) override;
 
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 6, 0) && QT_VERSION < QT_VERSION_CHECK(6, 1, 0))
     void geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry) override;
