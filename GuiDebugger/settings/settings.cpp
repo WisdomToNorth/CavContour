@@ -75,14 +75,6 @@ bool Settings::save() const
         return false;
     }
 
-    qDebug() << "save config file: " << configFilePath;
-    qDebug() << "app_alg: " << app_alg_;
-    qDebug() << "point_radius: " << point_radius_;
-    qDebug() << "line_width: " << line_width_;
-    qDebug() << "arc_approx_error: " << arc_approx_error_;
-    qDebug() << "use_uint32_index: " << use_uint32_index_;
-    qDebug() << "color_index: " << color_index;
-
     QTextStream out(&configFile);
     out << "app_alg=" << app_alg_ << "\n";
     out << "point_radius=" << point_radius_ << "\n";
@@ -102,7 +94,17 @@ bool Settings::load()
     QFile configFile(configFilePath);
     if (!configFile.exists())
     {
-        return save();
+        app_alg_ = 0;
+        point_radius_ = 5.0;
+        line_width_ = 1.0f;
+        arc_approx_error_ = 0.001;
+        use_uint32_index_ = true;
+        color_index = 1;
+        if (save())
+        {
+            emit initDone();
+            return true;
+        }
     }
 
     if (!configFile.open(QIODevice::ReadOnly | QIODevice::Text))
