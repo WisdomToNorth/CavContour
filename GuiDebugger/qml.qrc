@@ -4,5 +4,6 @@
         <file>viewer/ViewScene2d.qml</file>
         <file>viewer/Viewer2d.qml</file>
         <file>settings/NgSettings.qml</file>
+        <file>settings/CustomSlider.qml</file>
     </qresource>
 </RCC>

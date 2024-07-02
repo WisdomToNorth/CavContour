@@ -1,9 +1,8 @@
 import QtQuick 2.13
 import QtQuick.Controls 2.13
+import QtQuick.Controls.Material 2.12
 import QtQuick.Layouts 1.15
 import QtQuick.Window 2.13
-import QtQuick.Controls.Material 2.12
-
 import "settings"
 import "viewer"
 
@@ -15,7 +14,6 @@ ApplicationWindow {
     Material.primary: Material.Indigo
     Material.background: Material.White
     Material.foreground: Material.Black
-
     visible: true
     width: Screen.width - 200
     height: Screen.height - 200
@@ -23,21 +21,6 @@ ApplicationWindow {
 
     font {
         family: "Consolas"
-    }
-
-    header: TabBar {
-        id: tabBar
-        height: 40
-
-        TabButton {
-            height: tabBar.height
-            text: "Polyline Offset"
-        }
-
-        TabButton {
-            height: tabBar.height
-            text: "Debugger Settings"
-        }
     }
 
     Page {
@@ -53,11 +36,34 @@ ApplicationWindow {
                 anchors.margins: 2
                 currentIndex: tabBar.currentIndex
 
-                Viewer2d {}
-                NgSettings {}
+                Viewer2d {
+                }
+
+                NgSettings {
+                }
+
             }
+
         }
+
     }
 
+    header: TabBar {
+        id: tabBar
+
+        currentIndex: 1
+        height: 40
+
+        TabButton {
+            height: tabBar.height
+            text: "Polyline Offset"
+        }
+
+        TabButton {
+            height: tabBar.height
+            text: "Debugger Settings"
+        }
+
+    }
 
 }

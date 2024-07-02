@@ -7,8 +7,9 @@
 
 namespace debugger
 {
-class Settings
+class Settings : public QObject
 {
+    Q_OBJECT
 public:
     static Settings &instance()
     {
@@ -21,25 +22,25 @@ public:
     bool save() const;
     bool load();
 
-    // clang-format off
-    int getAppAlg() const { return app_alg_; }
-    void setAppAlg(int alg) { app_alg_ = alg; }
+    int getAppAlg() const;
+    void setAppAlg(int alg);
 
-    qreal pointRadius() const { return point_radius_; }
-    void setPointRadius(qreal radius) { point_radius_ = radius; }
+    qreal pointRadius() const;
+    void setPointRadius(qreal radius);
+    float lineWidth() const;
+    void setLineWidth(float width);
 
-    float lineWidth() const { return line_width_; }
-    void setLineWidth(float width) { line_width_ = width; }
+    double arcApproxError() const;
+    void setArcApproxError(double error);
 
-    double arcApproxError() const { return arc_approx_error_; }
-    void setArcApproxError(double error) { arc_approx_error_ = error; }
+    bool useUInt32Index() const;
+    void setUseUInt32Index(bool use);
 
-    bool useUInt32Index() const { return use_uint32_index_; }
-    void setUseUInt32Index(bool use) { use_uint32_index_ = use; }
+    int colorIndex() const;
+    void setColorIndex(int index);
 
-    int colorIndex() const { return color_index; }
-    void setColorIndex(int index) { color_index = index; }
-    // clang-format on
+signals:
+    void initDone();
 
 private:
     Settings() = default;
@@ -56,44 +57,43 @@ private:
 
     /*Draw style*/
     const QSGGeometry::DrawingMode line_draw_mode_ = QSGGeometry::DrawingMode::DrawLineStrip;
-    const QString path_to_config_ = "config.ini";
+    const QString path_to_config_ = "polyconfig.ini";
 };
 
 class SettingItem : public QQuickItem
 {
     Q_OBJECT
-    Q_PROPERTY(int polyAlg READ polyAlg WRITE setAppAlg NOTIFY appAlgChangedSig)
+public:
+    Q_PROPERTY(qreal lineWidth READ lineWidth WRITE setLineWidth NOTIFY lineWidthChangedSig)
     Q_PROPERTY(qreal pointRadius READ pointRadius WRITE setPointRadius NOTIFY pointRadiusChangedSig)
-    Q_PROPERTY(float lineWidth READ lineWidth WRITE setLineWidth NOTIFY lineWidthChangedSig)
-    Q_PROPERTY(double arcApproxError READ arcApproxError WRITE setArcApproxError NOTIFY
+    Q_PROPERTY(uint polyAlg READ polyAlg WRITE setAppAlg NOTIFY appAlgChangedSig)
+    Q_PROPERTY(qreal arcApproxError READ arcApproxError WRITE setArcApproxError NOTIFY
                    arcApproxErrorChangedSig)
     Q_PROPERTY(bool useUInt32Index READ useUInt32Index WRITE setUseUInt32Index NOTIFY
                    useUInt32IndexChangedSig)
-    Q_PROPERTY(int colorIndex READ colorIndex WRITE setColorIndex NOTIFY colorIndexChangedSig)
+    Q_PROPERTY(uint colorIndex READ colorIndex WRITE setColorIndex NOTIFY colorIndexChangedSig)
 
 public:
-    SettingItem(QQuickItem *parent = nullptr){};
+    SettingItem(QQuickItem *parent = nullptr);
     ~SettingItem() = default;
 
-    // clang-format off
-    int polyAlg() const { return Settings::instance().getAppAlg(); }
-    void setAppAlg(int polyAlg){Settings::instance().setAppAlg(polyAlg);}
+    int polyAlg() const;
+    void setAppAlg(int poly_alg);
 
-    qreal pointRadius() const { return Settings::instance().pointRadius(); }
-    void setPointRadius(qreal radius) { Settings::instance().setPointRadius(radius); }
+    qreal pointRadius() const;
+    void setPointRadius(qreal radius);
 
-    float lineWidth() const { return Settings::instance().lineWidth(); }
-    void setLineWidth(float width) { Settings::instance().setLineWidth(width); }
+    float lineWidth() const;
+    void setLineWidth(float width);
 
-    double arcApproxError() const { return Settings::instance().arcApproxError(); }
-    void setArcApproxError(double error) { Settings::instance().setArcApproxError(error); }
+    double arcApproxError() const;
+    void setArcApproxError(double error);
 
-    bool useUInt32Index() const { return Settings::instance().useUInt32Index(); }
-    void setUseUInt32Index(bool use) { Settings::instance().setUseUInt32Index(use); }
+    bool useUInt32Index() const;
+    void setUseUInt32Index(bool use);
 
-    int colorIndex() const { return Settings::instance().colorIndex(); }
-    void setColorIndex(int index) { Settings::instance().setColorIndex(index); }
-    // clang-format on
+    int colorIndex() const;
+    void setColorIndex(int index);
 
 signals:
     void appAlgChangedSig(int polyAlg);
@@ -102,6 +102,9 @@ signals:
     void arcApproxErrorChangedSig(double error);
     void useUInt32IndexChangedSig(bool use);
     void colorIndexChangedSig(int index);
+
+private slots:
+    void initDone();
 };
 
 } // namespace debugger

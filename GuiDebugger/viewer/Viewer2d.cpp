@@ -191,7 +191,7 @@ QPointF SceneViewer::convertFromGlobalUICoord(const QPointF &pt)
 }
 
 #if (QT_VERSION >= QT_VERSION_CHECK(6, 1, 0))
-QPoint SceneViewer::getMouseEventGlobalPoint(QSinglePointEvent *event)
+QPointF SceneViewer::getMouseEventGlobalPoint(QSinglePointEvent *event)
 {
     return event->globalPosition();
 }

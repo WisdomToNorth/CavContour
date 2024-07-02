@@ -11,8 +11,6 @@ using namespace debugger;
 
 int main(int argc, char *argv[])
 {
-    Settings::instance().load();
-
     qmlRegisterType<SettingItem>("PolyDebugger", 1, 0, "SettingItem");
     qmlRegisterType<SceneViewer>("PolyDebugger", 1, 0, "SceneViewer");
 
@@ -38,6 +36,7 @@ int main(int argc, char *argv[])
 
     engine.load(url);
 
+    Settings::instance().load();
     int run_result = app.exec();
     if (run_result == 0)
     {

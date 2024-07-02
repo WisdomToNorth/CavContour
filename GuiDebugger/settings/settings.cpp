@@ -2,6 +2,7 @@
 
 #include <iostream>
 
+#include <QDebug>
 #include <QDir>
 #include <QFile>
 #include <QStandardPaths>
@@ -9,6 +10,60 @@
 
 namespace debugger
 {
+int Settings::getAppAlg() const
+{
+    return app_alg_;
+}
+void Settings::setAppAlg(int alg)
+{
+    app_alg_ = alg;
+}
+
+qreal Settings::pointRadius() const
+{
+    return point_radius_;
+}
+void Settings::setPointRadius(qreal radius)
+{
+    point_radius_ = radius;
+}
+
+float Settings::lineWidth() const
+{
+    return line_width_;
+}
+void Settings::setLineWidth(float width)
+{
+    line_width_ = width;
+}
+
+double Settings::arcApproxError() const
+{
+    return arc_approx_error_;
+}
+void Settings::setArcApproxError(double error)
+{
+    arc_approx_error_ = error;
+}
+
+bool Settings::useUInt32Index() const
+{
+    return use_uint32_index_;
+}
+void Settings::setUseUInt32Index(bool use)
+{
+    use_uint32_index_ = use;
+}
+
+int Settings::colorIndex() const
+{
+    return color_index;
+}
+void Settings::setColorIndex(int index)
+{
+    color_index = index;
+}
+
 bool Settings::save() const
 {
     QString documentsPath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
@@ -20,14 +75,22 @@ bool Settings::save() const
         return false;
     }
 
+    qDebug() << "save config file: " << configFilePath;
+    qDebug() << "app_alg: " << app_alg_;
+    qDebug() << "point_radius: " << point_radius_;
+    qDebug() << "line_width: " << line_width_;
+    qDebug() << "arc_approx_error: " << arc_approx_error_;
+    qDebug() << "use_uint32_index: " << use_uint32_index_;
+    qDebug() << "color_index: " << color_index;
+
     QTextStream out(&configFile);
+    out << "app_alg=" << app_alg_ << "\n";
     out << "point_radius=" << point_radius_ << "\n";
     out << "line_width=" << line_width_ << "\n";
     out << "arc_approx_error=" << arc_approx_error_ << "\n";
     out << "use_uint32_index=" << (use_uint32_index_ ? "true" : "false") << "\n";
     out << "color_index=" << color_index << "\n";
 
-    configFile.close();
     return true;
 }
 
@@ -56,8 +119,12 @@ bool Settings::load()
         {
             QString key = parts[0].trimmed();
             QString value = parts[1].trimmed();
-
-            if (key == "point_radius")
+            qDebug() << "key: " << key << " value: " << value;
+            if (key == "app_alg")
+            {
+                app_alg_ = value.toInt();
+            }
+            else if (key == "point_radius")
             {
                 point_radius_ = value.toDouble();
             }
@@ -81,6 +148,7 @@ bool Settings::load()
     }
 
     configFile.close();
+    emit initDone();
     return true;
 }
 
@@ -95,5 +163,92 @@ DrawStyle Settings::getDrawStyle() const
     style.useUInt32Index = use_uint32_index_;
 
     return style;
+}
+SettingItem::SettingItem(QQuickItem *parent)
+    : QQuickItem(parent)
+{
+    connect(&Settings::instance(), &Settings::initDone, this, &SettingItem::initDone);
+}
+
+void SettingItem::initDone()
+{
+    emit appAlgChangedSig(Settings::instance().getAppAlg());
+    emit pointRadiusChangedSig(Settings::instance().pointRadius());
+    emit lineWidthChangedSig(Settings::instance().lineWidth());
+    emit arcApproxErrorChangedSig(Settings::instance().arcApproxError());
+    emit useUInt32IndexChangedSig(Settings::instance().useUInt32Index());
+    emit colorIndexChangedSig(Settings::instance().colorIndex());
+}
+
+int SettingItem::polyAlg() const
+{
+    return Settings::instance().getAppAlg();
+}
+
+void SettingItem::setAppAlg(int poly_alg)
+{
+    std::cout << "SettingItem::setAppAlg: " << poly_alg << std::endl;
+    Settings::instance().setAppAlg(poly_alg);
+    emit appAlgChangedSig(poly_alg);
+}
+
+qreal SettingItem::pointRadius() const
+{
+    return Settings::instance().pointRadius();
+}
+
+void SettingItem::SettingItem::setPointRadius(qreal radius)
+{
+    std::cout << "SettingItem::setPointRadius: " << radius << std::endl;
+    Settings::instance().setPointRadius(radius);
+    emit pointRadiusChangedSig(radius);
+}
+
+float SettingItem::lineWidth() const
+{
+    return Settings::instance().lineWidth();
+}
+
+void SettingItem::setLineWidth(float width)
+{
+    std::cout << "SettingItem::setLineWidth: " << width << std::endl;
+    Settings::instance().setLineWidth(width);
+    emit lineWidthChangedSig(width);
+}
+
+double SettingItem::arcApproxError() const
+{
+    return Settings::instance().arcApproxError();
+}
+
+void SettingItem::setArcApproxError(double error)
+{
+    std::cout << "SettingItem::setArcApproxError: " << error << std::endl;
+    Settings::instance().setArcApproxError(error);
+    emit arcApproxErrorChangedSig(error);
+}
+
+bool SettingItem::useUInt32Index() const
+{
+    return Settings::instance().useUInt32Index();
+}
+
+void SettingItem::setUseUInt32Index(bool use)
+{
+    std::cout << "SettingItem::setUseUInt32Index: " << use << std::endl;
+    Settings::instance().setUseUInt32Index(use);
+    emit useUInt32IndexChangedSig(use);
+}
+
+int SettingItem::colorIndex() const
+{
+    return Settings::instance().colorIndex();
+}
+
+void SettingItem::setColorIndex(int index)
+{
+    std::cout << "SettingItem::setColorIndex: " << index << std::endl;
+    Settings::instance().setColorIndex(index);
+    emit colorIndexChangedSig(index);
 }
 } // namespace debugger
