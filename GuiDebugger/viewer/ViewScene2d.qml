@@ -10,11 +10,11 @@ Rectangle {
     Rectangle {
         id: plineSceneItem
 
+        property real cur_window_x: rect.width
+        property real cur_window_y: rect.height
         width: 20000
         height: 20000
         // initially center (0, 0)
-        property real cur_window_x: rect.width
-        property real cur_window_y: rect.height
         x: cur_window_x / 2 - width / 2
         y: cur_window_y / 2 - height / 2
         border.width: 1 / scaler.xScale

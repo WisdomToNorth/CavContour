@@ -2,6 +2,7 @@ import QtQuick 2.13
 import QtQuick.Controls 2.13
 import QtQuick.Layouts 1.15
 import QtQuick.Window 2.13
+import QtQuick.Controls.Material 2.12
 
 import "settings"
 import "viewer"
@@ -9,9 +10,11 @@ import "viewer"
 ApplicationWindow {
     id: mainWindow
 
-    function adjustFontSize(baseSize) {
-        return baseSize * Screen.pixelDensity
-    }
+    Material.theme: Material.Light
+    Material.accent: Material.Blue
+    Material.primary: Material.Indigo
+    Material.background: Material.White
+    Material.foreground: Material.Black
 
     visible: true
     width: Screen.width - 200
@@ -20,6 +23,21 @@ ApplicationWindow {
 
     font {
         family: "Consolas"
+    }
+
+    header: TabBar {
+        id: tabBar
+        height: 40
+
+        TabButton {
+            height: tabBar.height
+            text: "Polyline Offset"
+        }
+
+        TabButton {
+            height: tabBar.height
+            text: "Debugger Settings"
+        }
     }
 
     Page {
@@ -36,21 +54,10 @@ ApplicationWindow {
                 currentIndex: tabBar.currentIndex
 
                 Viewer2d {}
-
                 DebuggerSettings {}
             }
         }
     }
 
-    header: TabBar {
-        id: tabBar
 
-        TabButton {
-            text: "Polyline Offset"
-        }
-
-        TabButton {
-            text: "Debugger Settings"
-        }
-    }
 }

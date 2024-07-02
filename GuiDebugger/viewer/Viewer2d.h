@@ -18,6 +18,7 @@ class SceneViewer : public QQuickItem
     Q_PROPERTY(bool showVertex READ showVertex WRITE setShowVertexes NOTIFY showVertexChangedSig)
     Q_PROPERTY(QString caseIndex READ caseIndex WRITE setCaseIndex NOTIFY caseIndexChangedSig)
     Q_PROPERTY(QStringList caseList READ caseList CONSTANT)
+    Q_PROPERTY(QString mouseLocation READ mouseLoc NOTIFY mouseLocationChanged)
 
 public:
     explicit SceneViewer(QQuickItem *parent = nullptr);
@@ -29,16 +30,22 @@ public:
     void setCaseIndex(QString caseindex);
 
     QStringList caseList() const;
+    QString mouseLoc() const
+    {
+        return "";
+    };
 
 signals:
     void showVertexChangedSig(bool showVertex);
     void caseIndexChangedSig(QString caseindex);
+    void mouseLocationChanged(QString location);
 
 protected:
     QSGNode *updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *) override;
     void mousePressEvent(QMouseEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;
+    void hoverMoveEvent(QHoverEvent *event) override;
 
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 6, 0) && QT_VERSION < QT_VERSION_CHECK(6, 1, 0))
     void geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry) override;
@@ -49,9 +56,10 @@ protected:
 private:
     void setUiScaleFactor(double scale_factor);
     void updateCoordMatrices(qreal width, qreal height);
-    QPoint getMouseEventGlobalPoint(QMouseEvent *event);
+    QPoint getMouseEventGlobalPoint(QSinglePointEvent *event);
     QPointF convertToGlobalUICoord(const QPointF &pt);
     QPointF convertFromGlobalUICoord(const QPointF &pt);
+    QString getLocLabel(const QPointF &pt, int precision = 3);
 
 private:
     double ui_scale_factor_ = 50;

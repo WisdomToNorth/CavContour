@@ -21,6 +21,7 @@ SceneViewer::SceneViewer(QQuickItem *parent)
 {
     setFlag(ItemHasContents, true);
     setAcceptedMouseButtons(Qt::AllButtons);
+    setAcceptHoverEvents(true);
 
     updateCoordMatrices(width(), height());
     DocManager::instance().setCurDoc("case9");
@@ -126,6 +127,9 @@ void SceneViewer::mouseMoveEvent(QMouseEvent *event)
         {
             doc->editData(cur_pick.x(), cur_pick.y(), pick_tol_);
             update();
+
+            QString location = getLocLabel(cur_pick);
+            emit mouseLocationChanged(location);
             return;
         }
     }
@@ -149,6 +153,19 @@ void SceneViewer::mouseReleaseEvent(QMouseEvent *event)
     event->ignore();
 }
 
+void SceneViewer::hoverMoveEvent(QHoverEvent *event)
+{
+    QPointF mouse_pick_pt = getMouseEventGlobalPoint(event);
+    QPointF pick = convertFromGlobalUICoord(mouse_pick_pt);
+    QString location = getLocLabel(pick);
+    emit mouseLocationChanged(location);
+}
+
+QString SceneViewer::getLocLabel(const QPointF &pt, int precision)
+{
+    return QString("X: %1, Y: %2").arg(pt.x(), 0, 'f', precision).arg(pt.y(), 0, 'f', precision);
+}
+
 void SceneViewer::setUiScaleFactor(double scale_factor)
 {
     ui_scale_factor_ = scale_factor;
@@ -165,7 +182,7 @@ void SceneViewer::updateCoordMatrices(qreal width, qreal height)
     ui_to_real_coord_ = real_to_ui_coord_.inverted();
 }
 
-QPoint SceneViewer::getMouseEventGlobalPoint(QMouseEvent *event)
+QPoint SceneViewer::getMouseEventGlobalPoint(QSinglePointEvent *event)
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
     QPointF startPos = event->globalPosition();
